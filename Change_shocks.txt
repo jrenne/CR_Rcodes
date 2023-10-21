@@ -1,0 +1,27 @@
+##*Change in the number of shocks:
+#*-change W, omega.star and n.eta in Code2
+#*-change function a.w and b.w
+#*-change the simulations
+#*-change in the alpha.w(1)(2) and beta.w(1)(2)
+#*change Param2Model and Model2Param
+
+
+
+#Quick plot with simulations for emissions
+date.f<-11
+x<-exp(seq(-20,40,length.out = 10000))
+x<-seq(0.000001,500,by=0.001)
+gamma<-seq(-5,60,length.out = 100)
+F.x<-fourier(model_sol,x,gamma,date.f,3)
+
+plot(gamma,F.x,type="l")
+lines(ecdf(simul_model_est$E[(date.f+1),]),col="darkorange")
+
+f.x<-matrix(0,length(gamma)-1,1)
+for(i in 1:length(gamma)){
+  f.x[i]<-(F.x[i+1]-F.x[i])/(gamma[i+1]-gamma[i])}
+
+plot(density(simul_model_est$E[(date.f+1),]),col="darkorange")
+lines(gamma,f.x,col="black")
+abline(v=mean(simul_model_est$E[(date.f+1),]),col="darkorange")
+abline(v=EV$EX[[3]][(date.f+1)],col="black")

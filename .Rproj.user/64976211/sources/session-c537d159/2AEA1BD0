@@ -1,0 +1,26 @@
+{
+    "id": "2AEA1BD0",
+    "path": "~/Dropbox/Research/TIBs/Rcodes_v10/outputs/make_figures/make_figure_Dsimul.R",
+    "project_path": "outputs/make_figures/make_figure_Dsimul.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1697817950859.0,
+    "source_on_save": false,
+    "relative_order": 20,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "7,26",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1696868951,
+    "encoding": "ISO8859-1",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1696868951,
+    "read_only": false,
+    "read_only_alternatives": []
+}

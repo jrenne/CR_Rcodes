@@ -1,0 +1,26 @@
+{
+    "id": "83F4FC01",
+    "path": "~/Dropbox/Research/TIBs/Rcodes_v10/estimations/load_ini_model.R",
+    "project_path": "estimations/load_ini_model.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1695109403321.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "184,0",
+        "scrollLine": "169"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1697809104,
+    "encoding": "ISO8859-1",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1697809104827,
+    "read_only": false,
+    "read_only_alternatives": []
+}

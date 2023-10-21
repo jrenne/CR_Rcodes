@@ -1,0 +1,11 @@
+Specification&\multicolumn{2}{c}{$\gamma=7$}&\multicolumn{2}{c}{$\gamma=4$}&\multicolumn{2}{c}{$\gamma=10$}\\
+\hline
+Baseline&{\bf 819}&&{\bf 669}&&{\bf 1120}&\\
+Deterministic model&560&$-$\textit{32\%}&560&$-$\textit{16\%}&560&$-$\textit{50\%}\\
+No damage uncertainty ($\mu_T=0$)&585&$-$\textit{29\%}&572&$-$\textit{15\%}&599&$-$\textit{46\%}\\
+Small damages (twice lower in expectation)&463&$-$\textit{43\%}&436&$-$\textit{35\%}&496&$-$\textit{56\%}\\
+Small damages and deterministic&409&$-$\textit{50\%}&409&$-$\textit{39\%}&409&$-$\textit{64\%}\\
+No permafrost uncertainty ($\mu_N=0$)&802&$-$\textit{2\%}&664&$-$\textit{1\%}&1069&$-$\textit{5\%}\\
+No permaf.-based carbon releases ($a_N=b_N=0$)&627&$-$\textit{23\%}&520&$-$\textit{22\%}&833&$-$\textit{26\%}\\
+No sea-level uncertainty ($\mu_H=0$)&804&$-$\textit{2\%}&663&$-$\textit{1\%}&1096&$-$\textit{2\%}\\
+No sea-level risks ($a_H=b_H=0$)&522&$-$\textit{36\%}&389&$-$\textit{42\%}&796&$-$\textit{29\%}\\

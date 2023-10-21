@@ -1,0 +1,26 @@
+{
+    "id": "341BA9F5",
+    "path": "C:/Users/Pauline/Dropbox/TIBs/Rcodes_v10/procedure/Functions_General_v2.R",
+    "project_path": "procedure/Functions_General_v2.R",
+    "type": "r_source",
+    "hash": "1486313046",
+    "contents": "",
+    "dirty": false,
+    "created": 1679306160036.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "1582,56",
+        "scrollLine": "0"
+    },
+    "folds": "5|31|32|0|\n34|31|63|0|\n65|31|112|0|\n159|59|209|0|\n217|49|233|0|\n236|64|260|0|\n268|44|297|0|\n310|43|340|0|\n359|64|651|0|\n1753|72|1767|0|\n2424|32|2436|0|\n2438|32|2449|0|\n2456|36|2487|0|\n2489|36|2529|0|\n2531|34|2542|0|\n2544|34|2555|0|\n2562|36|2587|0|\n",
+    "lastKnownWriteTime": 1693470032,
+    "encoding": "ISO8859-1",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1693470032780,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,27 @@
+{
+    "id": "2B836C13",
+    "path": "~/Dropbox/Research/TIBs/Rcodes_v10/outputs/make_figures/make_figure_calibration.R",
+    "project_path": "outputs/make_figures/make_figure_calibration.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1697808120991.0,
+    "source_on_save": false,
+    "relative_order": 19,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "10,0",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1697057965,
+    "encoding": "ISO8859-1",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1697057965,
+    "read_only": false,
+    "read_only_alternatives": []
+}

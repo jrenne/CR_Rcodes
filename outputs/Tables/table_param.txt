@@ -1,0 +1,31 @@
+Time step &$\Delta t $ &&$5$&years &\\
+Risk aversion&$\gamma$&\eqref{eq:logU}&$7.0$& &\\
+Discount factor (annual) &$1-\delta^{\frac{1}{\Delta t}}$ &\eqref{eq:logU}&$1.50$&percent per year&\\
+Capital depreciation rate &$dep$&\eqref{eq:mucsigmac}&$6$&percent per year&\\
+Avg ratio $M_{AT}\big/M_{PI}$ over 2020-2100&$m_0$&\eqref{eq:radforcAppendix}&$1.92$&&CDICE+RCP\\
+Decline rate of decarbonization &$\delta_{\sigma} $ &\eqref{eq:carboIntensity}&$-0.10$&percent per period&DICE2016\\
+Industrial emissions in 2015 &$e_0$ &$(\sigma_{0})$ &$35.85$&GtCO$_2$ per year&CDICE\\
+Initial world gross output in 2015 &$q_0 $ &\eqref{eq:IndAppendix}&$105.50$&trillions of 2010 USD&DICE2016\\
+Initial emission control rate in 2015 &$\mu_0 $ &\eqref{eq:IndAppendix}&$3.00$&percent&\hl{DICE?}\\
+Carbon intensity in 2015 &$\sigma_{0} $ &\eqref{eq:carboIntensity}&$\frac{e_0}{q_0 (1-\mu_0 )}=$$0.35$&kgCO$_2$ per one thousand USD of 2015 production&DICE2016\\
+Initial growth of carbon intensity $\sigma_1$ &$g_{\sigma,1} $ &\eqref{eq:carboIntensity}&$-1.52$&percent per period &DICE2016\\
+Backstop price  &$pback$ &\eqref{eq:bckstopAppendix}&$500$&USD &\hl{DICE2016}\\
+Initial cost decline backstop cost &$gback $ &\eqref{eq:bckstopAppendix}&$2.50$&percent per period&DICE2016\\
+Exponent control cost function &$\theta_2 $ &\eqref{eq:adjLambdatAppendix}+\eqref{eq:adjBackstopAppendix}&$2.60$&&DICE2016\\
+Carbon emissions from land in 2015 &$\varepsilon_0 $ &\eqref{eq:declineLand}&$2.60$&GtCO$_2$ per year &DICE2016\\
+Decline rate in land emissions &$\rho $ &\eqref{eq:declineLand}&$11.50$&percent per period &DICE2016\\
+2015 forcings of non-CO$_2$ GHG &$\phi_0 $ &\eqref{eq:exogradforcingAppendix}&$0.50$&W/m$^2$&DICE2016\\
+2100 forcings of non-CO$_2$ GHG &$\phi_1 $ &\eqref{eq:exogradforcingAppendix}&$1.00$&W/m$^2$&DICE2016\\
+Equilibrium concentration in atmosphere &$mateq $ &\eqref{eq:carboncycleAppendix}&$607$&GtC &CDICE\\
+Equilibrium concentration in upper strata &$mueq $ &\eqref{eq:carboncycleAppendix}&$489$&GtC &CDICE\\
+Equilibrium concentration in lower strata &$mleq $ &\eqref{eq:carboncycleAppendix}&$1281$&GtC &CDICE\\
+Transfer coef. from atm. to up. ocean &$\varphi_{12} $ &\eqref{eq:carboncycleAppendix}&$0.05300$&&CDICE\\
+Transfer coef. from up. to lo. ocean &$\varphi_{23} $ &\eqref{eq:carboncycleAppendix}&$0.00820$&&CDICE\\
+Climate eq. coefficient for upper level &$\xi_1 $ &\eqref{eq:TatAppendix}&$0.68500$&per period&CDICE\\
+Transfer coef. upper to lower stratum &$\xi_2 $ &\eqref{eq:TatAppendix}&$0.73000$&per period &CDICE\\
+Transfer coef. for lower stratum &$\xi_3 $ &\eqref{eq:TloAppendix}&$0.03445$&per period&CDICE\\
+Forcings of equilibrium CO$_2$ doubling &$\tau $ &\eqref{eq:radforcAppendix}+\eqref{eq:TatAppendix}&$3.45$&W/m$^2$&CDICE\\
+Equilibrium temperature impact &$\nu $ &\eqref{eq:TatAppendix}&3.25&\degree C per doubling CO$_2$&CDICE\\
+Coef. attached to $\Delta T_{at,t}$ &$b_{SAT} $ &\eqref{eq:SeaLAppendix}&$$&m per \degree C&\citet{Vermeer_Rahmstorf_2009}\\
+Base temperature for sea level equilibrium &$T_{0,S} $ &\eqref{eq:SeaLAppendix}&$$& per \degree C&\citet{Vermeer_Rahmstorf_2009}\\
+Destruction of capital due to rising SL&$b_{SK} $ &\eqref{eq:DeltaC}&$0.10000$& &\citet{Hinkel_etal_2014}\\

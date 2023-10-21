@@ -1,0 +1,9 @@
+Initial emissions &$\mathcal{E}_0$ &\eqref{eq:Emit}&$38.45$&GtCO$_2$ &CDICE\\
+Initial industrial emissions &$\mathcal{E}_{ind,0}$ &\eqref{eq:IndAppendix}&$35.85$&GtCO$_2$&CDICE\\
+Initial radiative forcings &$F_0$ &\eqref{eq:Fradiat}+\eqref{eq:Tat}&$2.00$&W/m$^2$&CDICE\\
+Initial carbon concent. (atmos.) &$M_{AT,0}$ &\eqref{eq:Mvector}&$847$&GtC&Chris Smith (2022)\\
+Initial carbon concent. (upper ocean) &$M_{UP,0}$ &\eqref{eq:Mvector}&$822$&GtC&CDICE\\
+Initial carbon concent. (lower ocean) &$M_{LO,0}$ &\eqref{eq:Mvector}&$1810$&GtC&CDICE\\
+Initial temp. anomaly (atmos.) &$T_{AT,0}$ &\eqref{eq:Tat}&$1.10$&\degree C&Chris Smith (2022)\\
+Initial temp. anomaly (lower ocean) &$T_{LO,0}$ &\eqref{eq:TloAppendix}&$0.25$&\degree C&Chris Smith (2022)\\
+Initial sea level &$H_{0}$ &\eqref{eq:SeaL}&$0.13$&m&\citet{Vermeer_Rahmstorf_2009}\\
