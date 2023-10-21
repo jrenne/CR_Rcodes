@@ -10,6 +10,7 @@ library(optimx)
 library(MASS)
 library(expm)
 
+
 #Integers: from 0 to Tmax=100
 passive.mu        <- 0  #in which period mu can reach 1?
 #Binary operators: 0 = NO, 1 = YES.
