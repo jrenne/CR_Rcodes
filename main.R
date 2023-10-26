@@ -14,8 +14,8 @@ library(expm)
 #Integers: from 0 to Tmax=100
 passive.mu        <- 0  #in which period mu can reach 1?
 #Binary operators: 0 = NO, 1 = YES.
-indic_plots_paper <- 0  #do you run some plots of the paper? see description below
-indic_tables_paper<- 0  #do you run the tables of the paper?
+indic_plots_paper <- 1  #do you run some plots of the paper? see description below
+indic_tables_paper<- 1  #do you run the tables of the paper?
 indic_stocks      <- 0  #do you add stocks to your analysis? see file -stocks-
 
 #Load libraries of functions:
@@ -49,7 +49,8 @@ toc()
 
 
 plots <- 13:14
-#plots <- 5
+plots <- c(3,7)
+plots <- 0:15
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
