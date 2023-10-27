@@ -116,8 +116,7 @@ for(b_sk in values.b_sk){
 
 
 stopCluster(cl)
-
-
+file.remove("outputs/toto.Rdata")
 
 par(mfrow=c(2,2))
 plot(discounted.R[1,],type="l")

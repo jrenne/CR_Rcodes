@@ -1,4 +1,3 @@
-indic_stocks      <-0
 
 #Climate beta
 y.lim   <- c(-.3,1.2)
@@ -75,6 +74,8 @@ all_res <- foreach(i = 1:length(seq.mu_D),
                    }
 
 stopCluster(cl)
+file.remove("outputs/toto.Rdata")
+
 
 all_res[abs(all_res)>10^5] <- NaN
 

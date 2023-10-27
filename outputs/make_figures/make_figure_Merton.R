@@ -147,6 +147,7 @@ for(muAD in vector.of.muAD){
 dev.off()
 
 stopCluster(cl)
+file.remove("outputs/toto.Rdata")
 
 
 

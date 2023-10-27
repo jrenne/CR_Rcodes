@@ -116,6 +116,8 @@ all_SCC <- foreach(i = 1:dim(all.specif)[1],
                    }
 
 stopCluster(cl)
+file.remove("outputs/toto.Rdata")
+
 
 all_SCC <- matrix(all_SCC,dim(all.targets)[1],length(values.of.gamma))
 rownames(all_SCC) <- rownames(all.targets)

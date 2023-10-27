@@ -35,6 +35,7 @@ all.Ts <- foreach(i = 1:length(values.of.mu_D), .combine=rbind) %dopar% {
 }
 
 stopCluster(cl)
+file.remove("outputs/toto.Rdata")
 
 
 T.P       <- matrix(all.Ts[,1],length(values.of.mu_D),1)

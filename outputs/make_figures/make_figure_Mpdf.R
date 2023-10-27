@@ -44,6 +44,8 @@ all.Probas.P <- foreach(i = 1:H, .combine=cbind) %dopar% {
 }
 
 stopCluster(cl)
+file.remove("outputs/toto.Rdata")
+
 
 CI.P <- confidence_intervals_across_horizons(all.Probas.P,
                                              values.of.variable = values.of.emissions,

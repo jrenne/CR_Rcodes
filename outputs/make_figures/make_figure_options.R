@@ -1,9 +1,6 @@
 # Vector of temperatures for strike K, Digital Option:
 K <- c(2,3,3.5)
 
-indic_stocks<-0
-#Options on temperatures (atm.)
-
 TAT <- which(model$names.var.X=="T_at")
 
 omega_ZCB <- matrix(0,model_sol$n.X)
@@ -58,6 +55,8 @@ all.Probas.P <- foreach(h = 1:H, .combine=rbind) %dopar% {
 }
 
 stopCluster(cl)
+file.remove("outputs/toto.Rdata")
+
 
 k <- 3
 plot(all.Probas.P[,k])

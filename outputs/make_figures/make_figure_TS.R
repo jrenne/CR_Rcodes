@@ -1,4 +1,3 @@
-indic_stocks      <-0
 #TIB & Swaps
 
 H <- model_sol$horiz.2100

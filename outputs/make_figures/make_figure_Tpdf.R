@@ -44,6 +44,7 @@ all.Probas.P <- foreach(h = 1:H, .combine=cbind) %dopar% {
 }
 
 stopCluster(cl)
+file.remove("outputs/toto.Rdata")
 
 
 # Compute confidence intervals:

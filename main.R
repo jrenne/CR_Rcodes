@@ -16,11 +16,11 @@ passive.mu        <- 0  #in which period mu can reach 1?
 #Binary operators: 0 = NO, 1 = YES.
 indic_plots_paper <- 1  #do you run some plots of the paper? see description below
 indic_tables_paper<- 1  #do you run the tables of the paper?
-indic_stocks      <- 0  #do you add stocks to your analysis? see file -stocks-
+
 
 #Load libraries of functions:
-source("./procedure/Functions_General_v2.R")
-source("./procedure/prepare.figures.R")
+source("./procedures/Functions_General_v2.R")
+source("./procedures/prepare.figures.R")
 
 tic("Calibration")
 source("./estimations/load_ini_model.R")
@@ -61,10 +61,3 @@ if(indic_tables_paper==1){
   source("outputs/tables_paper.R")
 }
 
-#####
-#* To add a variable/parameter: see CHANGE
-#* FILES:
-#* load_ini_model (n.X, param, ...)
-#* optimiz (Number of parameters FILTER)
-#* Functions_General_v2 (model_solve, EV.fct, simul.function)
-#* Functions_Optim (Param2Model, Model2Param)
