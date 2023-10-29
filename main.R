@@ -19,13 +19,16 @@ indic_tables_paper<- 1  #do you run the tables of the paper?
 
 
 #Load libraries of functions:
-source("./procedures/Functions_General_v2.R")
-source("./procedures/prepare.figures.R")
+source("procedures/functions_general.R")
+source("procedures/functions_figures.R")
 
 tic("Calibration")
-source("./estimations/load_ini_model.R")
-#source("./estimations/plots_check.R") 
+source("estimations/load_ini_model.R")
+#source("estimations/plots_check.R") 
 toc()
+
+
+stop()
 
 
 #Updating Plots and Tables

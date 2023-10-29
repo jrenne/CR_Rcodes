@@ -79,7 +79,7 @@ layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE),
        widths=c(1,1,2), heights=c(1,1,2))
 par(plt=c(.15,.95,.15,.85))
 
-y.lim <- c(1,6)
+y.lim <- c(.5,6)
 x.lim <- c(2035,2100)
 
 plot(model_sol$vec_date[2:(H+1)],ET.P,
