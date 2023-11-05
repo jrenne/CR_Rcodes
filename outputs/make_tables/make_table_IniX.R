@@ -54,7 +54,7 @@ latex.table <- rbind(
         "\\\\",sep=""),
   paste("Initial temp. anomaly (lower ocean) &",
         "$T_{LO,0}$ &",
-        "\\eqref{eq:TloAppendix}&",
+        "\\eqref{eq:TLO}&",
         make.entry(model$vector.ini$ini_Tlo,format.nb),"&\\degree C&",
         "CDICE",
         "\\\\",sep=""),

@@ -2,40 +2,39 @@
 # Initial model - solves model with initial parameters
 # ==============================================================================
 
+#number of periods before climatic risks disappear:
 Tmax   <-100
 
 #number of years in each period t \in(1:Tmax):
 tstep  <-5
 
-#---- Model Characteristics----
 #vector of dates
 vec_date<-seq(2020,by=tstep,len=Tmax-1)
+
 #Initial values of theta_/_b for mitig optim. from DICE2016
 theta0  <-list(c(log(0.17),-1/21*log(0.17)))
+
 #Determine of max of iterations in mitig optim.
 MAXIT   <-200 
+
 #Define the horizon for optimization
 horiz   <-(2100-vec_date[1])/tstep
 
-#---- state vector ----
-#CHANGE
 
-#*                        *#
-#### List of parameters ####
-#*                        *#
+#---- state vector -------------------------------------------------------------
 
 #---- INITIALIZATION ----
 #The World in Data + DICE
-eps_0 <- 5.9 # DICE2023
+eps_0 <- 5.9  # DICE2023
 Eind  <- 37.6 # DICE2023
-Ftot  <- 2
-#CDICE, Folini et al. (2023)
-Mat <- 851
-Mup <- 628
-Mlo <-1323
-Tlo <-   0.27
-Tat <-   1.1
-H   <-   0.13
+#CDICE, Folini et al. (2023):
+Ftot <- 2
+Mat  <- 851
+Mup  <- 628
+Mlo  <- 1323
+Tlo  <- 0.27
+Tat  <- 1.1
+H    <- 0.13
 
 vector.ini<-list(
   ini_delc   = 0,
@@ -56,26 +55,24 @@ vector.ini<-list(
 remove(Eind,Ftot,Mat,Mup,Mlo,Tat,Tlo,H)
 
 
-#---- Economic parameters ----
-#Covariance matrix eta
-#Can add correlation and/or persistence in shocks
+#---- Economic parameters ------------------------------------------------------
 n.eta    <- 2
 Phi.prep <- matrix(0,n.eta,n.eta)
 n.Z <- length(vector.ini)
 n.W <- n.eta + 4
 
 param.econ<-list(
-  A_bar      = NaN,                                                             #exp(5*0.015)/0.95-0.73
-  sigma_a    = NaN,                                                             #0.03*sqrt(1-Phi.prep[1,1]^2),
+  A_bar      = NaN,                                                             #will be calibrated
+  sigma_a    = NaN,                                                             #will be calibrated
   Phi        = Phi.prep,
   gamma      = 7,
   delta      = (1 - .015)^5,
-  delta_K    = 0.27,                                                            #Hall&Jones(1999)
+  delta_K    = 0.27,                                                            
   c0         = 299                                                              #Ini consumpt. (in tn) over tstep
 )
-
 remove(Phi.prep)
-#---- Climate parameters ----
+
+#---- Climate parameters -------------------------------------------------------
 #CDICE
 b12     <- 0.053
 b23     <- 0.0082
@@ -88,17 +85,15 @@ c4      <- 0.00689*tstep
 f2co2   <- 3.45
 t2co2   <- 3.25
 
-#DICE2016
-q0  <- 135.7
+q0  <- 135.7 #ini production DICE2023
 mu0 <- 0.05
+
 #RCP 4.5 + 6
 exp.mat.2100.rcp45_6 <-1168
 m0 <- exp.mat.2100.rcp45_6/mateq
 
 param.clim<-list(
   m0         = m0, 
-  #sigma_E    = 0.0, 
-  #sigma_F    = 0.0, 
   a_H        = NaN,
   b_H        = NaN,
   a_N        = NaN,
@@ -121,7 +116,7 @@ param.clim<-list(
   xi_3       = c4,                                                           
   nu         = t2co2,                                                       
   tau        = f2co2,                                                           
-  delsigma   =-0.04,                                                           #DICE2023
+  delsigma   =-0.04,                                                            #DICE2023
   e0         = vector.ini$ini_Eind,                                             
   q0         = q0,                                                            
   mu0        = mu0,                                                           
@@ -139,22 +134,20 @@ param.clim<-list(
   gback      = 0.05,                                                            #DICE2023
   pback      = 695,                                                             #DICE2023
   theta2     = 2.6,                                                             #DICE2023,expcost2
-  b_sk       = .1, #0.3/80,
+  b_sk       = .1,
   tol.GN     = 10^(-6),
   eps.GN     = 10^(-5),
   mu_T       = NaN,
   mu_H       = NaN
 )
-remove(b12,b23,c1,c3,c4,mateq,mueq,mleq,f2co2,t2co2,q0,mu0,exp.mat.2100.rcp45_6)
+remove(b12,b23,c1,c3,c4,mateq,mueq,mleq,f2co2,
+       t2co2,q0,mu0,exp.mat.2100.rcp45_6)
 
 param<-c(param.econ,param.clim)
 
-#*                                *#
-#### cALIBRATION of parameters ####
-#*                                *#
 
 
-#-----------------------------------moments
+#---- Targets ------------------------------------------------------------------
 #These are the moments the model must replicate:
 target_vector <- c(
   0.95,                                                                         #consump w/ damages & T_at=2
@@ -192,6 +185,9 @@ names(target_vector)<-c(
   "sigma_c0"
 )
 
+
+#---- Names of variables in X --------------------------------------------------
+
 names.var.X <- c("delc","y_tilde","E","E_ind","Forc","M_at",
                  "M_up","M_lo","T_at","T_lo","Cum_D","Cum_E",
                  "Cum_dc","H",
@@ -201,7 +197,7 @@ names.var.X <- c("delc","y_tilde","E","E_ind","Forc","M_at",
                  "D","N","T_atW","HW")
 
 
-#log-growth rate
+#---- log-growth rate ----------------------------------------------------------
 #* must be a list of one element (mu_0) called muprice_0, and a matrix of n.X*1 (mu_1)
 #* elements called muprice_1. 
 #* No need to put the diagonal element (A0[13,13]=1) as a correction has been added in case.
@@ -211,7 +207,7 @@ Cum_dc1[1]  <- 1
 Cum_dc      <- list(muprice_0=0,muprice_1=Cum_dc1)
 
 
-#---- Solving the SDF ----
+#---- Define a model object ----------------------------------------------------
 ini_matx<-list()
 inf_matx<-list()
 model<-list("parameters"=param,"vec_date"=vec_date,"tstep"=tstep,
@@ -223,7 +219,7 @@ model<-list("parameters"=param,"vec_date"=vec_date,"tstep"=tstep,
             "names.var.X"=names.var.X)
 
 
-#---- Calibration ----
+#---- Perform calibration ------------------------------------------------------
 print("***** starting calibration *****")
 model <- solveParam4D(model)
 model <- solveParam4H(model)
@@ -232,11 +228,12 @@ model <- solveParam4c(model)
 model <- solveParam4T(model)
 print("***** calibration: done *****")
 
-tic("Solve Initial Model")
+tic("***** Solve Initial Model *****")
 model_sol<-model_solve(model,theta0)
 toc()
 
-H        <-model$horiz.2100+50
+# Check plots:
+H <- model$horiz.2100 + 50
 #Model-implied EV
 EV<-EV.fct(model_sol,H)
 par(mfrow=c(2,3))
@@ -251,9 +248,7 @@ lines(model$vec_date[1:H],EV$EX$H+2*sqrt(EV$VX$H),type="l",col="red",lty=2)
 lines(model$vec_date[1:H],EV$EX$H-2*sqrt(EV$VX$H),type="l",col="red",lty=2)
 plot(model$vec_date[1:H],EV$EX$N,type="l")
 
-# #Remove unnecessary elements:
-# remove(horiz,ini_pd,MAXIT,target_vector,vec_date,
-#        tstep,Tmax,n.eta,n.W,n.Z,theta0,
-#        omega_ZCB,omega_T.at,omega_Div,mu_r1.a1,mu_r0.om0,
-#        mu_pd.a0,mu_div.0,mu_c,kap1.a0,kap0.om0,inf_matx,ini_matx,
-#        vector.ini,param.clim,param.econ,Cum_dc,Cum_dc1)
+#Remove unnecessary elements:
+remove(horiz,MAXIT,target_vector,vec_date,
+       tstep,Tmax,n.eta,n.W,n.Z,theta0,ini_matx,
+       vector.ini,param.clim,param.econ,Cum_dc,Cum_dc1)
