@@ -1,14 +1,12 @@
-##############
-#LATEX TABLES#
-##############
+# ==============================================================================
+# LATEX TABLES
+# ==============================================================================
 
 #* Description
 #* 1 Estimated parameters
 #* 2 Targets + estimated param
 #* 3 Initial value of State Vector
 #* 4 Parameters
-
-
 
 
 par(plt=c(.1,.9,.1,.9))

@@ -1,5 +1,6 @@
-#Generalized Functions file
-#--------------------------ctrl F: CHANGE
+# ==============================================================================
+# Figure 
+# ==============================================================================
 
 #* CALIBRATION ----
 solveParam4c <- function(model){
@@ -69,7 +70,7 @@ solveParam4N <-function(model,
   
   mu_N  <- model$target_vector["stdCumN4"]^2/(2*model$target_vector["ECumN4"])
   
-  kapN  <- matrix(seq(0.6,0.9,length=5000),ncol=1)
+  kapN  <- matrix(seq(0.6,0.98,length=5000),ncol=1)
   
   C     <- matrix(c(model$target_vector["ECumN2"],
                     model$target_vector["ECumN4"]),
@@ -86,13 +87,11 @@ solveParam4N <-function(model,
               2,2)*mu_N
     ellN  <- matrix(c(0,0),ncol=1)
     ellN  <- solve(N)%*%C
-    
     return(ellN)})
   
-  CumN.inf    <- mu_N/(1-kapN[1:length(kapN)])*
-    (t(ellN.condkapN[,1:length(kapN)])%*%
-       matrix(c(1,T.2500),ncol=1))
-  
+  CumN.inf    <- c(mu_N/(1-kapN)) *
+    c(matrix(c(1,T.2500),nrow=1) %*% ellN.condkapN)
+       
   param.CumN  <-rbind(t(kapN),ellN.condkapN,t(CumN.inf),
                       rep(model$target_vector["ECumNinf"],length(kapN)),
                       t(CumN.inf-model$target_vector["ECumNinf"]))
@@ -151,7 +150,6 @@ solveParam4T <-function(model){
     
     print(paste(" deviation between higher and lower bound: ",toString(std.T_at.high-std.T_at.low),sep=""))
     
-    #mu_T.interm <- mu_T.low * (1-rel.diff) + mu_T.high * rel.diff
     mu_T.interm <- mu_T.low * .5 + mu_T.high * .5
     
     model.interm$parameters$mu_T  <- mu_T.interm
@@ -189,39 +187,6 @@ mu_T.bisection <- function(x,model){
 }
 
 
-#* MISCELLANEOUS ----
-
-##----------------Bisection Algorithm
-#*bounds is a size 2 vector containing lower and upper bounds respectively
-#*bounds[1]<bounds[2]
-#*fun is the function to maximize
-#*return a vector containing c and fun(c) respectively
-
-bisection <- function(bounds,fun,model){
-  a    <- min(bounds)
-  b    <- max(bounds)
-  tol  <- .001
-  i    <- 0
-  diff <- 1
-  while(diff > tol){
-    c   <- (a+b)/2
-    f.c <- fun(c,model)
-    f.a <- fun(a,model)
-    if(f.c*f.a > 0){
-      a <- c
-    }else{
-      b <- c
-    }
-    i <- i + 1
-    diff <- abs(b-a)
-    print(diff)
-  }
-  return(c(c,fun(c)))
-}
-
-
-
-#parallel calculations for f(a) and f(c)
 
 #----------------Plot with confidence area
 make_confidence_area <- function(x,y,pdf_xy,p,tol=10^(-2)){
@@ -418,11 +383,10 @@ Fourier.psi <- function(model,gamma,x,
 
 LT.CumN.infinite <- function(model,u,
                              T0=NaN,
-                             Tstar,
+                             Tstar = 4,
                              tstar=NaN){
   param <- model$parameters
-  aux <- 1/(1-param$kappa_N) * u*param$mu_N/(1-u*param$mu_N) * 
-    (param$a_N + param$b_N * Tstar) / param$mu_N
+  aux <- 1/(1-param$kappa_N) * u/(1-u*param$mu_N) * (param$a_N + param$b_N * Tstar)
   return(exp(aux))
 }
 
@@ -688,21 +652,6 @@ varphi.bar<-function(model_sol,omega.v.bar,H,x,a,b,X=model_sol$X,t=0){
 #*u is set to 0 to compute the cdf
 #*x is a grid for the integral
 #*gamma is the set of possible values for the variable i
-# psi<-function(model_sol,u,h,i,X=model_sol$X){
-#   U    <-matrix(0,model_sol$n.X,length(u))
-#   U[i,]<-u
-#   psi  <-multi.lt.fct.N(model_sol,U,h,X)
-#   return(psi)
-# }
-# 
-# fourier<-function(model_sol,x,gamma,h,i,X=model_sol$X,u=0){
-#   dx<-matrix(x-c(0,x[1:length(x)-1]),length(x),1)
-#   s1<-psi(model_sol,u+1i*x,h,i,X)
-#   fx<-outer(x,gamma,function(r,c)Im(s1[,1]*exp(-1i*r*c))/r)*
-#       dx[,1]
-#   f <-1/2-1/pi*apply(fx,2,sum)
-#   return(f)
-# }
 psi<-function(model_sol,u,h,i,X=model_sol$X,indic.cum=0){
   U    <-matrix(0,model_sol$n.X,length(u))
   U[i,]<-u
@@ -823,36 +772,6 @@ multi.lt.fct<-function(model_sol,U,h,X=model_sol$X,t=0){
 #----------------------------------Corollary .N: Simple Multihorizon LapT
 #*U is a matrix of dimension "dim(X)*N"
 #*return psi_t.h
-# multi.lt.fct.N<-function(model_sol,U,h,X=model_sol$X,t=0){
-#   param    <-model_sol$parameters
-#   
-#   U.h  <-list(U)
-#   a.sum<-matrix(0,nrow=dim(U)[2])
-#   if((t+h)>(model_sol$Tmax-1)){
-#     i<-1
-#     while((t+h+1-i)>(model_sol$Tmax-1)){
-#       a.sum     <-a.sum+a1.fct.inf(model_sol,U.h[[i]])
-#       U.h[[i+1]]<-b1.fct.inf(model_sol,U.h[[i]])
-#       
-#       i<-i+1
-#     }
-#     if(i<=h){
-#       for (k in i:h){
-#         a.sum     <-a.sum+a1.fct(model_sol,U.h[[k]],t+h-k)
-#         U.h[[k+1]]<-b1.fct(model_sol,U.h[[k]],t+h-k)
-#       } 
-#     }
-#     uX_t.h<-exp(a.sum+t(U.h[[h+1]])%*%X)
-#     
-#   }else{
-#     for (k in 1:h){
-#       a.sum     <-a.sum+a1.fct(model_sol,U.h[[k]],t+h-k)
-#       U.h[[k+1]]<-b1.fct(model_sol,U.h[[k]],t+h-k)
-#     }
-#     uX_t.h<-exp(a.sum+t(U.h[[h+1]])%*%X)
-#   }
-#   return(uX_t.h)
-# }
 multi.lt.fct.N<-function(model_sol,U,h,X=model_sol$X,t=0,indic.cum=0){
   param    <-model_sol$parameters
   
@@ -1139,7 +1058,7 @@ model_solve<-function(model,theta,
   
   #Carbon intensity
   gsigma[1]<-param$gsigma1                                                      
-  for(i in 2:Tmax) gsigma[i] <- gsigma[i-1]*((1+param$delsigma)**tstep)    
+  for(i in 2:Tmax) gsigma[i] <- gsigma[i-1]*(1+param$delsigma)   
   sigma[1] <- param$sigma0                                                         
   for(i in 2:Tmax) sigma[i]  <- sigma[i-1] * exp(gsigma[i-1] * tstep)      
   
@@ -1167,8 +1086,7 @@ model_solve<-function(model,theta,
   Z[indic.Cum_dc]<- model_sol$vector.ini$ini_Cumdelc
   Z[indic.H]     <- model_sol$vector.ini$ini_H
   W    <- matrix(0,model_sol$n.W,1)
-  #t=0, value of the state variables at time 0
-  #X=[delc,tilde_y,E,E_ind,Forc,M_at,M_up,M_lo,T_at,T_lo,Cum_D,Cum_E,Cum_dc,W]
+  
   X<-rbind(Z,W)
   
   model_sol$vector.ini$ini_delc    <- Z[indic.delc]

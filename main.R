@@ -11,12 +11,12 @@ library(MASS)
 library(expm)
 
 
-#Integers: from 0 to Tmax=100
-passive.mu        <- 0  #in which period mu can reach 1?
 #Binary operators: 0 = NO, 1 = YES.
 indic_plots_paper <- 1  #do you run some plots of the paper? see description below
 indic_tables_paper<- 1  #do you run the tables of the paper?
 
+# For scripts using parallel computing:
+number.of.cores <- 8
 
 #Load libraries of functions:
 source("procedures/functions_general.R")
@@ -28,13 +28,11 @@ source("estimations/load_ini_model.R")
 toc()
 
 
-stop()
+#Updating Plots and Tables -----------------------------------------------------
 
-
-#Updating Plots and Tables
-#* Description
+#* Description:
 #* 0 calibration
-#* 1 tibs and swaps
+#* 1 TIBS and swaps
 #* 2 digital option
 #* 3 pdf temperatures
 #* 4 pdf carbon concentration in atmosphere
@@ -44,15 +42,13 @@ stop()
 #* 8 mu (comparison with DICE)
 #* 9 Radiative forcing approximation
 #*10 Constant maturity - ZCB
-#*11 Cut Climate Premium
+#*11 Sensitivity of climate Premium
 #*12 Break-even rates of inflation
 #*13 Merton 1
 #*14 Merton 2
 #*15 Housing prices
 
 
-plots <- 13:14
-plots <- c(3,7)
 plots <- 0:15
 
 if(indic_plots_paper==1){

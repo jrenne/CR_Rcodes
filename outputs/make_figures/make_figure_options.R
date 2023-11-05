@@ -1,3 +1,7 @@
+# ==============================================================================
+# Figure illustrating option pricing
+# ==============================================================================
+
 # Vector of temperatures for strike K, Digital Option:
 K <- c(2,3,3.5)
 
@@ -23,10 +27,6 @@ for(k in 1:length(K)){
   )))
 }
 
-
-
-# P.OpD.k     <-NaN
-# P.OpD_RNF.k <-NaN                                                               #Risk-neutrality w/ Fourier
 
 #Normalization with ZCB
 Price.ZC <- varphi(model_sol,omega_ZCB,H = H)[[3]]

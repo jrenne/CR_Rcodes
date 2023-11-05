@@ -1,3 +1,6 @@
+# ==============================================================================
+# Figure with distributions of carbon concentrations
+# ==============================================================================
 
 # Prepare omega vectors (for pricing):
 omega_ZCB <- matrix(0,model_sol$n.X)

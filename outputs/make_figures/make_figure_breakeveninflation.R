@@ -1,4 +1,6 @@
-# Term Structure of Yields
+# ==============================================================================
+# Term Structure of Yields, BEIR
+# ==============================================================================
 
 H <- 100
 
@@ -10,7 +12,6 @@ omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
 mu.pi.0     <- 0.02*model$tstep
 all.mu.pi.D <- c(0.01,.1,1)
 
-#q3 <- sequential_hcl(5, "YlOrRd")
 colors.muD <- sequential_hcl(length(all.mu.pi.D)+2, "YlOrRd")
 colors.muD <- colors.muD[length(all.mu.pi.D):1]
 
@@ -27,14 +28,14 @@ all.BEIR      <- NULL
 
 
 names4legend <- c("Real yields")
-for(k in 1:length(K)){
+for(k in 1:length(all.mu.pi.D)){
   eval(parse(text = gsub(" "," ",
                          paste("names4legend <- c(names4legend,expression(paste('Nominal yields (',mu[pi*','*D],' = ',",all.mu.pi.D[k],",')',sep='')))")
   )))
 }
 
 panel.titles <- NULL
-for(k in 1:length(K)){
+for(k in 1:length(all.mu.pi.D)){
   eval(parse(text = gsub(" "," ",
                          paste("panel.titles <- c(panel.titles,expression(paste('Panel (",letters[k+1],") BEIR with ',mu[pi*','*D],' = ',",all.mu.pi.D[k],",sep='')))",sep="")
   )))
@@ -48,8 +49,6 @@ for(k in 1:length(all.mu.pi.D)){
   mu_PI <- list(muprice_0 = mu.pi.0,
                 muprice_1 = matrix(0,model_sol$n.X,1))
   mu_PI$muprice_1[indic_D] <- all.mu.pi.D[k]
-  #mu_PI$muprice_1[model_sol$n.Z+1] <- -.01*0 # eta_A
-  #model_sol<-model_solve(model,theta0,mu_altern = mu_PI)
   model_sol <- update.model_sol.4.mu_altern(model_sol,
                                             mu_altern=mu_PI)
     

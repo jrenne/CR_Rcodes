@@ -1,6 +1,7 @@
-# ===============================================================
+# ==============================================================================
 # Prepare tex table with initial value of X
-# =========================================
+# ==============================================================================
+
 # Define format of figures:
 nb.dec <- 2 # number of decimal numbers
 format.nb  <- paste("%.",nb.dec,"f",sep="")
@@ -9,16 +10,6 @@ format.nb1 <- paste("%.",1,"f",sep="")
 format.nb5 <- paste("%.",5,"f",sep="")
 
 latex.table <- rbind(
-  # paste("Initial consumption growth &",
-  #       "$\\Delta c_{0}$ &",
-  #       make.entry(100*model$vector.ini$ini_delc,format.nb),"&\\%","&",
-  #       "Worldbank",
-  #       "\\\\",sep=""),
-  # paste("Initial cumulative TFP shocks &",
-  #       "$\\tilde{y}_0$ &",
-  #       make.entry(model$vector.ini$ini_tildey,format.nb),"&","&",
-  #       "",
-  #       "\\\\",sep=""),
   paste("Initial emissions &",
         "$\\mathcal{E}_0$ &",
         "\\eqref{eq:Emit}&",
@@ -27,7 +18,7 @@ latex.table <- rbind(
         "\\\\",sep=""),
   paste("Initial industrial emissions &",
         "$\\mathcal{E}_{ind,0}$ &",
-        "\\eqref{eq:IndAppendix}&",
+        "\\eqref{eq:qt}&",
         make.entry(model$vector.ini$ini_Eind,format.nb),"&GtCO$_2$&",
         "CDICE",
         "\\\\",sep=""),
@@ -41,7 +32,7 @@ latex.table <- rbind(
         "$M_{AT,0}$ &",
         "\\eqref{eq:Mvector}&",
         make.entry(model$vector.ini$ini_Mat,format.nb0),"&GtC&",
-        "Chris Smith (2022)",
+        "CDICE",
         "\\\\",sep=""),
   paste("Initial carbon concent. (upper ocean) &",
         "$M_{UP,0}$ &",
@@ -59,32 +50,14 @@ latex.table <- rbind(
         "$T_{AT,0}$ &",
         "\\eqref{eq:Tat}&",
         make.entry(model$vector.ini$ini_Tat,format.nb),"&\\degree C&",
-        "Chris Smith (2022)",
+        "CDICE",
         "\\\\",sep=""),
   paste("Initial temp. anomaly (lower ocean) &",
         "$T_{LO,0}$ &",
         "\\eqref{eq:TloAppendix}&",
         make.entry(model$vector.ini$ini_Tlo,format.nb),"&\\degree C&",
-        "Chris Smith (2022)",
+        "CDICE",
         "\\\\",sep=""),
-  # paste("Cumulative damages &",
-  #       "$Cum_{D,0}$ &",
-  #       "\\eqref{eq:IndAppendix}&",
-  #       make.entry(model$vector.ini$ini_CumD,format.nb),"&\\%&",
-  #       "",
-  #       "\\\\",sep=""),
-  # paste("Cumulative emissions &",
-  #       "$Cum_{\\mathcal{E},0}$ &",
-  #       "\\eqref{eq:IndAppendix}&",
-  #       make.entry(model$vector.ini$ini_CumE,format.nb),"&GtCO$_2$&",
-  #       "CDICE",
-  #       "\\\\",sep=""),
-  # paste("Cumulative consumption growth &",
-  #       "$Cum_{\\Delta c,0}$ &",
-  #       "\\eqref{eq:IndAppendix}&",
-  #       make.entry(100*model$vector.ini$ini_Cumdelc,format.nb),"&\\% &",
-  #       "",
-  #       "\\\\",sep=""),
   paste("Initial sea level &",
         "$H_{0}$ &",
         "\\eqref{eq:SeaL}&",
@@ -96,3 +69,4 @@ latex.table <- rbind(
 latex.file <- paste("outputs/Tables/table_ini_X.txt",sep="")
 
 write(latex.table, file = latex.file)
+

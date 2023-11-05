@@ -1,3 +1,6 @@
+# ==============================================================================
+# Figure with temperature distributions
+# ==============================================================================
 
 H <- model_sol$horiz.2100
 
@@ -48,7 +51,6 @@ file.remove("outputs/toto.Rdata")
 
 
 # Compute confidence intervals:
-
 CI.P <- confidence_intervals_across_horizons(all.Probas.P,
                                                  values.of.variable = values.of.temperatures,
                                                  nb.values.variable = nb.values.variable,

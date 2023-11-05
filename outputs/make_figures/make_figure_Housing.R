@@ -1,3 +1,6 @@
+# ==============================================================================
+# Figure illustrating housing prices
+# ==============================================================================
 
 # Prepare omega vectors (for pricing):
 omega_ZCB <- matrix(0,model_sol$n.X)
@@ -29,8 +32,6 @@ omega_H[which(model_sol$names.var.X=="H")] <- 1
 #              muprice_1 = matrix(0,model_sol$n.X,1))
 mu_R <- list(muprice_0 = .02,
              muprice_1 = matrix(0,model_sol$n.X,1))
-
-#x <- exp(seq(-20,50,length.out = 1000))                                         #grid for Proposition 8 (Fourier)
 
 
 legend.b_sk <- NULL

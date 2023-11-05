@@ -21,16 +21,19 @@ make_figure_calibration_SLR(model_sol,
 
 # Permafrost-related emissions -------------------------------------------------
 make_figure_calibration_N(model_sol,
+                          CumN.values = seq(0,2000,length.out=1000),
+                          nb.values.interpol=1000,
+                          xN = exp(seq(-20,20,length.out = 5000)),
                           main.title="(c.1) 2100 Permafrost-related emissions")
 
 all.Ttilde <- c(2,4,6)
 
-CumN.values <- seq(0,3000,length.out=50)
+CumN.values <- seq(0,3000,length.out=60)
 CumN.values.interpol <- seq(CumN.values[1],
                             CumN.values[length(CumN.values)],
                             length.out=1000)
 # to compute Riemann sum:
-xN <- exp(seq(-10,10,length.out = 2000))
+xN <- exp(seq(-20,20,length.out = 2000))
 
 all.cdf <- matrix(NaN,length(CumN.values.interpol),length(all.Ttilde))
 all.pdf <- matrix(NaN,length(CumN.values.interpol)-1,length(all.Ttilde))

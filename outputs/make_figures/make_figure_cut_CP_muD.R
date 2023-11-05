@@ -1,4 +1,6 @@
-# Sensitivity of Temperature risk premium to mu_D:
+# ==============================================================================
+# Sensitivity of Temperature expectations/swaps to mu_D:
+# ==============================================================================
 
 H <- model_sol$horiz.2100
 
@@ -73,12 +75,10 @@ plot(values.of.mu_D.fine,T.P.fit,type="l",
      col=P.col.line,lwd=2,las=1,
      cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
      main="",
-     xlab=expression(paste("Disaster uncertainty ",mu[D],sep="")),
+     xlab=expression(paste("Damage uncertainty ",mu[D],sep="")),
      ylab=expression(paste("Temperature Anomaly ",T[at],sep="")),
      ylim=c(min(T.P.fit,T.Q.fit),
             min(5,max(T.P.fit,T.Q.fit))),lty=1)
-# lines(values.of.mu_D.fine,T.Q.fit,
-#       col=Q.col.line,lwd=2,lty=1)
 points(values.of.mu_D,T.Q,
       col=Q.col.line,lwd=2,pch=16,cex=1.3)
 abline(v=model_sol$parameters$mu_D,col="grey",lty=3,lwd=2)

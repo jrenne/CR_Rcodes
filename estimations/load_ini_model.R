@@ -1,16 +1,12 @@
-#Initial model - solves model with initial parameters
+# ==============================================================================
+# Initial model - solves model with initial parameters
+# ==============================================================================
 
-#library
-
-#Data information
-#*X = delc, ytilde, E, Eind, F, Mat, Mup, Mlo, Tat, Tlo, CumD, CumE, Cumdc, H, W
-
-#*                      *#
-#### Data preparation ####
-#*                      *#
 Tmax   <-100
-#number of years in each period t \in(1:Tmax)
+
+#number of years in each period t \in(1:Tmax):
 tstep  <-5
+
 #---- Model Characteristics----
 #vector of dates
 vec_date<-seq(2020,by=tstep,len=Tmax-1)
@@ -30,19 +26,15 @@ horiz   <-(2100-vec_date[1])/tstep
 
 #---- INITIALIZATION ----
 #The World in Data + DICE
-eps_0 <- 2.6
-Eind  <- 35.85
+eps_0 <- 5.9 # DICE2023
+Eind  <- 37.6 # DICE2023
 Ftot  <- 2
 #CDICE, Folini et al. (2023)
-# Mat <- 851
-# Mup <- 628
-# Mlo <-1323
-Mat <- 847 # JP modif to match ShinyApp
-Mup <- 822 # JP modif to match ShinyApp
-Mlo <-1810 # JP modif to match ShinyApp
+Mat <- 851
+Mup <- 628
+Mlo <-1323
+Tlo <-   0.27
 Tat <-   1.1
-#Tlo <-   0.27
-Tlo <-   0.25 # JP modif to match ShinyApp
 H   <-   0.13
 
 vector.ini<-list(
@@ -82,33 +74,26 @@ param.econ<-list(
   c0         = 299                                                              #Ini consumpt. (in tn) over tstep
 )
 
-# param.econ$Phi[1,1] <- .9
-# param.econ$sigma_a <- .03 * sqrt(1 - param.econ$Phi[1,1]^2)
-
 remove(Phi.prep)
 #---- Climate parameters ----
 #CDICE
-#b12                  <-0.054
-b12                  <-0.053 # JP modif to match ShinyApp
-b23                  <-0.0082
-mateq                <-607
-mueq                 <-489
-mleq                 <-1281
-c1                   <-0.137*tstep
-c3                   <-0.73
-c4                   <-0.00689*tstep
-f2co2                <-3.45
-t2co2                <-3.25
+b12     <- 0.053
+b23     <- 0.0082
+mateq   <- 607
+mueq    <- 489
+mleq    <- 1281
+c1      <- 0.137*tstep
+c3      <- 0.73
+c4      <- 0.00689*tstep
+f2co2   <- 3.45
+t2co2   <- 3.25
 
 #DICE2016
-q0  <- 105.5
-mu0 <- 0.03
+q0  <- 135.7
+mu0 <- 0.05
 #RCP 4.5 + 6
 exp.mat.2100.rcp45_6 <-1168
-#m0 <- exp.mat.2100.rcp45_6/mateq
-m0 <- 1.92 # JP modif to match ShinyApp
-
-#m0 <- 2.3 # JP modif to match ShinyApp
+m0 <- exp.mat.2100.rcp45_6/mateq
 
 param.clim<-list(
   m0         = m0, 
@@ -123,25 +108,25 @@ param.clim<-list(
   b_D        = NaN,
   mu_D       = NaN,
   mu_N       = NaN,
-  eps_0      = eps_0,                                                             #DICE2016,eland0
-  rho        = 0.115,                                                           #DICE2016,deland
+  eps_0      = eps_0,                                                           #DICE2023
+  rho        = 0.1,                                                             #DICE2023
   mateq      = mateq,                                                 
   mueq       = mueq,                                                      
   mleq       = mleq,                                                          
-  phi_0      = 0.5,                                                             #DICE2016,fex0
-  phi_1      = 1,                                                               #DICE2016,fex1
+  phi_0      = 0.518,                                                           #DICE2023
+  phi_1      = 0.801,                                                           #DICE2023
   m_pi       = mateq,                                                           
   xi_1       = c1,                                                           
   xi_2       = c3,                                                           
   xi_3       = c4,                                                           
   nu         = t2co2,                                                       
   tau        = f2co2,                                                           
-  delsigma   =-0.001,                                                           #DICE2016,dsig
+  delsigma   =-0.04,                                                           #DICE2023
   e0         = vector.ini$ini_Eind,                                             
   q0         = q0,                                                            
   mu0        = mu0,                                                           
   sigma0     = vector.ini$ini_Eind/(q0*(1-mu0)),                                    
-  gsigma1    =-0.0152,                                                          #DICE2016
+  gsigma1    =-0.015,                                                           #DICE2023
   varphi_11  = 1-b12,                                                         
   varphi_12  = b12,                                                           
   varphi_13  = 0,                                                           
@@ -151,14 +136,14 @@ param.clim<-list(
   varphi_31  = 0,                                                           
   varphi_32  = b23*mueq/mleq,                                                 
   varphi_33  = 1-b23*mueq/mleq,                                               
-  gback      = 0.025,                                                           #DICE2016
-  pback      = 500,                                                             #DICE2016
-  theta2     = 2.6,                                                             #DICE2016,expcost2
+  gback      = 0.05,                                                            #DICE2023
+  pback      = 695,                                                             #DICE2023
+  theta2     = 2.6,                                                             #DICE2023,expcost2
   b_sk       = .1, #0.3/80,
   tol.GN     = 10^(-6),
   eps.GN     = 10^(-5),
-  mu_T       = .02,
-  mu_H       = .0000001
+  mu_T       = NaN,
+  mu_H       = NaN
 )
 remove(b12,b23,c1,c3,c4,mateq,mueq,mleq,f2co2,t2co2,q0,mu0,exp.mat.2100.rcp45_6)
 
@@ -174,18 +159,19 @@ param<-c(param.econ,param.clim)
 target_vector <- c(
   0.95,                                                                         #consump w/ damages & T_at=2
   0.9,                                                                          #consump w/ damages & T_at=4
-  0.1,                                                                          #std w/ damages & T_at=4
-  # 0.45,                                                                       #E(SLR) in 2100 & T_at=2
-  # 0.93,                                                                       #E(SLR) in 2100 & T_at=4
-  # 0.2,                                                                        #std(SLR) in 2100 & T_at=4
-  0.5,                                                                          #E(SLR) in 2100 & T_at=2
-  1,                                                                            #E(SLR) in 2100 & T_at=4
-  0.4,                                                                          #std(SLR) in 2100 & T_at=4
-  1.0,                                                                          #std(T_at) in 2100 + no-mitig
-  225,#225,                                                                     #E(CumN) @ T_at=2
-  360,#360,                                                                     #E(CumN) @ T_at=4
-  200,                                                                          #std(CumN) @ T_at=4
-  1185,                                                                         #E(CumN) @ infinity
+  0.075,                                                                        #std w/ damages & T_at=4
+  .45,                                                                          #E(SLR) in 2100 & T_at=2
+  .93,                                                                          #E(SLR) in 2100 & T_at=4
+  (1.65-.45)/(2*qnorm(.95)),                                                    #std(SLR) in 2100 & T_at=4
+  .75,                                                                          #std(T_at) in 2100
+  # 36*3.667 + 446*21/1000,                                                     #E(CumN) @ T_at=2
+  # 87*3.667 + 1400*21/1000,                                                    #E(CumN) @ T_at=4
+  # ((141*3.667 + 2614*21/1000) - (42*3.667+836*21/1000))/2,                    #std(CumN) @ T_at=4
+  # 228*3.667 + 5877*21/1000,                                                   #E(CumN) @ infinity
+  56*3.667,                                                                     #E(CumN) @ T_at=2
+  101*3.667,                                                                    #E(CumN) @ T_at=4
+  (199*3.667 - 27*3.667)/(2*qnorm(.95)),                                        #std(CumN) @ T_at=4
+  376*3.667,                                                                    #E(CumN) @ infinity
   .08,                                                                          #ini E consumption growth
   .03                                                                           #ini std dev conso growth
 )
@@ -264,7 +250,6 @@ plot(model$vec_date[1:H],EV$EX$H,type="l")
 lines(model$vec_date[1:H],EV$EX$H+2*sqrt(EV$VX$H),type="l",col="red",lty=2)
 lines(model$vec_date[1:H],EV$EX$H-2*sqrt(EV$VX$H),type="l",col="red",lty=2)
 plot(model$vec_date[1:H],EV$EX$N,type="l")
-
 
 # #Remove unnecessary elements:
 # remove(horiz,ini_pd,MAXIT,target_vector,vec_date,

@@ -1,6 +1,7 @@
-# ===============================================================
-# Prepare tex table with target and estimated parameters
-# ======================================================
+# ==============================================================================
+# Prepare tex table with targets + estimated parameters
+# ==============================================================================
+
 # Define format of figures:
 nb.dec <- 2 # number of decimal numbers
 format.nb <- paste("%.",nb.dec,"f",sep="")
@@ -22,11 +23,6 @@ latex.table <- rbind(
         make.entry(mim[2],format.nb),"$^2$\\degree C&",
         "RCP4.5+RCP6.0",
         "\\\\",sep=""),
-  # paste("Expected contribution of FL to $T_{AT,2100}$&",
-  #       make.entry(target_vector[3],format.nb),"\\degree C&",
-  #       make.entry(mim[3],format.nb),"\\degree C&",
-  #       "\\citet*{Burke_Hartley_Jones_2012}",
-  #       "\\\\",sep=""),
   paste("$\\mathbb{E}_0$($Cum_{\\mathcal{E},2100,FL}$|$\\mu=0$) &",
         make.entry(target_vector[4],paste("%.",nb.dec=0,"f",sep="")),"\\,GtCO$_2$&", 
         make.entry(mim[4],paste("%.",nb.dec=0,"f",sep="")),"\\,GtCO$_2$&",
@@ -60,4 +56,3 @@ latex.file <- paste("outputs/Tables/table_moments.txt",sep="")
 
 write(latex.table, file = latex.file)
 
-#* Explain other targets in the note.

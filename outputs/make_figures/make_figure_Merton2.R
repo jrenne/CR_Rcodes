@@ -1,10 +1,13 @@
+# ==============================================================================
+# Figure illustrating Merton model (2/2)
+# ==============================================================================
 
-ylim.returns <- 100*c(.03,.05)
+
+ylim.returns <- 100*c(.03,.045)
 ylim.PD      <- c(log(.0001),log(.25))
-ylim.ratioPD <- c(0,35)
-ylim.ratioRates <- c(2.5,4)
-xlim         <- c(.2,1.2)
-#xlim         <- c(.25,1.5)
+ylim.ratioPD <- c(0,10)
+ylim.ratioRates <- c(2.5,3.5)
+xlim         <- c(.2,1.3)
 
 # Values of debt to repay:
 A_bar <- seq(.01,max(1,max(xlim)),length.out=50)
@@ -21,15 +24,6 @@ prices.ZCRF.bonds   <- varphi(model_sol,
                               H = horizon)
 RF.strategy <- 1/prices.ZCRF.bonds$P.t
 
-
-# panel.titles <- NULL
-# for(k in 1:length(vector.of.muAD)){
-#   eval(parse(text = gsub(" "," ",
-#                          paste("panel.titles <- c(panel.titles,expression(paste('Panel (",
-#                                letters[k],") ',mu[A*','*H],' = ',",
-#                                vector.of.muAD[k],",sep='')))",sep="")
-#   )))
-# }
 legend.muAD <- NULL
 for(k in 1:length(vector.of.muAD)){
   eval(parse(text = gsub(" "," ",
@@ -119,16 +113,9 @@ for(indic.plot in 1:length(vector.of.muAD)){
            lty=c(1,3),
            col=c("black"),cex=1.1,
            lwd=c(2,2),bty = "n")
-    # legend("bottomleft",
-    #        legend=c("Indebted firm","Non-indedbted firm"),
-    #        lty=c(1,1),
-    #        col=c(P.col.line,"grey"),cex=1.1,
-    #        lwd=c(2,2),bty = "n")
-    #abline(h=100*return.Eq.yearly[1,indic.plot],lty=1,col="grey",lwd=2)
   }else{
     lines(A_bar,100*return.Eq.yearly[,indic.plot],
           lwd=2,lty=3,col="black")
-    #abline(h=100*return.Eq.yearly[1,indic.plot],lty=3,col="grey",lwd=2)
   }
 }
 

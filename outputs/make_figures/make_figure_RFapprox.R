@@ -1,6 +1,9 @@
-#radiative forcings w/o approx
-#2040
-H40<-model_sol$horiz.2100-12
+# ==============================================================================
+# Figure illustrating the linearization of radiative forcings' equation
+# ==============================================================================
+
+interm.year <- 2050
+H40 <- which(model_sol$vec_date==interm.year)-1
 
 sigma_F <- .1
 
@@ -28,9 +31,11 @@ linF[1:length(linF)]  <- model_sol$parameters$tau/log(2)*
      (gridMat[1:length(gridMat)]/model_sol$parameters$m_pi-
         model_sol$parameters$m0)/(model_sol$parameters$m0))
 
-Mat.distr.2040 <-fourier(model_sol,x,gridMat,H40,6)
+indic.Mat <- which(model_sol$names.var.X=="M_at")
+
+Mat.distr.2040 <-fourier(model_sol,x,gridMat,H40,indic.Mat)
 Mat.pdf.2040   <- diff(Mat.distr.2040)
-Mat.distr.2100 <-fourier(model_sol,x,gridMat,H,6)
+Mat.distr.2100 <-fourier(model_sol,x,gridMat,model_sol$horiz.2100,indic.Mat)
 Mat.pdf.2100   <- diff(Mat.distr.2100)
 
 #x=M_at, y=F
@@ -73,7 +78,7 @@ ca.F.2100     <- res.2100$y.polygon
 FILE = paste("/outputs/Figures/Figure_F_approx.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=8,width=6, height=6)
 par(mfrow=c(2,1))
-par(plt=c(.15,.95,.2,.85))
+par(plt=c(.1,.95,.2,.85))
 plot(ca.Mat, ca.F,col="white",ylim=c(1,6),xlim=range(gridMat),type="l",
      las=1,xlab=expression(paste("M"[AT]," (GtC)")),
      ylab=expression(paste("FCO"[2]," (in Wm-2)")),
@@ -107,7 +112,7 @@ plot(gridMat[-1],Mat.pdf.2040,type="l",yaxt="n",
 lines(gridMat[-1],Mat.pdf.2100,
       col=P.col.line,lwd=1,lty=1)
 legend("topleft",
-       legend=c("2040","2100"),
+       legend=c(interm.year,"2100"),
        lty=c(1,1),
        col=c(P.col.line,P.col.line),
        lwd=c(3,1),

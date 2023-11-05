@@ -1,4 +1,6 @@
-
+# ==============================================================================
+# Figure with distributions of SLR
+# ==============================================================================
 
 # Prepare omega vectors (for pricing):
 omega_ZCB <- matrix(0,model_sol$n.X)
@@ -93,14 +95,6 @@ plot(model_sol$vec_date[2:(H+1)],E.P,
      main="(a) - Global sea level rise")
 lines(model_sol$vec_date[2:(H+1)],
       E.P,lwd=2,col=P.col.line)
-#lines(sea.rcp[,1],sea45.smooth,lty=2,lwd=2,col="lightsteelblue4")
-#lines(sea.rcp[,1],sea60.smooth,lty=2,lwd=2,col="grey28")
-# legend("topright",
-#        legend=c("RCP4.5","RCP6.0"),
-#        lty=c(2,2),
-#        col=c("lightsteelblue4","grey28"),
-#        cex=1.5,
-#        lwd=c(2,2),bty = "n")
 for(i in length(vector.of.CI):1){
   # P
   polygon(c(model_sol$vec_date[2:(H+1)],rev(model_sol$vec_date[2:(H+1)])),

@@ -1,3 +1,6 @@
+# ==============================================================================
+# Table illustrating sensitivity of SCC 
+# ==============================================================================
 
 # Do something with mu_T (at least in no uncertainty at all)
 
@@ -11,13 +14,17 @@ targets_smallD <- targets
 targets_smallD["ECumD2"] <- 1 - (1-targets["ECumD2"])/2
 targets_smallD["ECumD4"] <- 1 - (1-targets["ECumD4"])/2
 targets_smallD["stdCumD4"] <- targets["stdCumD4"]/2
+targets_smallD["EH2"] <- targets["EH2"]/2
+targets_smallD["EH4"] <- targets["EH4"]/2
+targets_smallD["stdH4"] <- targets["stdH4"]/2
 
 targets_noD.uncert <- targets
 targets_noD.uncert["stdCumD4"] <- .00001
 
 targets_smallN <- targets
-targets_smallN["ECumN2"] <- .00001
-targets_smallN["ECumN4"] <- .00001
+targets_smallN["ECumN2"]   <- .00001
+targets_smallN["ECumN4"]   <- .00001
+targets_smallN["ECumNinf"] <- .0001
 targets_smallN["stdCumN4"] <- sqrt(.00001)
 
 targets_noN.uncert <- targets
@@ -44,38 +51,44 @@ targets_no.uncert["sigma_c0"]   <- .00001
 targets_no.uncert["stdTat2100"] <- NaN
 
 targets_smallD_no.uncert <- targets
-targets_smallD_no.uncert["stdCumD4"]   <- .00001
-targets_smallD_no.uncert["stdCumN4"]   <- .00001
-targets_smallD_no.uncert["stdH4"]      <- .00001
-targets_smallD_no.uncert["sigma_c0"]   <- .00001
+targets_smallD_no.uncert["stdCumD4"]   <- .000001
+targets_smallD_no.uncert["stdCumN4"]   <- .000001
+targets_smallD_no.uncert["stdH4"]      <- .000001
+targets_smallD_no.uncert["sigma_c0"]   <- .000001
 targets_smallD_no.uncert["stdTat2100"] <- NaN
 targets_smallD_no.uncert["ECumD2"] <- 1 - (1-targets["ECumD2"])/2
 targets_smallD_no.uncert["ECumD4"] <- 1 - (1-targets["ECumD4"])/2
+targets_smallD_no.uncert["EH2"] <- targets["EH2"]/2
+targets_smallD_no.uncert["EH4"] <- targets["EH4"]/2
+targets_smallD_no.uncert["ECumN2"]   <- .00001
+targets_smallD_no.uncert["ECumN4"]   <- .00001
+targets_smallD_no.uncert["ECumNinf"] <- .0001
+targets_smallD_no.uncert["stdCumN4"] <- sqrt(.00001)
 
 all.targets <- rbind(
   targets,
   targets_no.uncert,
   targets_noD.uncert,
   targets_smallD,
-  targets_smallD_no.uncert,
   targets_noN.uncert,
   targets_smallN,
   #targets_noGrowth0.uncert,
   #targets_smallGrowth0,
   targets_noH.uncert,
-  targets_smallH
+  targets_smallH,
+  targets_smallD_no.uncert
 )
 rownames(all.targets) <- c("Baseline",
                            "Deterministic model",
-                           "No damage uncertainty ($\\mu_T=0$)",
-                           "Small damages (twice lower in expectation)",
-                           "Small damages and deterministic",
+                           "No damage uncertainty ($\\mu_D=0$)",
+                           "Small damages (twice lower)",
                            "No permafrost uncertainty ($\\mu_N=0$)",
-                           "No permaf.-based carbon releases ($a_N=b_N=0$)",
+                           "No permaf.-based carbon releases ($a^{(N)}=b^{(N)}=0$)",
                            #"no growth uncertainty",
                            #"small growth",
                            "No sea-level uncertainty ($\\mu_H=0$)",
-                           "No sea-level risks ($a_H=b_H=0$)")
+                           "No sea-level risks ($a^{(H)}=b^{(H)}=0$)",
+                           "Small damages, deterministic, no permaf.")
 
 all.specif <- cbind(values.of.gamma%x%matrix(1,dim(all.targets)[1],1),
                     matrix(1,length(values.of.gamma),1) %x% all.targets)
@@ -105,7 +118,7 @@ all_SCC <- foreach(i = 1:dim(all.specif)[1],
                      model_new <- solveParam4N(model_new)
                      model_new <- solveParam4c(model_new)
                      if(is.na(model_new$target_vector["stdTat2100"])){
-                       model_new$parameters$mu_T <- .00001
+                       model_new$parameters$mu_T <- .000001
                      }
                      
                      model_sol_new <- model_solve(model_new,theta0)

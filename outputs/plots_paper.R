@@ -17,7 +17,6 @@
 #*15 Housing prices
 
 
-
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
 EV<-EV.fct(model_sol,H)
@@ -30,10 +29,6 @@ b <- 2                                                                          
 
 # Miscellaneous
 n.date<-model_sol$Tmax
-
-# For scripts using parallel computing:
-number.of.cores <- 8
-
 
 # Quantiles considered for pdf charts:
 vector.of.CI <- c(0.5,0.8,0.9,0.95)
@@ -85,10 +80,11 @@ if(is.element(4,plots)){
 }
 
 #********************************5*********************************************#
-#Climate beta
+#Sensitivity to mu_D
 if(is.element(5,plots)){
-  print("Prepare Climate beta plot (about 30 sec)")
-  source("outputs/make_figures/make_figure_ClimateBeta.R")
+  print("Prepare sensitivity-to-mu_D plot (about 30 sec)")
+  source("outputs/make_figures/make_figure_sensitiv_muD.R")
+  source("outputs/make_figures/make_figure_SCC.R")
 }
 
 #********************************6*********************************************#
@@ -143,7 +139,7 @@ if(is.element(10,plots)){
 #*******************************11*********************************************#
 #Cut in Climate Premium
 if(is.element(11,plots)){
-  print("Prepare plot of sensitivitiy of Temp risk premium to mu_d")
+  print("Prepare plot of sensitivitiy of Temp risk premium to mu_D")
   source("outputs/make_figures/make_figure_cut_CP_muD.R")
 }
 

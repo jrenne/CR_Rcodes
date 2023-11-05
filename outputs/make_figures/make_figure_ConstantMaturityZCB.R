@@ -1,3 +1,6 @@
+# ==============================================================================
+# Figure showing expected trajectories of long-term rates
+# ==============================================================================
 
 EV <- EV.fct(model_sol)
 Price.ZC <- varphi(model_sol,

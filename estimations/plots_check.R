@@ -1,5 +1,3 @@
-#Verification plots
-source("./procedure/Functions_General_v2.R")
 
 #Information
 H       <-model$horiz.2100
@@ -69,6 +67,10 @@ legend("bottomright",legend=c("DICE","Own mitigation"),col=c("red","black"),
        lty=c(1,1))
 title(main="Comparison mitigation rate DICE vs our model")
 #end ----
+
+
+
+stop()
 
 
 #Test Pricing ----

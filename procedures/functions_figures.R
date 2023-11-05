@@ -327,20 +327,16 @@ make_figure_trajectory_and_pdf <- function(model_sol,EV,Price.ZC,
        cex.main=1.5,cex.axis=1.5,cex.lab=1.5)
   lines(fitted.pdf.Q.values,values.extended[2:length.extended],
         lwd=2,col=Q.col.line)
-  # abline(h=values.extended[which.min(abs(fitted.cdf.Q.values-0.5))],
-  #        col=Q.col.line,lty=1,lwd=1)                                              #median of Q
   abline(h=ET.Q[H.specif],col=Q.col.line,lty=3,lwd=1)                                    #mean of Q
-  # abline(h=values.extended[which.min(abs(fitted.cdf.P.values-0.5))],
-  #        col=P.col.line,lty=1,lwd=1)                                              #median of P
   abline(h=ET.P[H.specif],col=P.col.line,lty=3,lwd=1)                                    #mean of P
   abline(v=0,col="grey")
   
   polygon(c(fitted.pdf.P.values,rev(fitted.pdf.P.values)),
           c(values.extended[2:length.extended],0*values.extended[2:length.extended]),
-          col=P.col,border = NULL)
+          col=P.col,border = P.col.line)
   polygon(c(fitted.pdf.Q.values,rev(fitted.pdf.Q.values)),
           c(values.extended[2:length.extended],0*values.extended[2:length.extended]),
-          col=Q.col,border = NULL)
+          col=Q.col,border = Q.col.line)
   
   legend("topright",
          legend=c("Physical pdf for selected date","Risk-adjusted pdf for selected date"),
@@ -352,15 +348,14 @@ make_figure_trajectory_and_pdf <- function(model_sol,EV,Price.ZC,
 }
 
 
-
+# # Check:
 # H <- 30
 # EV <- EV.fct(model_sol,h=H)
 # # Compute P and Q proba:
 # Price.ZC <- varphi(model_sol,omega_ZCB,H = H)[[3]]
 # 
-# 
 # par(mfrow=c(2,2))
-# 
+# TAT <- which(model_sol$names.var.X=="T_at")
 # make_figure_trajectory_and_pdf(model_sol,EV,Price.ZC,
 #                                variable = "T_at",
 #                                year.density = 2100,
@@ -370,11 +365,10 @@ make_figure_trajectory_and_pdf <- function(model_sol,EV,Price.ZC,
 # 
 # make_figure_trajectory_and_pdf(model_sol,EV,Price.ZC,
 #                                variable = "H",
-#                                year.density = 2100, 
+#                                year.density = 2100,
 #                                values = seq(0,2.5,by=.05), # where Fourier is performed
 #                                name.of.variable = expression(paste("Global mean sea level ",H,sep="")), # title for chart
 #                                unit = "in meters")
-# 
 
 
 

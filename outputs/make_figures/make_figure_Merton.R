@@ -1,3 +1,6 @@
+# ==============================================================================
+# Figure illustrating Merton model (1/2)
+# ==============================================================================
 
 nb.values.variable <- 2000 # for extrapolation
 
@@ -36,16 +39,12 @@ mu_A <- list(muprice_0 = 0,
 
 indic_delc <- which(model$names.var.X=="delc")
 mu_A$muprice_1[indic_delc] <- elasticity.wrt.dc
-
+# in case one wants to add idiosyncratic shocks:
 indic_X <- which(model$names.var.X=="eta_X")
 mu_A$muprice_1[indic_X] <- .0
 
 indic_D <- which(model$names.var.X=="D")
 indic_H <- which(model$names.var.X=="H")
-
-# model$parameters$b_sk <- .1
-# model$parameters$mu_H <- .2
-# model_sol<-model_solve(model,theta0)
 
 panel.titles <- NULL
 for(k in 1:length(vector.of.muAD)){
@@ -96,8 +95,7 @@ for(muAD in vector.of.muAD){
   
   expected.A <- apply(matrix(1:H,ncol=1),1,
                       function(h){multi.lt.fct.N(model_sol,U=omega_A,h=h)})
-  print(expected.A)
-  
+
   # Compute P and Q proba:
   Price.ZC <- varphi(model_sol,omega.ZC,H = H)[[3]]
   all.Probas.P <- foreach(h = 1:H, .combine=cbind) %dopar% {

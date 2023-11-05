@@ -1,3 +1,7 @@
+# ==============================================================================
+# Simulation of damages
+# ==============================================================================
+
 #Gamma 0 shock simulations
 nb      <-12
 nb.simul<-model_sol$Tmax                                                                   
@@ -53,12 +57,9 @@ for(i in 1:dim(D)[2]){
   lines(model_sol$vec_date[2:(H+1)],D[,i],
         col="grey75")
 }
-# lines(vec_date[2:(H+1)],smallD,
-#       col=P.col.line)
 legend("bottomleft",legend=c("Expected Path","Simulations"),
        col=c(P.col.line,"grey75"),lty=c(2,1),lwd=c(2,1),
        bty = "n",cex=1.2)
-#N
 plot(model_sol$vec_date[2:(H+1)],Cum_EN,col=P.col.line,type="l",
      ylim=c(range(Cum_EN,Cum_N)),
      lwd=2,lty=2,las=1,
