@@ -3,7 +3,7 @@
 # ==============================================================================
 
 # Vector of temperatures for strike K, Digital Option:
-K <- c(2,3,3.5)
+K <- c(2,3,4)
 
 TAT <- which(model$names.var.X=="T_at")
 

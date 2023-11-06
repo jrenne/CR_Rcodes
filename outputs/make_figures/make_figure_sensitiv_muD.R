@@ -54,9 +54,9 @@ all_res <- foreach(i = 1:length(seq.mu_D),
                      modelswp2$parameters$mu_N <- values.of.mu_N[2]
                      modelswp3$parameters$mu_N <- values.of.mu_N[3]
                      
-                     model_solswp1<-model_solve(modelswp1,theta0)
-                     model_solswp2<-model_solve(modelswp2,theta0)
-                     model_solswp3<-model_solve(modelswp3,theta0)
+                     model_solswp1<-model_solve(modelswp1)
+                     model_solswp2<-model_solve(modelswp2)
+                     model_solswp3<-model_solve(modelswp3)
                      
                      # Get values for model1:
                      swaps1    <-(varphi.tilde(model_solswp1,omega_T.at,H)[[1]]/

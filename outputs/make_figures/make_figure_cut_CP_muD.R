@@ -26,7 +26,7 @@ all.Ts <- foreach(i = 1:length(values.of.mu_D), .combine=rbind) %dopar% {
   model_i <- model_sol
   
   model_i$parameters$mu_D <- values.of.mu_D[i]
-  model_i_sol <- model_solve(model_i,theta0)
+  model_i_sol <- model_solve(model_i)
   
   EV.i       <- EV.fct(model_i_sol,h=H)
   T.P        <- EV.i$EX$T_at[H]

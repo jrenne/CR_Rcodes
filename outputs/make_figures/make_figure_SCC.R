@@ -28,7 +28,7 @@ all_scc <- foreach(i = 1:length(seq.mu_D),
                      
                      model_new <- model_sol
                      model_new$parameters$mu_D <- seq.mu_D[i]
-                     model_sol_new <- model_solve(model_new,theta0)
+                     model_sol_new <- model_solve(model_new)
                      scc <- scc.fct(model_sol_new,0)
                      
                      scc

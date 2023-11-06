@@ -73,7 +73,7 @@ for(b_sk in values.b_sk){
   }else{
     new_model <- model
     new_model$parameters$b_sk <- b_sk
-    new_model_sol<-model_solve(new_model,theta0)
+    new_model_sol<-model_solve(new_model)
   }
   
   # Returns of risk-free strategy:

@@ -5,8 +5,10 @@
 # Define format of figures:
 nb.dec <- 2 # number of decimal numbers
 format.nb  <- paste("%.",nb.dec,"f",sep="")
-format.nb1 <- paste("%.",1,"f",sep="")
 format.nb0 <- paste("%.",0,"f",sep="")
+format.nb1 <- paste("%.",1,"f",sep="")
+format.nb2 <- paste("%.",2,"f",sep="")
+format.nb3 <- paste("%.",3,"f",sep="")
 format.nb4 <- paste("%.",4,"f",sep="")
 format.nb5 <- paste("%.",5,"f",sep="")
 
@@ -93,11 +95,11 @@ latex.table <- rbind(
   "\\hline",
   "\\multicolumn{5}{l}{{\\bf Sea-level rise (SLR)}}\\\\",
   paste("\\multicolumn{3}{l}{\\textit{Target: Expected 2100 SLR conditional on $T_{AT}=2\\degree C$}} &",
-        make.entry(model$target_vector[["EH2"]],format.nb1)," & meters \\\\",sep=""),
+        make.entry(model$target_vector[["EH2"]],format.nb2)," & m \\\\",sep=""),
   paste("\\multicolumn{3}{l}{\\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\\degree C$}} &",
-        make.entry(model$target_vector[["EH4"]],format.nb1)," & meters \\\\",sep=""),
+        make.entry(model$target_vector[["EH4"]],format.nb2)," & m \\\\",sep=""),
   paste("\\multicolumn{3}{l}{\\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\\degree C$}} &",
-        make.entry(100*(model$target_vector[["stdH4"]]),format.nb1)," & meters \\\\",sep=""),
+        make.entry(model$target_vector[["stdH4"]],format.nb2)," & m \\\\",sep=""),
   paste("Uncertainty parameter in SLR specif.&",
         "$\\mu_{H}$ &",
         "\\eqref{eq:SeaL}&",

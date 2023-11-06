@@ -121,7 +121,7 @@ all_SCC <- foreach(i = 1:dim(all.specif)[1],
                        model_new$parameters$mu_T <- .000001
                      }
                      
-                     model_sol_new <- model_solve(model_new,theta0)
+                     model_sol_new <- model_solve(model_new)
                      
                      SCC <- scc.fct(model_sol_new,h=0)
                      

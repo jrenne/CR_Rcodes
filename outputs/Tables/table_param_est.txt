@@ -28,9 +28,9 @@ Decay rate of releases &$\kappa_N$ &\eqref{eq:damage_NmainText}&$0.77$\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Sea-level rise (SLR)}}\\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=2\degree C$}} &$0.5$ & meters \\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.9$ & meters \\
-\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\degree C$}} &$36.5$ & meters \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=2\degree C$}} &$0.45$ & m \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.93$ & m \\
+\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.36$ & m \\
 Uncertainty parameter in SLR specif.&$\mu_{H}$ &\eqref{eq:SeaL}&$0.0715$&\\
 Constant in SLR specif.&$a^{(H)}$ &\eqref{eq:SeaL}&$-0.0287$& m/period\\
 Coefficient on $T_{AT}$ in SLR specif. &$b^{(H)}$ &\eqref{eq:SeaL}&$0.0320$& m/period/\degree C\\
@@ -38,7 +38,7 @@ Coefficient on $T_{AT}$ in SLR specif. &$b^{(H)}$ &\eqref{eq:SeaL}&$0.0320$& m/p
 \hline
 \multicolumn{5}{l}{{\bf Uncertainty about temperature process}}\\
 \multicolumn{3}{l}{\textit{Target: Std dev. of 2100 atmospheric temperature}} &0.75 & \degree C \\
-Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0576$&\\
+Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0574$&\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Mitigation process}}\\

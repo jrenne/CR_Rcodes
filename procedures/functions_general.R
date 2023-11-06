@@ -123,8 +123,8 @@ solveParam4T <-function(model){
   model.high <- model
   model.low$parameters$mu_T  <- mu_T.low
   model.high$parameters$mu_T <- mu_T.high
-  model_sol.low  <- model_solve(model.low,model$theta0)
-  model_sol.high <- model_solve(model.high,model$theta0)
+  model_sol.low  <- model_solve(model.low)
+  model_sol.high <- model_solve(model.high)
   
   EV_low  <- EV.fct(model_sol.low,model$horiz.2100)
   EV_high <- EV.fct(model_sol.high,model$horiz.2100)
@@ -136,7 +136,7 @@ solveParam4T <-function(model){
   while(std.T_at.high<model$target_vector["stdTat2100"]){
     model.high <- model
     model.high$parameters$mu_T <- model.high$parameters$mu_T + .2
-    model_sol.high <- model_solve(model.high,model$theta0)
+    model_sol.high <- model_solve(model.high)
     EV_high <- EV.fct(model_sol.high,model$horiz.2100)
     std.T_at.high <- sqrt(EV_high$VX$T_at[model$horiz.2100])
   }
@@ -153,7 +153,7 @@ solveParam4T <-function(model){
     mu_T.interm <- mu_T.low * .5 + mu_T.high * .5
     
     model.interm$parameters$mu_T  <- mu_T.interm
-    model_sol.interm  <- model_solve(model.interm,model$theta0)
+    model_sol.interm  <- model_solve(model.interm)
     EV_interm         <- EV.fct(model_sol.interm,model$horiz.2100)
     std.T_at.interm   <- sqrt(EV_interm$VX$T_at[model$horiz.2100])
     
@@ -178,7 +178,7 @@ solveParam4T <-function(model){
 mu_T.bisection <- function(x,model){
   
   model$parameters$mu_T <- x
-  model_new <- model_solve(model,model$theta0)
+  model_new <- model_solve(model)
   
   EV_new <- EV.fct(model_new,model$horiz.2100)
   Var.T_at <- EV_new$VX$T_at[model$horiz.2100]
@@ -876,7 +876,8 @@ mu_u.t.fct.all<-function(model_sol){
 
 #----------------------------------Solve model for infinite mitig mu=1
 #*theta is a set of ini cond. for the optim. of mitig rate mu
-model_solve<-function(model,theta,
+model_solve<-function(model,
+                      theta=model$theta0,
                       indic_mitig=TRUE,mu.chosen=rep(param$mu0,model$Tmax),
                       mu_altern=model$Cum_dc){
   #Data preparation
@@ -1049,9 +1050,10 @@ model_solve<-function(model,theta,
   bc    <-matrix(NaN, nrow=Tmax, 1)
   
   #Radiative forcings
-  f_ex               <- matrix(rep(param$phi_0,Tmax),Tmax,1)                        
-  f_ex[1:17]         <- f_ex[1:17]+(1/17)*(param$phi_1-param$phi_0)*((1:17)-1)
-  f_ex[18:Tmax]      <- f_ex[18:Tmax] + (param$phi_1-param$phi_0)
+  H2100                <- model_sol$horiz.2100
+  f_ex                 <- matrix(rep(param$phi_0,Tmax),Tmax,1)                        
+  f_ex[1:H2100]        <- f_ex[1:H2100]+(1/H2100)*(param$phi_1-param$phi_0)*((1:H2100)-1)
+  f_ex[(H2100+1):Tmax] <- f_ex[(H2100+1):Tmax] + (param$phi_1-param$phi_0)
   
   #Emissions from deforestation
   E_land[1:Tmax]<- param$eps_0*(1-param$rho)**((1:(Tmax))-1)           

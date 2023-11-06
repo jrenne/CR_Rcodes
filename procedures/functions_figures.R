@@ -393,7 +393,7 @@ compute_CMT <- function(model_sol,EV,Price.ZC,
   model_ncc$parameters$mu_N <- 0.0001
   model_ncc$parameters$mu_T <- 0.0001
   # and agents re-optimize:
-  model_ncc <- model_solve(model_ncc,theta0)
+  model_ncc <- model_solve(model_ncc)
   ncc.1 <-compute_cst_h(model_ncc,h_cst.1,nb)
   ncc.2 <-compute_cst_h(model_ncc,h_cst.2,nb)
   
@@ -404,7 +404,7 @@ compute_CMT <- function(model_sol,EV,Price.ZC,
   model_ncc.mu_c$parameters$b_sk <- 0
   E_delc <- EV.fct(model_sol,h=model_sol$Tmax-1)$EX$delc
   model_ncc.mu_c$mu_c<- c(model_sol$X[1],E_delc)
-  model_ncc.mu_c     <- model_solve(model_ncc.mu_c,theta0,indic_mitig = FALSE)
+  model_ncc.mu_c     <- model_solve(model_ncc.mu_c,indic_mitig = FALSE)
   
   ncc.mu_c.1 <-compute_cst_h(model_ncc.mu_c,h_cst.1,nb)
   ncc.mu_c.2 <-compute_cst_h(model_ncc.mu_c,h_cst.2,nb)
