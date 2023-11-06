@@ -229,7 +229,7 @@ model <- solveParam4T(model)
 print("***** calibration: done *****")
 
 tic("***** Solve Initial Model *****")
-model_sol<-model_solve(model,theta0)
+model_sol<-model_solve(model)
 toc()
 
 # Check plots:
