@@ -58,7 +58,6 @@ toc()
 
 
 plots <- 0:15
-plots <- 5
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
