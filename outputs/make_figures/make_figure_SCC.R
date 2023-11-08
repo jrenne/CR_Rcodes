@@ -4,7 +4,7 @@
 
 #Climate beta
 y.lim   <- c(-.3,1.2)
-y.limscc<- c(0,4000)
+y.limscc<- c(0,1000)
 
 # Considered values of mu_N (select three values):
 values.of.mu_N <- c(0.001,round(model_sol$parameters$mu_N),
