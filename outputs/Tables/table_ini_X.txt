@@ -1,5 +1,5 @@
-Initial emissions &$\mathcal{E}_0$ &\eqref{eq:Emit}&$43.50$&GtCO$_2$ &CDICE\\
-Initial industrial emissions &$\mathcal{E}_{ind,0}$ &\eqref{eq:qt}&$37.60$&GtCO$_2$&CDICE\\
+Initial emissions &$\mathcal{E}_0$ &\eqref{eq:Emit}&$43.50$&GtCO$_2$ &DICE2023\\
+Initial industrial emissions &$\mathcal{E}_{ind,0}$ &\eqref{eq:qt}&$37.60$&GtCO$_2$&DICE2023\\
 Initial radiative forcings &$F_0$ &\eqref{eq:Fradiat}+\eqref{eq:Tat}&$2.00$&W/m$^2$&CDICE\\
 Initial carbon concent. (atmos.) &$M_{AT,0}$ &\eqref{eq:Mvector}&$851$&GtC&CDICE\\
 Initial carbon concent. (upper ocean) &$M_{UP,0}$ &\eqref{eq:Mvector}&$628$&GtC&CDICE\\

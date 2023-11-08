@@ -397,7 +397,8 @@ LT.CumN.infinite <- function(model,u,
 #*if all = TRUE, vector of H \in(0, h).
 
 scc.fct<-function(model_sol,h,
-                  all=F,C_0=model_sol$parameters$c0,X=model_sol$X,t=0){  
+                  all=F,C_0=model_sol$parameters$c0,X=model_sol$X,t=0){
+  # returns SCC in USD per t CO2
   mat <- which(model_sol$names.var.X=="M_at")
   mu.u1.c    <-abs(extract(model_sol$mu_u1.t1,mat))
   if(h>(model_sol$Tmax-1)){
@@ -422,7 +423,7 @@ scc.fct<-function(model_sol,h,
     }
     return(scc.all)/(1-model_sol$parameters$delta)
   }
-  return(scc/(1-model_sol$parameters$delta))
+  return(scc/(1-model_sol$parameters$delta)/3.667)
 }
 
 
