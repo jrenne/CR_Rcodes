@@ -47,7 +47,7 @@ plot(seq.mu_D,all_scc,type="l",lwd=2,col="black",
      ylim=y.limscc,
      xlab=expression(paste("Damage uncertainty, ",mu[D],sep="")),
      main="",
-     ylab=expression(paste("SCC (in $/GtC)"),sep=""),
+     ylab=expression(paste("SCC (in U.S. $ per ton of ",CO[2],")"),sep=""),
      las=0)
 abline(h=0,lty=3,col="black")
 abline(v=model_sol$parameters$mu_D,lty=3,col="lightslategrey")
