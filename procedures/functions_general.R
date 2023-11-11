@@ -91,7 +91,7 @@ solveParam4N <-function(model,
   
   CumN.inf    <- c(mu_N/(1-kapN)) *
     c(matrix(c(1,T.2500),nrow=1) %*% ellN.condkapN)
-       
+  
   param.CumN  <-rbind(t(kapN),ellN.condkapN,t(CumN.inf),
                       rep(model$target_vector["ECumNinf"],length(kapN)),
                       t(CumN.inf-model$target_vector["ECumNinf"]))
@@ -400,29 +400,30 @@ scc.fct<-function(model_sol,h,
                   all=F,C_0=model_sol$parameters$c0,X=model_sol$X,t=0){
   # returns SCC in USD per t CO2
   mat <- which(model_sol$names.var.X=="M_at")
-  mu.u1.c    <-abs(extract(model_sol$mu_u1.t1,mat))
+  mu.u1.c    <- abs(extract(model_sol$mu_u1.t1,mat))
   if(h>(model_sol$Tmax-1)){
-    mu.u1.c    <-c(mu.u1.c,rep(abs(model_sol$inf_matx$mu_u1[mat]),
-                               h-model_sol$Tmax+1)) 
+    mu.u1.c    <- c(mu.u1.c,rep(abs(model_sol$inf_matx$mu_u1[mat]),
+                                h-model_sol$Tmax+1)) 
   }
   omega_c    <-matrix(0,model_sol$n.X,1)
   omega_c[which(model_sol$names.var.X=="Cum_dc")]<-1
   
   if(h==0){
-    scc<--C_0*mu_u.t.fct(model_sol)[[2]][which(model_sol$names.var.X=="M_at")]*10^(3)
+    scc <- - C_0*mu_u.t.fct(model_sol)[[2]][which(model_sol$names.var.X=="M_at")]*10^(3)
   } else{
-    scc<-multi.lt.fct(model_sol,omega_c,h,X,t)$uX_t.h*
+    scc <- multi.lt.fct(model_sol,omega_c,h,X,t)$uX_t.h*
       mu.u1.c[h+1]*C_0*10^(3)
   }
   
   if(all){
-    scc.all<--C_0*mu_u.t.fct(model_sol)[[2]][mat]*10^(3)
+    scc.all <- - C_0*mu_u.t.fct(model_sol)[[2]][mat]*10^(3)
     for(i in 1:(h-1)){
-      scc.all[i+1]<-multi.lt.fct(model_sol,omega_c,i,X)$uX_t.h*
+      scc.all[i+1] <- multi.lt.fct(model_sol,omega_c,i,X)$uX_t.h*
         mu.u1.c[i+1]*C_0*10^(3)
     }
-    return(scc.all)/(1-model_sol$parameters$delta)
+    return(scc.all)/(1-model_sol$parameters$delta/3.667)
   }
+  
   return(scc/(1-model_sol$parameters$delta)/3.667)
 }
 
@@ -809,10 +810,12 @@ multi.lt.fct.N<-function(model_sol,U,h,X=model_sol$X,t=0,indic.cum=0){
 #* SOLVING SDF ----
 
 #------------------Proposition: Function that returns mu_u1 and mu_u0 @0 
-#*Tend: General case with Tmax=100, end up with t=2020
+#*Tend: General case with Tmax=100, ends up with t=2020
 #*If want a specific date--> mu_u.t.fct.all
 #*return mu_u0.t, mu_u1.t
-mu_u.t.fct<-function(model_sol,Tend=model_sol$Tmax){
+mu_u.t.fct<-function(model_sol,
+                     Tend = model_sol$Tmax # comes back to initial date
+){
   param    <-model_sol$parameters
   mu_u1.inf<-model_sol$mu_u1
   mu_u0.inf<-model_sol$mu_u0
@@ -829,7 +832,6 @@ mu_u.t.fct<-function(model_sol,Tend=model_sol$Tmax){
     mu_u0.t<-param$delta*(mu_u0.t+mu_c0)+
       param$delta/(1-param$gamma)*a.t
   }
-  
   mylist<-list("mu_u0.t"=mu_u0.t,"mu_u1.t"=mu_u1.t)
   return(mylist)
 }
@@ -866,6 +868,8 @@ mu_u.t.fct.all<-function(model_sol){
   #no 2020
   mu_u1  <-mu_u1.t[-1]
   mu_u0  <-mu_u0.t[-1]
+  #mu_u1  <-mu_u1.t
+  #mu_u0  <-mu_u0.t
   vec_date<-seq(model_sol$vec_date[2],by=model_sol$tstep,length=Tmax-2)         #infinity not counted
   
   mylist<-list("mu_u0.t1"=mu_u0,"mu_u1.t1"=mu_u1,"date"=vec_date)
@@ -993,7 +997,7 @@ model_solve<-function(model,
   model_sol[["omega0.inf"]]   <-omega0.inf
   model_sol[["omega.inf"]]    <-omega.inf
   
-  ##Infinite components (t+100)
+  ##Infinite components (t + Tmax)
   # solution initial values
   betawGN<- cbind(matrix(0,model_sol$n.Z+model_sol$n.W,model_sol$n.Z),          #CHANGE IF ADD GAMMA0
                   rbind(
@@ -1018,14 +1022,14 @@ model_solve<-function(model,
   muu1_ini<- model_sol$parameters$delta*
     solve(diag(model_sol$n.Z+model_sol$n.W)-model_sol$parameters$delta*betaGN)%*%
     betaGN%*%muc1GN
-  GN      <-muu1_ini
+  GN <- muu1_ini
   
   Newton<-GN.function(model_sol,GN)
   
-  mu_c1 <-Newton$mu_c1
-  mu_c0 <-0
-  mu_u1 <-Newton$mu_u1
-  mu_u0 <-param$delta/(1-param$delta)*
+  mu_c1 <- Newton$mu_c1
+  mu_c0 <- 0
+  mu_u1 <- Newton$mu_u1
+  mu_u0 <- param$delta/(1-param$delta)*
     mu_c0+param$delta/((1-param$delta)*(1-param$gamma))*
     a1.fct.inf(model_sol,(1-param$gamma)*(mu_u1+mu_c1))
   
@@ -1042,13 +1046,13 @@ model_solve<-function(model,
   #####
   #Exogenous variables
   #####
-  f_ex  <-matrix(NaN, nrow=Tmax, 1)
-  E_land<-matrix(NaN, nrow=Tmax, 1)
-  gsigma<-matrix(NaN, nrow=Tmax, 1)
-  sigma <-matrix(NaN, nrow=Tmax, 1)
-  mu    <-matrix(NaN, nrow=Tmax, 1)
-  bp    <-matrix(NaN, nrow=Tmax, 1)
-  bc    <-matrix(NaN, nrow=Tmax, 1)
+  f_ex   <- matrix(NaN, nrow=Tmax, 1)
+  E_land <- matrix(NaN, nrow=Tmax, 1)
+  gsigma <- matrix(NaN, nrow=Tmax, 1)
+  sigma  <- matrix(NaN, nrow=Tmax, 1)
+  mu     <- matrix(NaN, nrow=Tmax, 1)
+  bp     <- matrix(NaN, nrow=Tmax, 1)
+  bc     <- matrix(NaN, nrow=Tmax, 1)
   
   #Radiative forcings
   H2100                <- model_sol$horiz.2100
@@ -1069,9 +1073,7 @@ model_solve<-function(model,
   bp[1:Tmax]<-param$pback*(1-param$gback)**((1:Tmax)-1)              
   bc[1:Tmax]<-bp[1:Tmax]*sigma[1:Tmax]/param$theta2/1000
   
-  #####
-  #Initial states in 2020                                                       #CHANGE STATES INI COND.
-  #####
+  #Initial states:
   Z    <- matrix(NaN,model_sol$n.Z,1)
   Z[indic.delc] <- log(param$delta)+log((1-bc[1]*param$mu0**(param$theta2))*param$A_bar+
                                           1-param$delta_K)
@@ -1114,13 +1116,13 @@ model_solve<-function(model,
     for (i in 1:length(theta)){
       opt[[i]] <- res.optim(model_sol,theta[[i]],Tend=Tmax,X=X)
     }
-    maxi     <-min(unlist(extract(opt,2)))
-    best     <-which(maxi==unlist(extract(opt,2)))[1]
-    theta.opt<-unlist(opt[[best]][1])
-    mu       <-mu.function(model_sol,theta.opt)
+    maxi      <- min(unlist(extract(opt,2)))
+    best      <- which(maxi==unlist(extract(opt,2)))[1]
+    theta.opt <- unlist(opt[[best]][1])
+    mu        <- mu.function(model_sol,theta.opt)
     
-    model_sol[["theta.opt"]]<-theta.opt
-    model_sol[["u0"]]       <-abs(maxi)
+    model_sol[["theta.opt"]] <- theta.opt
+    model_sol[["u0"]]        <- abs(maxi)
   }else{
     mu   <- mu.chosen
   }
@@ -1136,33 +1138,33 @@ model_solve<-function(model,
   #####
   
   #Keep all elements st [1] is t for t=0
-  model_sol[["AC"]]      <-model_matrix$AC
-  model_sol[["lambda"]]  <-model_matrix$lambda
+  model_sol[["AC"]]      <- model_matrix$AC
+  model_sol[["lambda"]]  <- model_matrix$lambda
   
   #remove first period st starting from t=0, first element is t=1
-  model_sol[["A1"]]      <-model_matrix$A1[-1]
-  model_sol[["omega"]]   <-model_matrix$omega[-1]
-  model_sol[["omega0"]]  <-model_matrix$omega0[-1]
+  model_sol[["A1"]]      <- model_matrix$A1[-1]
+  model_sol[["omega"]]   <- model_matrix$omega[-1]
+  model_sol[["omega0"]]  <- model_matrix$omega0[-1]
   
   #Date 0 storage
-  list2015[["A1"]]       <-model_matrix$A1[[1]]
-  list2015[["omega"]]    <-model_matrix$omega[[1]]
-  list2015[["omega0"]]   <-model_matrix$omega0[[1]]
+  list2015[["A1"]]       <- model_matrix$A1[[1]]
+  list2015[["omega"]]    <- model_matrix$omega[[1]]
+  list2015[["omega0"]]   <- model_matrix$omega0[[1]]
   
   if (indic_mitig==FALSE){
-    mu_u1.t  <-model_sol$mu_u1
-    mu_u0.t  <-model_sol$mu_u0
-    mu_c1    <-model_sol$mu_c1
-    mu_c0    <-model_sol$mu_c0
+    mu_u1.t  <- model_sol$mu_u1
+    mu_u0.t  <- model_sol$mu_u0
+    mu_c1    <- model_sol$mu_c1
+    mu_c0    <- model_sol$mu_c0
     
-    mu_u.1<-mu_u.t.fct(model_sol)
+    mu_u.1 <- mu_u.t.fct(model_sol)
     
     if(is.na(mu_u.1[[1]])){
       u0 <- 10000
       model_sol[["u0"]] <-u0
     }else{
-      u0<-log(model_sol$parameters$c0)+mu_u.1[[1]]+t(mu_u.1[[2]])%*%model_sol$X
-      model_sol[["u0"]] <-u0
+      u0 <- log(model_sol$parameters$c0)+mu_u.1[[1]]+t(mu_u.1[[2]])%*%model_sol$X
+      model_sol[["u0"]] <- u0
     }
   }
   
@@ -1171,21 +1173,20 @@ model_solve<-function(model,
   #*construct mu_u1.t
   #####
   #Proposition 9: SDF construction
-  P.mu_u.t1 <-mu_u.t.fct.all(model_sol)
-  P.mu_u1.t1<-P.mu_u.t1[[2]]
+  P.mu_u.t1  <- mu_u.t.fct.all(model_sol)
+  P.mu_u1.t1 <- P.mu_u.t1[[2]]
   
-  P.pi  <-lapply(1:(Tmax-2),                                                    
-                 function(t){(1-param$gamma)*P.mu_u1.t1[[t]]-
-                     param$gamma*mu_c1})
+  P.pi  <- lapply(1:(Tmax-2),                                                    
+                  function(t){(1-param$gamma)*P.mu_u1.t1[[t]]-
+                      param$gamma*mu_c1})
   
   #####
   #*construct eta.0                                                             
   #####
-  P.eta_0  <-matrix(unlist(lapply(1:(length(P.pi)),function(t){
+  P.eta_0  <- matrix(unlist(lapply(1:(length(P.pi)),function(t){
     -log(param$delta)+
       a1.fct(model_sol,(1-param$gamma)*(P.mu_u1.t1[[t]]+mu_c1),t-1)-
-      a1.fct(model_sol,P.pi[[t]],t-1)})),                             #t=0 for a.t
-    length(P.pi),1)
+      a1.fct(model_sol,P.pi[[t]],t-1)})), length(P.pi),1)
   
   #####
   #*construct eta.1                                                             
@@ -1205,18 +1206,16 @@ model_solve<-function(model,
   #Infinite economy:
   inf_matx<-list("mu_u1"=model_sol$mu_u1)
   
-  inf_matx[["pi.inf"]]  <-(1-param$gamma)*inf_matx$mu_u1-param$gamma*mu_c1
-  inf_matx[["eta0.inf"]]<--log(param$delta)+
+  inf_matx[["pi.inf"]]   <- (1-param$gamma)*inf_matx$mu_u1-param$gamma*mu_c1
+  inf_matx[["eta0.inf"]] <- - log(param$delta)+
     a1.fct.inf(model_sol,(1-param$gamma)*(inf_matx$mu_u1+mu_c1))-
     a1.fct.inf(model_sol,inf_matx$pi.inf)
-  inf_matx[["eta1.inf"]]<-b1.fct.inf(model_sol,
-                                     (1-param$gamma)*(inf_matx$mu_u1+mu_c1))-
+  inf_matx[["eta1.inf"]] <- b1.fct.inf(model_sol,
+                                       (1-param$gamma)*(inf_matx$mu_u1+mu_c1))-
     b1.fct.inf(model_sol,inf_matx$pi.inf)
   
-  
-  
-  model_sol$ini_matx<-c(list2015,model_sol$ini_matx)
-  model_sol$inf_matx<-c(inf_matx,model_sol$inf_matx)
+  model_sol$ini_matx <- c(list2015,model_sol$ini_matx)
+  model_sol$inf_matx <- c(inf_matx,model_sol$inf_matx)
   ##############################################################################
   return(model_sol)
 }
@@ -1232,7 +1231,7 @@ mu.function <- function(model_sol,theta,
   if(a<b*date.min.mu.equal.1){
     b <- a/date.min.mu.equal.1
   }
-  mu  <-pmin(exp(-a+b*(1:model_sol$Tmax)),1)
+  mu  <- pmin(exp(-a+b*(1:model_sol$Tmax)),1)
   return(mu)
 }
 
@@ -1352,12 +1351,12 @@ mu_dep<-function(model_sol,mu,mu_altern=model_sol$Cum_dc){
                      omega0.star[[i]])
   omega   <-lapply(1:Tmax,function(i)solve(A0.star)%*%
                      omega.star[[i]]) 
-  # }
   
-  mylist  <-list("A1"=A1,"omega0"=omega0,"omega"=omega,
-                 "AC"=AC,"lambda"=lambda)
-  return(mylist)
-}
+  return(list("A1"=A1,
+              "omega0"=omega0,
+              "omega"=omega,
+              "AC"=AC,
+              "lambda"=lambda))}
 
 
 #-------------------------------Results of optimization problem of mu
@@ -1380,47 +1379,53 @@ res.optim <-function(model_sol,theta,Tend=model_sol$Tmax,X=model_sol$X){
   return(mylist)
 }
 
-#-------------------------------construction of u0 for optim of mitig rate mu
-utility.optim<-function(model_sol,theta,Tend=model_sol$Tmax,X=model_sol$X){
-  param     <-model_sol$parameters
-  tstep     <-model_sol$tstep
-  omega.star<-model_sol$omega.star
-  Tmax      <-model_sol$Tmax
+#------- construction of u0 for optim of mitig rate mu
+utility.optim <- function(model_sol,
+                          theta,
+                          Tend = model_sol$Tmax,
+                          X    = model_sol$X){
+  
+  param      <- model_sol$parameters
+  tstep      <- model_sol$tstep
+  omega.star <- model_sol$omega.star
+  Tmax       <- model_sol$Tmax
   
   #utility
-  mu_u1.inf<-model_sol$mu_u1
-  mu_u0.inf<-model_sol$mu_u0
-  mu_c1    <-model_sol$mu_c1
-  mu_c0    <-model_sol$mu_c0                                                   
-  mu_u1.t  <-mu_u1.inf                                                            
-  mu_u0.t  <-mu_u0.inf
+  mu_u1.inf <- model_sol$mu_u1
+  mu_u0.inf <- model_sol$mu_u0
+  mu_c1     <- model_sol$mu_c1
+  mu_c0     <- model_sol$mu_c0                                                   
+  mu_u1.t   <- mu_u1.inf                                                            
+  mu_u0.t   <- mu_u0.inf
   
   #Parameters to optimize
-  a <-theta[1]
-  b <-theta[2]
+  a <- theta[1]
+  b <- theta[2]
   
   #List of variables
-  mu<-matrix(NaN, nrow=Tmax, 1)
+  mu <- matrix(NaN, nrow=Tmax, 1)
   
   #Emissions control rate
-  mu[1:Tmax]<-mu.function(model_sol,c(a,b))
+  mu[1:Tmax] <- mu.function(model_sol,c(a,b))
   
-  model_matrix<-mu_dep(model_sol,mu)
-  omega0      <-model_matrix$omega0
-  omega       <-model_matrix$omega
-  A1          <-model_matrix$A1
+  model_matrix <- mu_dep(model_sol,mu)
+  omega0       <- model_matrix$omega0
+  omega        <- model_matrix$omega
+  A1           <- model_matrix$A1
   
-  model_sol[["A1"]]    <-A1[-1]
-  model_sol[["omega"]] <-omega[-1]
-  model_sol[["omega0"]]<-omega0[-1]
+  model_sol[["A1"]]     <- A1[-1]
+  model_sol[["omega"]]  <- omega[-1]
+  model_sol[["omega0"]] <- omega0[-1]
   
-  mu_u.1<-mu_u.t.fct(model_sol,Tend) 
-  #if NaN, returns high utility s.t. I don't mitigate and big loss
+  mu_u.1 <- mu_u.t.fct(model_sol,Tend)
+  
+  #if NaN, returns high utility s.t. I don't mitigate and big losses:
   if(is.na(mu_u.1[[1]])){
     return(-10000)
   }
   
-  u0<-log(param$c0)+mu_u.1[[1]]+t(mu_u.1[[2]])%*%X
+  u0 <- log(param$c0) + mu_u.1[[1]] + t(mu_u.1[[2]])%*%X
+  
   return(-u0)
 }
 
