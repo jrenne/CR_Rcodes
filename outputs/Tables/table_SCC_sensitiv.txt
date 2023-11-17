@@ -6,6 +6,6 @@ No damage uncertainty ($\mu_D=0$)&164&$-$\textit{14\%}&160&$-$\textit{8\%}&167&$
 Small damages (twice lower)&83&$-$\textit{56\%}&80&$-$\textit{54\%}&87&$-$\textit{59\%}\\
 No permafrost uncertainty ($\mu_N=0$)&187&$-$\textit{2\%}&172&$-$\textit{1\%}&206&$-$\textit{3\%}\\
 No permaf.-based carbon releases ($a^{(N)}=b^{(N)}=0$)&139&$-$\textit{27\%}&128&$-$\textit{26\%}&153&$-$\textit{28\%}\\
-No sea-level uncertainty ($\mu_H=0$)&187&$-$\textit{2\%}&172&$-$\textit{1\%}&207&$-$\textit{3\%}\\
+No sea-level uncertainty ($\mu_H=0$)&187&$-$\textit{2\%}&172&$-$\textit{1\%}&208&$-$\textit{3\%}\\
 No sea-level risks ($a^{(H)}=b^{(H)}=0$)&111&$-$\textit{42\%}&97&$-$\textit{44\%}&129&$-$\textit{39\%}\\
 Small damages, deterministic, no permaf.&57&$-$\textit{70\%}&57&$-$\textit{67\%}&57&$-$\textit{73\%}\\

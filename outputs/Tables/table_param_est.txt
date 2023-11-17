@@ -38,10 +38,10 @@ Coefficient on $T_{AT}$ in SLR specif. &$b^{(H)}$ &\eqref{eq:SeaL}&$0.0320$& m/p
 \hline
 \multicolumn{5}{l}{{\bf Uncertainty about temperature process}}\\
 \multicolumn{3}{l}{\textit{Target: Std dev. of 2100 atmospheric temperature}} &0.75 & \degree C \\
-Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0574$&\\
+Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0583$&\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Mitigation process}}\\
 \multicolumn{3}{l}{\textit{Based on agents' optimization on initial date}} \\
-Coef. on imposed function form of $\mu_t$ &$\theta_{a,opt} $ &\eqref{eq:mu}&$-0.0000$&\\
-Coef. on imposed function form of $\mu_t$ &$\theta_{b,opt} $ &\eqref{eq:mu}&$0.0887$&\\
+Coef. on imposed function form of $\mu_t$ &$\theta_{a,opt} $ &\eqref{eq:mu}&$-1.3332$&\\
+Coef. on imposed function form of $\mu_t$ &$\theta_{b,opt} $ &\eqref{eq:mu}&$0.0676$&\\

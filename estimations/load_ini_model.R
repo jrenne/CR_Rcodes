@@ -3,22 +3,22 @@
 # ==============================================================================
 
 #number of periods before climatic risks disappear:
-Tmax   <-100
+Tmax   <- 100
 
 #number of years in each period t \in(1:Tmax):
-tstep  <-5
+tstep  <- 5
 
 #vector of dates
-vec_date<-seq(2020,by=tstep,len=Tmax-1)
+vec_date <- seq(2020,by=tstep,len=Tmax-1)
 
 #Initial values of theta_/_b for mitig optim. from DICE2016
-theta0  <-list(c(log(0.17),-1/21*log(0.17)))
+theta0  <- c(log(0.17),-1/21*log(0.17))
 
 #Determine of max of iterations in mitig optim.
-MAXIT   <-200 
+MAXIT   <- 200
 
 #Define the horizon for optimization
-horiz   <-(2100-vec_date[1])/tstep
+horiz   <- (2100-vec_date[1])/tstep
 
 
 #---- state vector -------------------------------------------------------------
