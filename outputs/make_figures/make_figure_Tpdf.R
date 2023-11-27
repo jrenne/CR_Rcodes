@@ -8,16 +8,13 @@ H <- model_sol$horiz.2100
 omega_ZCB <- matrix(0,model_sol$n.X)
 omega_T.at <- omega_ZCB
 omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
+TAT <- which(model_sol$names.var.X=="T_at")
 
 #RCP data
 temp<-read.table("./data/mean_ssp.txt",header=TRUE)
 temp_graph<-temp[3:11,]
 
 x <- exp(seq(-5,5,length.out = 1000)) #grid for Proposition 8 (Fourier)
-
-omega_T.at <- matrix(0,model_sol$n.X)
-omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
-TAT <- which(model_sol$names.var.X=="T_at")
 
 #distribution and expected temperature
 values.of.temperatures <- seq(round(model_sol$vector.ini$ini_Tat),

@@ -4,9 +4,9 @@
 
 # Prepare omega vectors (for pricing):
 omega_ZCB <- matrix(0,model_sol$n.X)
-omega_T.at <- omega_ZCB
-omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
-
+a         <- matrix(0,length(model_sol$X),1)
+HSL       <- which(model$names.var.X=="H")
+a[HSL]    <- 1
 
 H <- model_sol$horiz.2100
 
@@ -18,16 +18,12 @@ sea45.smooth <- predict(loess(sea.rcp[,2]~sea.rcp[,1]))
 # For Fourier transform:
 x <- exp(seq(-5,5,length.out = 1000)) #grid for Proposition 8 (Fourier)
 
-HSL <- which(model$names.var.X=="H")
 values.of.sl <- seq(#round(model_sol$vector.ini$ini_H,1),
   0,
   round(EV$EX$H[H]+5*sqrt(EV$VX[[HSL]][H]),1),
   by=.01)
 
 nb.values.variable <- 2000
-
-a      <- matrix(0,length(model_sol$X),1)
-a[HSL] <- 1
 
 cl <- makeCluster(number.of.cores)
 registerDoParallel(cl)

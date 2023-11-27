@@ -15,6 +15,8 @@
 #*13 Merton 1
 #*14 Merton 2
 #*15 Housing prices
+#*16 Confidence Interval SCC and Risk premiums
+#*17 Relationship between SCC and Temperature risk premium
 
 
 # Maturity:
@@ -47,42 +49,42 @@ nb.values.variable <- 400
 #********************************0*********************************************#
 #CALIBRATION
 if(is.element(0,plots)){
-  print("Prepare Calibration plot")
+  print("Preparing Calibration plot")
   source("outputs/make_figures/make_figure_calibration.R")
 }
 
 #********************************1*********************************************#
 #TIBS/SWAPS
 if(is.element(1,plots)){
-  print("Prepare TS plot")
+  print("Preparing TS plot")
   source("outputs/make_figures/make_figure_TS.R")
 }
 
 #********************************2*********************************************#
 #Digital Option
 if(is.element(2,plots)){
-  print("Prepare Option plot")
+  print("Preparing Option plot")
   source("outputs/make_figures/make_figure_options.R")
 }
 
 #********************************3*********************************************#
 #Temperatures pdf + RCP
 if(is.element(3,plots)){
-  print("Prepare Temperature distri plot")
+  print("Preparing Temperature distri plot")
   source("outputs/make_figures/make_figure_Tpdf.R")
 }
 
 #********************************4*********************************************#
 #Carbon Concentration Atmosphere pdf + RCP
 if(is.element(4,plots)){
-  print("Prepare Atm carbon concentration distri plot")
+  print("Preparing Atm carbon concentration distri plot")
   source("outputs/make_figures/make_figure_Mpdf.R")
 }
 
 #********************************5*********************************************#
 #Sensitivity to mu_D
 if(is.element(5,plots)){
-  print("Prepare sensitivity-to-mu_D plot (about 30 sec)")
+  print("Preparing sensitivity-to-mu_D plot (about 30 sec)")
   source("outputs/make_figures/make_figure_sensitiv_muD.R")
   source("outputs/make_figures/make_figure_SCC.R")
 }
@@ -90,81 +92,97 @@ if(is.element(5,plots)){
 #********************************6*********************************************#
 #Disasters Simulations
 if(is.element(6,plots)){
-  print("Prepare D simulation plot")
+  print("Preparing D simulation plot")
   source("outputs/make_figures/make_figure_Dsimul.R")
 }
 
 #********************************7*********************************************#
 #Global Sea Level pdf + RCP
 if(is.element(7,plots)){
-  print("Prepare SLR distri plot")
+  print("Preparing SLR distri plot")
   source("outputs/make_figures/make_figure_Hpdf.R")
 }
 
 #********************************8*********************************************#
 #Mitigation vs DICE2016
 if(is.element(8,plots)){
-  print("Prepare figure mu plot")
+  print("Preparing figure mu plot (about 30 sec)")
   source("outputs/make_figures/make_figure_mu.R")
 }
 
 #*******************************9*********************************************#
 #Radiative Forcings Approximation
 if(is.element(9,plots)){
-  print("Prepare radiative forcing approx plot")
+  print("Preparing radiative forcing approx plot")
   source("outputs/make_figures/make_figure_RFapprox.R")
 }
 
 #*******************************10*********************************************#
 #Constant maturity for ZCB
 if(is.element(10,plots)){
-  print("Prepare ZCB plot")
+  print("Preparing ZCB plot")
   source("outputs/make_figures/make_figure_ConstantMaturityZCB.R")
 }
 
 # #*******************************12*********************************************#
 # #pdf Cum_r.s
 # if(is.element(12,plots)){
-#   print("Prepare r stock distri plot")
+#   print("Preparing r stock distri plot")
 #   source("outputs/make_figures/make_figure_rStockDistributions.R")
 # }
 
 # #*******************************13*********************************************#
 # #Constant maturity for Stocks
 # if(is.element(13,plots)){
-#   print("Prepare constant maturity for stocks plot")
+#   print("Preparing constant maturity for stocks plot")
 #   source("outputs/make_figures/make_figure_ConstantMaturityStocks")
 # }
 
 #*******************************11*********************************************#
 #Cut in Climate Premium
 if(is.element(11,plots)){
-  print("Prepare plot of sensitivitiy of Temp risk premium to mu_D")
+  print("Preparing plot of sensitivitiy of Temp risk premium to mu_D")
   source("outputs/make_figures/make_figure_cut_CP_muD.R")
 }
 
 #*******************************12*********************************************#
 #Break-even rates of inflation
 if(is.element(12,plots)){
-  print("Prepare figure BEIR term structures")
+  print("Preparing figure BEIR term structures")
   source("outputs/make_figures/make_figure_breakeveninflation.R")
 }
 
 #*******************************13-14******************************************#
 #Merton model
 if(is.element(13,plots)){
-  print("Prepare Merton-model figure (1/2)")
+  print("Preparing Merton-model figure (1/2)")
   source("outputs/make_figures/make_figure_Merton.R")
 }
 if(is.element(14,plots)){
-  print("Prepare Merton-model figure (2/2)")
+  print("Preparing Merton-model figure (2/2)")
   source("outputs/make_figures/make_figure_Merton2.R")
 }
 
 #*******************************15*********************************************#
 #Housing prices
 if(is.element(15,plots)){
-  print("Prepare figure Housing")
+  print("Preparing figure Housing")
   source("outputs/make_figures/make_figure_Housing.R")
+}
+
+#*******************************16*********************************************#
+#Confidence intervals for SCC and risk premiums
+if(is.element(16,plots)){
+  print("Preparing figure Confidence int. for SCC and Risk premiums (couple of minutes)")
+  source("outputs/make_figures/make_figure_ConfInt_RP.R",
+         encoding = 'ISO8859-1')
+}
+
+#*******************************17*********************************************#
+#Relationship between SCC and Temperature risk premium
+if(is.element(17,plots)){
+  print("Preparing figure Relationship SCC and Temp. risk premium (about 1 minute)")
+  source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
+         encoding = 'ISO8859-1')
 }
 

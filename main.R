@@ -20,8 +20,8 @@ library(expm)
 
 
 #Binary operators: 0 = NO, 1 = YES.
-indic_plots_paper <- 0  #do you run some plots of the paper? see description below
-indic_tables_paper<- 1  #do you run the tables of the paper?
+indic_plots_paper  <- 1  #do you run some plots of the paper? see description below
+indic_tables_paper <- 1  #do you run the tables of the paper?
 
 # For scripts using parallel computing:
 number.of.cores <- 8
@@ -55,9 +55,13 @@ toc()
 #*13 Merton 1
 #*14 Merton 2
 #*15 Housing prices
+#*16 Confidence Interval SCC and Risk premiums
+#*17 Relationship between SCC and Temperature risk premium
 
+plots <- 0:17
+#plots <- 12
 
-plots <- 0:15
+#plots <- 16:17
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")

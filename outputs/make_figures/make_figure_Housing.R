@@ -115,7 +115,6 @@ for(b_sk in values.b_sk){
   all.house.prices.Q[,indic.values.bsk] <- house.prices.Q * model_sol$tstep
 }
 
-
 stopCluster(cl)
 file.remove("outputs/toto.Rdata")
 

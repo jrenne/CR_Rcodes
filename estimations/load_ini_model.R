@@ -228,12 +228,50 @@ model <- solveParam4c(model)
 model <- solveParam4T(model)
 print("***** calibration: done *****")
 
+
+# gamma <- 1.45
+# gamma <- 7
+# model.CRRA <- model
+# model.CRRA$parameters$gamma <- gamma
+# # model.CRRA$target_vector["mu_c0"] <- .04
+# # model.CRRA$target_vector["sigma_c0"] <- sqrt(5*.014)
+# model.CRRA <- solveParam4c(model.CRRA,indic_CRRA=TRUE)
+# # model.CRRA$parameters$a_D  <- gamma * model.CRRA$parameters$a_D * 0
+# # model.CRRA$parameters$b_D  <- gamma * .0018 * model.CRRA$tstep
+# # model.CRRA$parameters$mu_D <- gamma * model.CRRA$parameters$mu_D * 4
+# # #model$parameters$mu_T <- model$parameters$mu_T * 3
+# # #model.CRRA$parameters$a_D <- 0.0001
+# # #model.CRRA$parameters$b_D <- 0.0001
+# # model.CRRA$parameters$b_sk <- 0
+# model_CRRA_sol <- model_solve(model.CRRA,
+#                               indic_mitig = T,
+#                               indic_CRRA = T)
+# res.scc <- scc.fct.CRRA(model_CRRA_sol,t = 0,H = 100)
+# print(res.scc$SCC.CO2)
+# plot(res.scc$scc.decomp)
+# omega.ZC <- matrix(0,model_CRRA_sol$n.X,1)
+# prices.ZCRF.bonds   <- varphi(model_CRRA_sol,
+#                               omega.varphi = omega.ZC,
+#                               H = 100)
+# plot(prices.ZCRF.bonds$r.t)
+
+
+
 tic("***** Solve Initial Model *****")
-model_sol<-model_solve(model)
+model_sol <- model_solve(model,indic_CRRA = FALSE)
+#plot(model_sol$mu)
 toc()
 
+# delc <- 0
+# for(i in 1:length(model_sol$omega)){
+#   delc <- c(delc,model_sol$omega0[[i]][1])
+# }
+# plot(delc,type="l")
+# compute.utility.CRRA(model_sol)
+
+
 # Check plots:
-H <- model$horiz.2100 + 50
+H <- model$horiz.2100 + 100
 #Model-implied EV
 EV<-EV.fct(model_sol,H)
 par(mfrow=c(2,3))
@@ -251,4 +289,5 @@ plot(model$vec_date[1:H],EV$EX$N,type="l")
 #Remove unnecessary elements:
 remove(horiz,MAXIT,target_vector,vec_date,
        tstep,Tmax,n.eta,n.W,n.Z,theta0,ini_matx,
-       vector.ini,param.clim,param.econ,Cum_dc,Cum_dc1)
+       vector.ini,param.clim,param.econ,Cum_dc,Cum_dc1,
+       param,inf_matx,eps_0,H,m0,names.var.X)

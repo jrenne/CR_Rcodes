@@ -3,9 +3,9 @@
 model_sol_new <- model_sol
 model_sol_new$parameters$b_sk <- .000001
 
-model_sol_new$target_vector["ECumD2"] <- .995
-model_sol_new$target_vector["ECumD4"] <- .99
-model_sol_new$target_vector["stdCumD4"] <- .001
+# model_sol_new$target_vector["ECumD2"] <- .995
+# model_sol_new$target_vector["ECumD4"] <- .99
+# model_sol_new$target_vector["stdCumD4"] <- .001
 
 model_sol_new <- solveParam4D(model_sol_new)
 model_sol_new <- model_solve(model_sol_new)
@@ -27,12 +27,11 @@ plot(prices.ZCRF.bonds$P.t,type="l")
 
 # Selection vector for Cum_dc:
 omega_C <- matrix(0,model_sol_new$n.X,1)
-#omega_C[which(model_sol_new$names.var.X=="Cum_dc")] <- 1
-omega_C[which(model_sol_new$names.var.X=="T_at")] <- 1
+omega_C[which(model_sol_new$names.var.X=="Cum_dc")] <- 1
+#omega_C[which(model_sol_new$names.var.X=="T_at")] <- 1
 
 X.shock <- model_sol_new$X
-X.shock[which(model$names.var.X=="E")] <- 
-  - 100 + X.shock[which(model$names.var.X=="E")]
+X.shock[which(model$names.var.X=="E")] <- - 1 + X.shock[which(model$names.var.X=="E")]
 
 prices.C   <- varphi(model_sol_new,
                      omega.varphi = omega_C,
@@ -42,6 +41,23 @@ prices.C.shock   <- varphi(model_sol_new,
                            H = H,
                            X = X.shock)
 D <- sum(prices.C$P.t) - sum(prices.C.shock$P.t)
+
+gamma <- model_sol$parameters$gamma
+delta <- model_sol$parameters$delta
+EC       <- NULL
+EC.shock <- NULL
+for(h in 1:H){
+  Uh <- matrix(model_sol$mu_c1,model_sol$n.X,h)
+  res.lt       <- multi.lt.fct.Uh(model_sol,Uh,X=model_sol_new$X,t=0)
+  res.lt.shock <- multi.lt.fct.Uh(model_sol,Uh,X=X.shock,t=0)
+  EC <- c(EC,res.lt$uX_t.h)
+  EC.shock <- c(EC.shock,res.lt.shock$uX_t.h)
+}
+#cbind(EC,EC.shock)
+
+stop()
+
+
 
 
 nb.traj  <- 10000
