@@ -1,15 +1,15 @@
-=====================================================================
+================================================================================
 An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 
 Pauline Chikhani and Jean-Paul Renne
 
 This version: December 2023
-=====================================================================
+================================================================================
 
 The present codes allow to replicate the results of the paper entitled "An Analytical Framework to Price Long-Dated Climate-Exposed Assets" that can be found at https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3881262.
 
 
----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 A - Requirements
 
 The paper's results have been generated under R version 4.3.1 (2023-06-16) -- "Beagle Scouts".
@@ -18,8 +18,10 @@ The name of the R project is "CR_Rcodes.Rproj." To use the codes, run "main.R." 
 
 Make sure the libraries called in "main.R" are available before running the codes.
 
+Computing time: Using a set up with 2.3 GHz 8-Core Intel Core i9, all figures and tables (including those appearing in the supplemental material) are generated in about 15 minutes.
 
----------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
 B - The different folders
 
 The different folders are as follows:
@@ -35,7 +37,7 @@ The different folders are as follows:
 In addition to the present README file, the main folder also contains two files "main.R" that has to be sourced in order to replicate the paper's results.
 
 
----------------------------------------------------------------------
+--------------------------------------------------------------------------------
 C - Outputs
 
 Figures are stored in "outputs/Figures/". Tables are stored in "outputs/Tables/".

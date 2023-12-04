@@ -21,9 +21,6 @@ make.entry <- function(x,format.nb){
 # 1 Estimated parameters
 source("outputs/make_tables/make_table_Estimated_param.R")
 
-# # 2 Targets + estimated param
-# source("outputs/make_tables/make_table_Targeted_Estimated_Moments.R")
-
 # 2 Initial value of State Vector
 source("outputs/make_tables/make_table_IniX.R")
 

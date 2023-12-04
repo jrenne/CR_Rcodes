@@ -174,7 +174,7 @@ if(is.element(15,plots)){
 #*******************************16*********************************************#
 #Confidence intervals for SCC and risk premiums
 if(is.element(16,plots)){
-  print("Preparing figure Confidence int. for SCC and Risk premiums (few minutes)")
+  print("Preparing figure Confidence int. for SCC and Risk premiums (a few minutes)")
   source("outputs/make_figures/make_figure_ConfInt_RP.R",
          encoding = 'ISO8859-1')
 }

@@ -36,7 +36,7 @@ i.case <- 0
 for(indic.CRRA in cases){
   
   i.case <- i.case + 1
-  print(paste("   * Case ",i.case," (out of 3",length(cases),")",sep=""))
+  print(paste("   * Case ",i.case," (out of ",length(cases),")",sep=""))
   
   if(indic.CRRA==1){
     gamma <- 1.45

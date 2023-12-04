@@ -8,19 +8,19 @@ Standard deviation of TFP shock&$\sigma_A$ &\eqref{eq:AKmainText}&$3.50$& \%\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Damage specification}}\\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 fractional damage conditional on $T_{AT}=2\degree C$}} &$$ & \% \\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 fractional damage conditional on $T_{AT}=4\degree C$}} &$$ & \% \\
-\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 fractional damage conditional on $T_{AT}=4\degree C$}} &$$ & \% \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 fractional damage conditional on $T_{AT}=2\degree C$}} &$5.0$ & \% \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 fractional damage conditional on $T_{AT}=4\degree C$}} &$10.0$ & \% \\
+\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 fractional damage conditional on $T_{AT}=4\degree C$}} &$7.5$ & \% \\
 Uncertainty parameter&$\mu_D$ &\eqref{eq:damagemainText}&$0.0352$&\\
 Constant term in damage specification &$a^{(D)}$ &\eqref{eq:damagemainText}&$-0.0024$\\
 Slope coefficient in damage specification &$b^{(D)}$ &\eqref{eq:damagemainText}&$0.0037$\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Permafrost-related emissions}}\\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 release conditional on $T_{AT}=2\degree C$}} &$$ &GtCO$_2$ \\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 release conditional on $T_{AT}=4\degree C$}} &$$ &GtCO$_2$ \\
-\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 release conditional on $T_{AT}=4\degree C$}} &$$ &GtCO$_2$ \\
-\multicolumn{3}{l}{\textit{Target: Expected release conditional on $\widetilde{T}_{AT}=4\degree C$}} &$$ &GtCO$_2$ \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 release conditional on $T_{AT}=2\degree C$}} &$205.4$ &GtCO$_2$ \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 release conditional on $T_{AT}=4\degree C$}} &$370.4$ &GtCO$_2$ \\
+\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 release conditional on $T_{AT}=4\degree C$}} &$191.7$ &GtCO$_2$ \\
+\multicolumn{3}{l}{\textit{Target: Expected release conditional on $\widetilde{T}_{AT}=4\degree C$}} &$1378.8$ &GtCO$_2$ \\
 Uncertainty parameter&$\mu_N$ &\eqref{eq:damage_NmainText}&$49.6$&\\
 Constant term in carbon-release specification &$a^{(N)}$ &\eqref{eq:damage_NmainText}&$-77.4$\\
 Slope coefficient in carbon-release specification &$b^{(N)}$ &\eqref{eq:damage_NmainText}&$98.0$\\
@@ -28,16 +28,16 @@ Decay rate of releases &$\kappa_N$ &\eqref{eq:damage_NmainText}&$0.77$\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Sea-level rise (SLR)}}\\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=2\degree C$}} &$$ & m \\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\degree C$}} &$$ & m \\
-\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\degree C$}} &$$ & m \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=2\degree C$}} &$0.45$ & m \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.93$ & m \\
+\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.36$ & m \\
 Uncertainty parameter in SLR specif.&$\mu_{H}$ &\eqref{eq:SeaL}&$0.0715$&\\
 Constant in SLR specif.&$a^{(H)}$ &\eqref{eq:SeaL}&$-0.0287$& m/period\\
 Coefficient on $T_{AT}$ in SLR specif. &$b^{(H)}$ &\eqref{eq:SeaL}&$0.0320$& m/period/\degree C\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Uncertainty about temperature process}}\\
-\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 atmospheric temperature}} & & \degree C \\
+\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 atmospheric temperature}} &0.75 & \degree C \\
 Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0583$&\\
 \\
 \hline

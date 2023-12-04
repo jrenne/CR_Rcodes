@@ -60,14 +60,13 @@ toc()
 #*18 Relationship between SCC and Temperature risk premium, alternative models
 
 plots <- 0:18
-plots <- 17:18
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
 }
 
 if(indic_tables_paper==1){
-  print("Preparing tables (about 10 seconds)")
+  print("Preparing tables (couple of minutes)")
   source("outputs/tables_paper.R")
 }
 
