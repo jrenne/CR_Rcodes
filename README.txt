@@ -3,7 +3,7 @@ An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 
 Pauline Chikhani and Jean-Paul Renne
 
-This version: November 2023
+This version: December 2023
 =====================================================================
 
 The present codes allow to replicate the results of the paper entitled "An Analytical Framework to Price Long-Dated Climate-Exposed Assets" that can be found at https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3881262.

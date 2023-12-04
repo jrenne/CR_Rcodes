@@ -17,6 +17,7 @@
 #*15 Housing prices
 #*16 Confidence Interval SCC and Risk premiums
 #*17 Relationship between SCC and Temperature risk premium
+#*18 Relationship between SCC and Temperature risk premium, Lemoine approach
 
 
 # Maturity:
@@ -173,7 +174,7 @@ if(is.element(15,plots)){
 #*******************************16*********************************************#
 #Confidence intervals for SCC and risk premiums
 if(is.element(16,plots)){
-  print("Preparing figure Confidence int. for SCC and Risk premiums (couple of minutes)")
+  print("Preparing figure Confidence int. for SCC and Risk premiums (few minutes)")
   source("outputs/make_figures/make_figure_ConfInt_RP.R",
          encoding = 'ISO8859-1')
 }
@@ -181,8 +182,16 @@ if(is.element(16,plots)){
 #*******************************17*********************************************#
 #Relationship between SCC and Temperature risk premium
 if(is.element(17,plots)){
-  print("Preparing figure Relationship SCC and Temp. risk premium (about 1 minute)")
+  print("Preparing figure Relationship SCC and Temp. risk premium (a few minutes)")
   source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
+         encoding = 'ISO8859-1')
+}
+
+#*******************************18*********************************************#
+#Relationship between SCC and Temperature risk premium, Lemoine's approach
+if(is.element(18,plots)){
+  print("Preparing figure Relationship SCC and Temp. risk premium, Lemoine's approach")
+  source("outputs/make_figures/make_figure_SCC_vs_TempRP_Lemoine.R",
          encoding = 'ISO8859-1')
 }
 

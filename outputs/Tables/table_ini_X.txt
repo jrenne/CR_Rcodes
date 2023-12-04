@@ -1,9 +1,9 @@
-Initial emissions &$\mathcal{E}_0$ &\eqref{eq:Emit}&$43.50$&GtCO$_2$ &DICE2023\\
-Initial industrial emissions &$\mathcal{E}_{ind,0}$ &\eqref{eq:qt}&$37.60$&GtCO$_2$&DICE2023\\
-Initial radiative forcings &$F_0$ &\eqref{eq:Fradiat}+\eqref{eq:Tat}&$2.00$&W/m$^2$&CDICE\\
-Initial carbon concent. (atmos.) &$M_{AT,0}$ &\eqref{eq:Mvector}&$851$&GtC&CDICE\\
-Initial carbon concent. (upper ocean) &$M_{UP,0}$ &\eqref{eq:Mvector}&$628$&GtC&CDICE\\
-Initial carbon concent. (lower ocean) &$M_{LO,0}$ &\eqref{eq:Mvector}&$1323$&GtC&CDICE\\
-Initial temp. anomaly (atmos.) &$T_{AT,0}$ &\eqref{eq:Tat}&$1.10$&\degree C&CDICE\\
-Initial temp. anomaly (lower ocean) &$T_{LO,0}$ &\eqref{eq:TLO}&$0.27$&\degree C&CDICE\\
-Initial sea level &$H_{0}$ &\eqref{eq:SeaL}&$0.13$&m&\citet{Vermeer_Rahmstorf_2009}\\
+Initial emissions &$\mathcal{E}_0$ &\eqref{eq:Emit}&$$&GtCO$_2$ &DICE2023\\
+Initial industrial emissions &$\mathcal{E}_{ind,0}$ &\eqref{eq:qt}&$$&GtCO$_2$&DICE2023\\
+Initial radiative forcings &$F_0$ &\eqref{eq:Fradiat}+\eqref{eq:Tat}&$$&W/m$^2$&CDICE\\
+Initial carbon concent. (atmos.) &$M_{AT,0}$ &\eqref{eq:Mvector}&$$&GtC&CDICE\\
+Initial carbon concent. (upper ocean) &$M_{UP,0}$ &\eqref{eq:Mvector}&$$&GtC&CDICE\\
+Initial carbon concent. (lower ocean) &$M_{LO,0}$ &\eqref{eq:Mvector}&$$&GtC&CDICE\\
+Initial temp. anomaly (atmos.) &$T_{AT,0}$ &\eqref{eq:Tat}&$$&\degree C&CDICE\\
+Initial temp. anomaly (lower ocean) &$T_{LO,0}$ &\eqref{eq:TLO}&$$&\degree C&CDICE\\
+Initial sea level &$H_{0}$ &\eqref{eq:SeaL}&$$&m&\citet{Vermeer_Rahmstorf_2009}\\

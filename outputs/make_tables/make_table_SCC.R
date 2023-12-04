@@ -132,15 +132,16 @@ all_results <- foreach(i = 1:dim(all.specif)[1],
                        .combine=rbind) %dopar% {
                          
                          targets <- all.specif[i,2:dim(all.specif)[2]]
-                         names(targets) <- names(model$target_vector)
+                         names(targets) <- names(model_sol$target_vector)
                          
                          gamma <- all.specif[i,1]
                          
-                         model_new <- model
+                         model_new <- model_sol
                          
                          model_new$parameters$gamma <- gamma
                          
                          model_new$target_vector <- targets
+                         
                          model_new <- solveParam4D(model_new)
                          model_new <- solveParam4H(model_new)
                          model_new <- solveParam4N(model_new)

@@ -31,8 +31,8 @@ all.LTR <- matrix(NaN,Nb.draws,length(all.gamma))
 
 for(iii in 1:length(all.gamma)){
   
-  print(paste("Progression: working on case ",iii," out of ",
-              length(all.gamma),sep=""))
+  print(paste("Progression: working on case ",iii," (out of ",
+              length(all.gamma),")",sep=""))
   
   cl <- makeCluster(number.of.cores)
   registerDoParallel(cl)
@@ -158,13 +158,13 @@ pdf(file=paste(getwd(),FILE,sep=""),pointsize=11,width=9, height=6)
 
 par(mfrow=c(2,2))
 plot.new()
-title("(A) Scocial Cost of Carbon (in U.S. $)")
+title("(a) Scocial Cost of Carbon (in U.S. $)")
 plot.new()
-title("(B) Temperature risk premium (in °C)")
+title("(b) Temperature risk premium (in °C)")
 plot.new()
-title("(C) SLR risk premium (in meters)")
+title("(c) SLR risk premium (in meters)")
 plot.new()
-title("(D) Long-term rate (in percent)")
+title("(d) Long-term rate (in percent)")
 
 par(mfrow=c(2,4))
 par(mgp=c(6,2,0)) 

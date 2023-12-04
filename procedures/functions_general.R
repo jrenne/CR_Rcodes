@@ -927,7 +927,7 @@ mu_u.t.fct.all<-function(model_sol){
 }
 
 
-#* SOLVE MODEL, MEAN AND SIMUL ----
+#* SOLVE MODEL, MEAN AND SIMUL -------------------------------------------------
 
 # Solve model for infinite mitig mu = 1 ----------------------------------------
 #*theta is a set of ini cond. for the optim. of mitig rate mu
@@ -1156,10 +1156,6 @@ model_solve <- function(model,
       solve(diag(model_sol$n.Z+model_sol$n.W) - param$delta*betaGN) %*%
       betaGN %*% mu_c1
     
-    # # print(betawGN %*% rbind(matrix(0,model_sol$n.Z,model_sol$n.Z+model_sol$n.W),
-    # #                         cbind(t(model_sol$omega.inf),diag(model_sol$n.W))))
-    # print(rbind(cbind(t(model_sol$omega.inf))))
-    
     # Step 2: Solve for fixed-point problem (muu1_ini):
     RES.fixed.point <- Auxiliary.function(model_sol,muu1_ini)
     mu_u1           <- RES.fixed.point$mu_u1
@@ -1175,9 +1171,6 @@ model_solve <- function(model,
   
   # Determine (optimal) mitigation path: ---------------------------------------
   
-  #model_sol$vector.ini$ini_delc    <- Z[indic.delc]
-  #model_sol$vector.ini$ini_Cumdelc <- Z[indic.delc]
-  
   if(indic_mitig){
     opt <- res.optim(model_sol,theta,Tend=Tmax,X=X,indic_CRRA)
     theta.opt <- opt[[1]]
@@ -1189,9 +1182,7 @@ model_solve <- function(model,
   }
   
   model_sol[["mu"]] <- mu
-  #Date 0 storage
-  #list2015 <- list()
-  
+
   # Determine model matrices for t < Tmax: -------------------------------------
   model_matrix <- mu_dep(model_sol,model_sol$mu,
                          mu_altern = mu_altern,
@@ -1206,25 +1197,8 @@ model_solve <- function(model,
   model_sol[["omega"]]   <- model_matrix$omega[-1]
   model_sol[["omega0"]]  <- model_matrix$omega0[-1]
   
-  #Date 0 storage
-  #list2015[["A1"]]       <- model_matrix$A1[[1]]
-  #list2015[["omega"]]    <- model_matrix$omega[[1]]
-  #list2015[["omega0"]]   <- model_matrix$omega0[[1]]
-  
-  
+
   # Solve for utility and SDF for t < Tmax -------------------------------------
-  
-  # if (indic_mitig == FALSE){
-  #   mu_u.1 <- mu_u.t.fct(model_sol)
-  #   if(is.na(mu_u.1[[1]])){
-  #     u0 <- 10000
-  #     model_sol[["u0"]] <- u0
-  #   }else{
-  #     u0 <- log(model_sol$parameters$c0) + mu_u.1[[1]] +
-  #       t(mu_u.1[[2]]) %*% model_sol$X
-  #     model_sol[["u0"]] <- u0
-  #   }
-  # }
   
   if(indic_CRRA==FALSE){# Epstein-Zin case
     
@@ -1308,8 +1282,6 @@ mu.function <- function(model_sol,
       return(NaN)
     }else{
       mu <- model_sol$mu
-      # print(length(theta))
-      # print(model_sol$Tmax-t.ini)
       mu[(t.ini+1):model_sol$Tmax] <- exp(theta)/(1+exp(theta))
     }
   }
@@ -1428,8 +1400,6 @@ mu_dep <- function(model_sol,
     if(indic_CRRA){
       omega_i[indic.delc,indic.eta_A] <- omega_i[indic.delc,indic.eta_A]/param$gamma
     }
-    #omega_i[indic.E_ind,indic.eta_E] <- lambda[i]*param$sigma_E
-    #omega_i[indic.Forc,indic.eta_F]  <- param$sigma_F
     omega_i[indic.Cum_dc,] <- t(mu_altern$muprice_1[(model_sol$n.Z+1):
                                                       (model_sol$n.Z+model_sol$n.W)])
     
@@ -1813,7 +1783,7 @@ EV.fct<-function(model_sol,h=NaN){
 }
 
 
-#* Simulations ----
+#* Simulations -----------------------------------------------------------------
 #CHANGE
 #------------------Function to simulate state variables of our model
 #*New approximation of the radiative forcings (linear)
@@ -2098,9 +2068,9 @@ b1.fct<-function(model_sol,U,t){
 }
 
 
-#* INFINITE AND GN ----
+#* INFINITE AND GN -------------------------------------------------------------
 
-#----------------------Functions for infinite a,b
+#---- Functions for infinite a,b
 #*U: matrix dim(U)=n.X*N
 a1.w.fct.inf<-function(model_sol,U){
   param <-model_sol$parameters
@@ -2152,15 +2122,6 @@ b1.w.fct.inf <- function(model_sol,U){
   
   b.w <- a + b
   
-  # print(u.D)
-  # print(u.N)
-  # print(u.T)
-  
-  # if(!is.complex(u.D)|!is.complex(u.N)){
-  #   b.w[,u.D >= 1/param$mu_D] <- NaN
-  #   b.w[,u.N >= 1/param$mu_N] <- NaN
-  #   b.w[,u.T >= 1/param$mu_T] <- NaN
-  # }
   if(u.D >= 1/param$mu_D){print("Warning D")}
   if(u.N >= 1/param$mu_N){print("Warning N")}
   if(u.T >= 1/param$mu_T){print("Warning T")}
@@ -2212,9 +2173,7 @@ Auxiliary.function <- function(model_sol,x0){
   listdev <- list(dev)
   tol     <- max(abs(dev*param$tol.GN))
   while((max(abs(dev))>tol)&(ite<50)){
-    #print((1-param$gamma)*(mu_u1 + model_sol$mu_c1))
     b     <-  b1.fct.inf(model_sol,(1-param$gamma)*(mu_u1 + model_sol$mu_c1))
-    #print(b)
     dev   <- -mu_u1+param$delta/(1-param$gamma)*b
     mu_u1 <-  param$delta/(1-param$gamma)*b
     ite   <-  ite+1
@@ -2227,18 +2186,7 @@ Auxiliary.function <- function(model_sol,x0){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-### New pricing functions where varphi is evaluated in parallel
+### New pricing functions where varphi is evaluated in parallel ----------------
 ### at different omega's. For only one maturity at a time.
 
 
@@ -2336,8 +2284,6 @@ varphi.hat.fast<-function(model_sol,omega,H,x,a,b,X=model_sol$X,t=0){
   U <- matrix(omega,model_sol$n.X,length(x))
   U <- U + 1i*matrix(a,ncol=1) %*% matrix(x,nrow=1)
   s1<-varphi_multi_omega(model_sol,U,H,X=X,t=t)$P.t
-  #fx<-outer(x,b,function(r,c)Im(matrix(s1[,1],ncol=1)*exp(-1i*r*c))/r)*dx[,1]
-  #varphi.hat<-varphi(model_sol,omega,H,X,t)[[3]][H]/2-1/pi*sum(fx)
   fx<-outer(x,b,function(r,c)Im(s1[,1]*exp(-1i*r*c))/r)*
     dx[,1]
   varphi.hat<-varphi(model_sol,omega,H,X,t)[[3]][H]/2-1/pi*apply(fx,2,sum)
@@ -2437,5 +2383,195 @@ update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
 }
 
 
+
+# Function that simulates Lemoine (2021)'s model -------------------------------
+
+simul.model.Lemoine <- function(model,X0,H,nb.replic=1){
+  
+  damage <- model$damage
+  
+  all.C     <- matrix(NaN,H,nb.replic)
+  all.Cexog <- matrix(NaN,H,nb.replic)
+  all.L  <- matrix(NaN,H,nb.replic)
+  all.T  <- matrix(NaN,H,nb.replic)
+  all.M1 <- matrix(NaN,H,nb.replic)
+  all.M2 <- matrix(NaN,H,nb.replic)
+  
+  C     <- matrix(X0[1],1,nb.replic)
+  Cexog <- matrix(X0[1],1,nb.replic)
+  L  <- matrix(X0[2],1,nb.replic)
+  T  <- matrix(X0[3],1,nb.replic)
+  M1 <- matrix(X0[4],1,nb.replic)
+  M2 <- matrix(X0[5],1,nb.replic)
+  
+  mut      <- model$mu0    * exp(- model$mu1    * (1:H + 2014 - 1960))
+  gammat   <- model$gamma0 * exp(- model$gamma1 * (1:H + 2014 - 1960))
+  delta.lt <- model$l0     * exp(- model$l1     * (1:H + 2014 - 1960))
+
+  for(t in 1:H){
+    if(damage$damage.type=="G. Lemoine"){
+      D <- damage$coef.multip * damage$alpha * (T - T0)
+      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
+      Cexog <- C
+    }
+    if(damage$damage.type=="G. Nordhaus-Sztorc"){
+      D <- damage$coef.multip * damage$alpha * T
+      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
+      Cexog <- C
+    }
+    if(damage$damage.type=="G. Dell-Jones-Olken"){
+      D <- damage$coef.multip * damage$alpha * T
+      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
+      Cexog <- C
+    }
+    if(damage$damage.type=="G. Weitzman"){
+      D <- damage$coef.multip * damage$alpha[1] * T^damage$alpha[2]
+      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
+      Cexog <- C
+    }
+    if(damage$damage.type=="L. Nordhaus-Sztorc"){
+      D <- damage$coef.multip * damage$alpha*T^2
+      Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
+      C <- Cexog * 1/(1 + D)
+    }
+    if(damage$damage.type=="L. Weitzman"){
+      D <- damage$coef.multip * ((T/damage$alpha[1])^2 + 
+                                  (T/damage$alpha[2])^damage$alpha[3])
+      Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
+      C <- Cexog * 1/(1 + D)
+    }
+    if(damage$damage.type=="L. Barnett-Brock-Hansen"){
+      y.bar <- 2
+      D <- damage$coef.multip * (damage$alpha[1]*T + 
+                                  damage$alpha[2]*T^2 + 
+                                  damage$alpha[3] * (T - y.bar)^2 * (T > y.bar))
+      Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
+      C <- Cexog * exp(- D)
+    }
+    L <- L * exp(delta.lt[t])
+    M1 <- M1 + model$psi1 * gammat[t] * C
+    M2 <- M2 + model$psi2 * (1 - model$psi1) * gammat[t] * C -
+      model$psi * M2
+    M  <- M1 + M2
+    #F  <- model$nu * (log(model$M0/model$Mpre) + M/model$M0 - 1)
+    F  <- model$nu * log(M/model$Mpre)
+    T  <- T + model$phi * (F - model$s * T)
+    
+    all.C[t,]      <- C
+    all.Cexog[t,]  <- Cexog
+    all.L[t,]  <- L
+    all.T[t,]  <- T
+    all.M1[t,] <- M1
+    all.M2[t,] <- M2
+  }
+  return(list(
+    all.C  = all.C,
+    all.L  = all.L,
+    all.T  = all.T,
+    all.M1 = all.M1,
+    all.M2 = all.M2
+  ))
+}
+
+sumE <- function(x,y=matrix(1,dim(x)[1],1)){
+  return(sum(apply(x,1,mean)*apply(y,1,mean)))
+}
+
+
+compute.SCC.Lemoine <- function(model,X0,H=500,nb.replic=100,
+                                s.values = NaN,
+                                coef.multip.values = NaN,
+                                seed0 = 123,
+                                shock = 1){
+  # s.values and alpha.values have to be lists
+  
+  if(is.na(s.values[1])){
+    s.values <- list(model$s)
+  }
+  
+  if(is.na(coef.multip.values[1])){
+    coef.multip.values <- list(model$damage$coef.multip)
+  }
+  
+  eta  <- model$eta
+  beta <- model$beta
+  C0 <- X0[1]
+  L0 <- X0[2]
+  
+  matrix.beta.h <- matrix(exp(-(1-beta)*(1:H)),H,nb.replic*
+                            length(s.values)*length(coef.multip.values))
+  
+  seed <- seed0
+  
+  all.sim.L <- NULL
+  all.sim.T <- NULL
+  all.sim.C <- NULL
+  all.sim.C.perturb <- NULL
+  
+  for(s in s.values){
+    for(coef.multip in coef.multip.values){
+      
+      seed <- seed0
+      
+      model.new <- model
+      model.new$damage$coef.multip <- coef.multip
+      model.new$s <- s
+      
+      set.seed(seed)
+      res.simul <- simul.model.Lemoine(model.new,X0,
+                                       H=H,nb.replic = nb.replic)
+      set.seed(seed)
+      X1 <- X0
+      X1[4] <- X0[4] - shock * model$psi1
+      X1[5] <- X0[5] - shock * (1 - model$psi1) * model$psi2
+      res.simul.perturb <- simul.model.Lemoine(model.new,X0=X1,
+                                               H=H,nb.replic = nb.replic)
+      
+      all.sim.C         <- cbind(all.sim.C,res.simul$all.C)
+      all.sim.C.perturb <- cbind(all.sim.C.perturb,res.simul.perturb$all.C)
+      all.sim.L         <- cbind(all.sim.L,res.simul$all.L)
+      all.sim.T         <- cbind(all.sim.T,res.simul$all.T)
+    }
+  }
+  
+  C.L <- all.sim.C/all.sim.L
+  U   <- matrix.beta.h * C.L^(1-eta)/(1-eta)
+  U   <- sumE(U)
+  
+  C.L.perturb <- all.sim.C.perturb/all.sim.L
+  U.perturb   <- matrix.beta.h * C.L.perturb^(1-eta)/(1-eta)
+  U.perturb   <- sumE(U.perturb)
+  
+  SCC <- (U.perturb - U)/shock/((C0/L0)^(-eta)/L0) * 10^12/10^9 / 3.667
+  
+  B         <- (C.L.perturb - C.L)/shock
+  M         <- matrix.beta.h * (C.L)^(-eta)/(C0/L0)^(-eta)
+  M.perturb <- matrix.beta.h * (C.L.perturb)^(-eta)/(C0/L0)^(-eta)
+  MM <- .5*(M + M.perturb)
+  SCC.check <- L0 * sumE(MM*B) * 10^12/10^9 / 3.667
+  
+  NPV <- L0 * sumE(MM,B) * 10^12/10^9 / 3.667
+  NPV <- L0 * sum(apply(MM,1,mean) * apply(B,1,mean)) * 10^12/10^9 / 3.667
+  
+  # Compute Temperature risk premium:
+  E.T <- apply(all.sim.T,1,mean)
+  E.T.risk.adj <- apply(MM*all.sim.T,1,mean)/apply(MM,1,mean)
+  
+  return(list(
+    U = U,
+    U.perturb = U.perturb,
+    SCC = SCC,
+    SCC.check = SCC.check,
+    NPV = NPV,
+    E.T = E.T,
+    E.T.risk.adj = E.T.risk.adj,
+    all.sim.C = all.sim.C,
+    all.sim.C.perturb = all.sim.C.perturb,
+    all.sim.L = all.sim.L,
+    all.sim.T = all.sim.T,
+    aux.M = apply(MM,1,mean),
+    aux.B = apply(B,1,mean)
+  ))
+}
 
 

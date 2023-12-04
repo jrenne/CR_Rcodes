@@ -57,11 +57,10 @@ toc()
 #*15 Housing prices
 #*16 Confidence Interval SCC and Risk premiums
 #*17 Relationship between SCC and Temperature risk premium
+#*18 Relationship between SCC and Temperature risk premium, alternative models
 
-plots <- 0:17
-#plots <- 12
-
-#plots <- 16:17
+plots <- 0:18
+plots <- 17:18
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
