@@ -2,7 +2,7 @@
 # An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 # ------------------------------------------------------------------------------
 # Pauline Chikhani and Jean-Paul Renne
-# This version: November 2023
+# This version: December 2023
 # ==============================================================================
 
 
