@@ -373,7 +373,6 @@ Fourier.psi <- function(model,gamma,x,
                         T0=model$vector.ini$ini_Tat,
                         Tstar,
                         tstar,psi.LT){
-  
   u       <- c(1i*x)
   psiCumD <- matrix(psi.LT(model,u,T0,Tstar,tstar),ncol=1)
   
