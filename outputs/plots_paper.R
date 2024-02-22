@@ -18,6 +18,7 @@
 #*16 Confidence Interval SCC and Risk premiums
 #*17 Relationship between SCC and Temperature risk premium
 #*18 Relationship between SCC and Temperature risk premium, Lemoine approach
+#*19 Illustrations of gamma-zero distribution
 
 
 # Maturity:
@@ -179,6 +180,14 @@ if(is.element(17,plots)){
 if(is.element(18,plots)){
   print("Preparing figure Relationship SCC and Temp. risk premium, Lemoine's approach")
   source("outputs/make_figures/make_figure_SCC_vs_TempRP_Lemoine.R",
+         encoding = 'ISO8859-1')
+}
+
+#*******************************19*********************************************#
+#illustrations of the Gamma-zero distribution
+if(is.element(19,plots)){
+  print("Preparing figure illustrating Gamma-zero distribution")
+  source("outputs/make_figures/make_figure_gamma0_distri.R",
          encoding = 'ISO8859-1')
 }
 

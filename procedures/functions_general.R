@@ -532,7 +532,10 @@ TIB <- function(model_sol,chi,T0,H,i,X=model_sol$X,t=0){
 #*H is the horizon of the bond [t+1:t+99], max H=98
 #*omega.varphi =dim(X)*1 matrix
 #*return r in percent
-varphi<-function(model_sol,omega.varphi,H,X=model_sol$X,t=0){
+varphi<-function(model_sol,
+                 omega.varphi,
+                 H,
+                 X=model_sol$X,t=0){
   if((t+H)>=(model_sol$Tmax-1)){
     P.pi    <-model_sol$pi
     inf     <-rep(list(model_sol$inf_matx$pi.inf),t+H-(model_sol$Tmax-1)+1)
@@ -582,7 +585,9 @@ varphi<-function(model_sol,omega.varphi,H,X=model_sol$X,t=0){
   P.psi<-lapply(1:H,function(h){
     if(h==1){
       multi.lt.fct(model_sol,U.tk[[h]],h,X,t)
-    }else{multi.lt.fct.Uh(model_sol,U.tk[[h]],X,t)}
+    }else{
+      multi.lt.fct.Uh(model_sol,U.tk[[h]],X,t)
+    }
   })
   
   varphi0<-matrix(NaN,H,1)
@@ -1181,7 +1186,7 @@ model_solve <- function(model,
   }
   
   model_sol[["mu"]] <- mu
-
+  
   # Determine model matrices for t < Tmax: -------------------------------------
   model_matrix <- mu_dep(model_sol,model_sol$mu,
                          mu_altern = mu_altern,
@@ -1196,7 +1201,7 @@ model_solve <- function(model,
   model_sol[["omega"]]   <- model_matrix$omega[-1]
   model_sol[["omega0"]]  <- model_matrix$omega0[-1]
   
-
+  
   # Solve for utility and SDF for t < Tmax -------------------------------------
   
   if(indic_CRRA==FALSE){# Epstein-Zin case
@@ -2406,7 +2411,7 @@ simul.model.Lemoine <- function(model,X0,H,nb.replic=1){
   mut      <- model$mu0    * exp(- model$mu1    * (1:H + 2014 - 1960))
   gammat   <- model$gamma0 * exp(- model$gamma1 * (1:H + 2014 - 1960))
   delta.lt <- model$l0     * exp(- model$l1     * (1:H + 2014 - 1960))
-
+  
   for(t in 1:H){
     if(damage$damage.type=="G. Lemoine"){
       D <- damage$coef.multip * damage$alpha * (T - T0)
@@ -2435,15 +2440,15 @@ simul.model.Lemoine <- function(model,X0,H,nb.replic=1){
     }
     if(damage$damage.type=="L. Weitzman"){
       D <- damage$coef.multip * ((T/damage$alpha[1])^2 + 
-                                  (T/damage$alpha[2])^damage$alpha[3])
+                                   (T/damage$alpha[2])^damage$alpha[3])
       Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
       C <- Cexog * 1/(1 + D)
     }
     if(damage$damage.type=="L. Barnett-Brock-Hansen"){
       y.bar <- 2
       D <- damage$coef.multip * (damage$alpha[1]*T + 
-                                  damage$alpha[2]*T^2 + 
-                                  damage$alpha[3] * (T - y.bar)^2 * (T > y.bar))
+                                   damage$alpha[2]*T^2 + 
+                                   damage$alpha[3] * (T - y.bar)^2 * (T > y.bar))
       Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
       C <- Cexog * exp(- D)
     }

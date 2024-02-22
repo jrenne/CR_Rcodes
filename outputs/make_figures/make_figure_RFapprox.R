@@ -127,8 +127,8 @@ Mat.trajectory <- EV$EX$M_at
 
 param <- model_sol$parameters
 H2100                <- model_sol$horiz.2100
-f_ex                 <- matrix(rep(param$phi_0,H2500),H2500,1)                        
-f_ex[1:H2100]        <- f_ex[1:H2100] + 
+f_ex                 <- matrix(rep(param$phi_0,H2500),H2500,1)
+f_ex[1:H2100]        <- f_ex[1:H2100] +
   (1/H2100)*(param$phi_1-param$phi_0)*((1:H2100)-1)
 f_ex[(H2100+1):H2500] <- f_ex[(H2100+1):H2500] + (param$phi_1-param$phi_0)
 
@@ -179,20 +179,20 @@ for(linearized in 0:1){
   for(t in 1:length(Mat.trajectory)){
     Tat <- Tat_1 + xi_1 * (F_1 - tau/nu * Tat_1 - xi_2 * (Tat_1 - Tlo_1))
     Tlo <- Tlo_1 + xi_3 * (Tat_1 - Tlo_1)
-    
+
     if(linearized==0){
-      F <- tau * log(Mat.trajectory[t]/m_pi)/log(2) + f_ex[t]
+      FF <- tau * log(Mat.trajectory[t]/m_pi)/log(2) + f_ex[t]
     }else{
-      F <- tau * log(m0)/log(2) +
+      FF <- tau * log(m0)/log(2) +
         tau/(log(2)*m0)*(Mat.trajectory[t]/m_pi - m0) + f_ex[t]
     }
-    
+
     all.Tat <- c(all.Tat,Tat)
-    all.F   <- c(all.F,F)
-    
+    all.F   <- c(all.F,FF)
+
     Tat_1 <- Tat
     Tlo_1 <- Tlo
-    F_1   <- F
+    F_1   <- FF
   }
   if(linearized==1){
     all.Tat.linear <- all.Tat
@@ -202,26 +202,26 @@ for(linearized in 0:1){
     all.F.nonlinear   <- all.F
   }
 }
-
-years <- seq(model_sol$vec_date[1],2500,by=model_sol$tstep)
-plot(years,all.Tat.nonlinear,type="l",lwd=2,
-     xlab="year",ylab="Atm. temperature (°C)",
-     ylim=c(1,3.5),
-     main=expression(paste("(c) Effect of linearization on atm. temperature trajectory")))
-points(years,all.Tat.linear,pch=3,col="#00000044",lwd=2)
-#lines(c(model_sol$vector.ini$ini_Tat,EV$EX$T_at),col="blue")
-
-legend("bottomright",
-       legend=c("Linearized","Non-linearized"),
-       lty=c(NaN,1),
-       col=c("#00000044","black"),
-       pch=c(3,NaN),
-       lwd=c(2,2),seg.len = 3,
-       bty = "n",cex=1)
-
-# plot(all.F.nonlinear,type="l")
-# lines(all.F.linear,col="red")
-# lines(c(model_sol$vector.ini$ini_F,EV$EX$Forc),col="blue")
+# 
+# years <- seq(model_sol$vec_date[1],2500,by=model_sol$tstep)
+# plot(years,all.Tat.nonlinear,type="l",lwd=2,
+#      xlab="year",ylab="Atm. temperature (Degrees Celsius)",
+#      ylim=c(1,3.5),
+#      main=expression(paste("(c) Effect of linearization on atm. temperature trajectory")))
+# points(years,all.Tat.linear,pch=3,col="#00000044",lwd=2)
+# #lines(c(model_sol$vector.ini$ini_Tat,EV$EX$T_at),col="blue")
+# 
+# legend("bottomright",
+#        legend=c("Linearized","Non-linearized"),
+#        lty=c(NaN,1),
+#        col=c("#00000044","black"),
+#        pch=c(3,NaN),
+#        lwd=c(2,2),seg.len = 3,
+#        bty = "n",cex=1)
+# 
+# # plot(all.F.nonlinear,type="l")
+# # lines(all.F.linear,col="red")
+# # lines(c(model_sol$vector.ini$ini_F,EV$EX$Forc),col="blue")
 
 dev.off()
 
