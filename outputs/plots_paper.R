@@ -125,19 +125,6 @@ if(is.element(10,plots)){
   source("outputs/make_figures/make_figure_ConstantMaturityZCB.R")
 }
 
-# #*******************************12*********************************************#
-# #pdf Cum_r.s
-# if(is.element(12,plots)){
-#   print("Preparing r stock distri plot")
-#   source("outputs/make_figures/make_figure_rStockDistributions.R")
-# }
-
-# #*******************************13*********************************************#
-# #Constant maturity for Stocks
-# if(is.element(13,plots)){
-#   print("Preparing constant maturity for stocks plot")
-#   source("outputs/make_figures/make_figure_ConstantMaturityStocks")
-# }
 
 #*******************************11*********************************************#
 #Cut in Climate Premium

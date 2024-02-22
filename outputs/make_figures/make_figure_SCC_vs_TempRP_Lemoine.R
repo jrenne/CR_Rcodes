@@ -9,7 +9,6 @@ percent_chge <- 50
 
 damage.type <- "G. Lemoine"
 
-
 all.damage <- list()
 
 all.damage[[1]] <- list(

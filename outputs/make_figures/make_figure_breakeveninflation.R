@@ -10,7 +10,7 @@ omega_T.at <- omega_ZCB
 omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
 
 mu.pi.0     <- 0.02*model$tstep
-all.mu.pi.D <- c(0.01,.1,1)
+all.mu.pi.D <- c(0.01,1,5)
 
 colors.muD <- sequential_hcl(length(all.mu.pi.D)+2, "YlOrRd")
 colors.muD <- colors.muD[length(all.mu.pi.D):1]
