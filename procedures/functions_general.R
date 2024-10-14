@@ -960,25 +960,25 @@ model_solve <- function(model,
   
   # Prepare "ell" components: --------------------------------------------------
   ell1.D   <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.D[model$n.Z+indic.T_atW] <-
+  ell1.D[model$n.Z+indic.T_at] <-
     model_sol$parameters$b_D/model_sol$parameters$mu_D
   model_sol[["ell1.D"]]<- ell1.D
   
   ell1.N   <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.N[model$n.Z+indic.T_atW] <-
+  ell1.N[model$n.Z+indic.T_at] <-
     model_sol$parameters$b_N/model_sol$parameters$mu_N
   model_sol[["ell1.N"]]<- ell1.N
   
   ell1.T   <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
   ell1.T[indic.Forc]   <- param$xi_1
-  ell1.T[model$n.Z+indic.T_atW] <-
+  ell1.T[model$n.Z+indic.T_at] <-
     1-param$xi_1*(param$tau/param$nu + param$xi_2)
   ell1.T[indic.T_lo]   <- param$xi_1*param$xi_2
   ell1.T               <- ell1.T/param$mu_T
   model_sol[["ell1.T"]]<- ell1.T
   
   ell1.H                <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.H[model$n.Z+indic.T_atW] <- param$b_H/param$mu_H
+  ell1.H[model$n.Z+indic.T_at] <- param$b_H/param$mu_H
   model_sol[["ell1.H"]] <- ell1.H
   
   # Construct matrices determining dynamics after Tmax ("infinite"): -----------
@@ -999,9 +999,8 @@ model_solve <- function(model,
   }
   omega.star.inf[indic.Cum_D,indic.D]    <- -1 
   omega.star.inf[indic.E,indic.N]        <-  1 #shock N
-  omega.star.inf[indic.T_at,indic.T_atW] <-  1 
   omega.star.inf[indic.H,indic.HW]       <-  1 
-  omega.star.inf[indic.T_lo,indic.T_atW] <- param$xi_3
+  omega.star.inf[indic.T_lo,indic.T_at] <- param$xi_3
   
   model_sol[["omega.star.inf"]]<-omega.star.inf
   
@@ -1119,14 +1118,13 @@ model_solve <- function(model,
   Z[indic.M_at]    <- model_sol$vector.ini$ini_Mat
   Z[indic.M_up]    <- model_sol$vector.ini$ini_Mup
   Z[indic.M_lo]    <- model_sol$vector.ini$ini_Mlo
-  Z[indic.T_at]    <- model_sol$vector.ini$ini_Tat 
   Z[indic.T_lo]    <- model_sol$vector.ini$ini_Tlo
   Z[indic.Cum_D]   <- model_sol$vector.ini$ini_CumD
   Z[indic.Cum_E]   <- model_sol$vector.ini$ini_CumE
   Z[indic.Cum_dc]  <- model_sol$vector.ini$ini_Cumdelc
   Z[indic.H]       <- model_sol$vector.ini$ini_H
   W <- matrix(0,model_sol$n.W,1)
-  W[indic.T_atW]   <- model_sol$vector.ini$ini_Tat
+  W[indic.T_at]   <- model_sol$vector.ini$ini_Tat
   X <- rbind(Z,W)
   model_sol[["X"]]   <- X
   model_sol[["n.X"]] <- length(X)
@@ -1415,9 +1413,8 @@ mu_dep <- function(model_sol,
     }
     omega_i[indic.Cum_D,indic.D]    <- -1 #shock D
     omega_i[indic.E,indic.N]        <-  1 #shock N on E
-    omega_i[indic.T_at,indic.T_atW] <-  1 
     omega_i[indic.H,indic.HW]       <-  1
-    omega_i[indic.T_lo,indic.T_atW] <- param$xi_3
+    omega_i[indic.T_lo,indic.T_at] <- param$xi_3
     
     omega.star[[i]]      <- omega_i
   }
@@ -1799,11 +1796,16 @@ EV.fct<-function(model_sol,h=NaN){
 #*for t>99, time-independent matrices
 simul.function<-function(model_sol,nb.simul.t,nb.traj){
   #useful parameters
-  nb.simul<-nb.simul.t+1 #take into account the t=0
+  nb.simul<-nb.simul.t+1 #take into account t=0
   
   tstep<-model_sol$tstep
   t    <-1:nb.simul
   param<-model_sol$parameters
+  
+  n.Z   <- model_sol$n.Z
+  n.W   <- model_sol$n.W
+  n.X   <- model_sol$n.X
+  n.eta <- model_sol$n.eta
   
   if(nb.simul>model_sol$Tmax){
     omega0<-model_sol$omega0
@@ -1823,12 +1825,7 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj){
     A1    <-model_sol$A1
   }
   
-  #Shocks
-  eta  <-matrix(0, nrow=model_sol$n.eta, ncol=nb.traj)
-  D    <-matrix(0, nrow=nb.simul, ncol=nb.traj)
-  N    <-matrix(0, nrow=nb.simul, ncol=nb.traj)
-  T_atW<-matrix(0, nrow=nb.simul, ncol=nb.traj)
-  HW   <-matrix(0, nrow=nb.simul, ncol=nb.traj)
+  eta <- matrix(0,n.eta,nb.traj)
   
   # Create indicators of position of variables (Variables in Z):
   for(i in 1:model$n.Z){
@@ -1844,110 +1841,81 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj){
                                  "<- which(model$names.var.X=='",model$names.var.X[i],
                                  "')-model$n.Z",sep=""))))}
   
-  ##endogenous equations
-  #Initial conditions
-  delc   <-model_sol$X[indic.delc]                                                       
-  y_tilde<-model_sol$X[indic.y_tilde]
-  E      <-model_sol$X[indic.E]                                                       #CDICE2021
-  E_ind  <-model_sol$X[indic.E_ind]                                                       #CDICE2021
-  Forc   <-model_sol$X[indic.Forc]                                                       #CDICE2021
-  M_at   <-model_sol$X[indic.M_at]                                                       #CDICE2021,mateq0
-  M_up   <-model_sol$X[indic.M_up]                                                       #CDICE2021,mueq0
-  M_lo   <-model_sol$X[indic.M_lo]                                                       #CDICE2021,mleq0
-  T_at   <-model_sol$X[indic.T_at]                                                       #CDICE2021,tat0
-  T_lo   <-model_sol$X[indic.T_lo]                                                      #CDICE2021,tlo0
-  Cum_D  <-model_sol$X[indic.Cum_D]
-  Cum_E  <-model_sol$X[indic.Cum_E]
-  Cum_dc <-model_sol$X[indic.Cum_dc]
-  H      <-model_sol$X[indic.H]
-  
-  
-  Z<-list(matrix(
-    rep(c(delc,y_tilde,E,E_ind,Forc,M_at,M_up,M_lo,T_at,T_lo,Cum_D,Cum_E,
-          Cum_dc,H),
-        nb.traj),
-    model_sol$n.Z,nb.traj))
-  
-  Z[[nb.simul+1]]<-D                                                            #CHANGE if gamma0 not only on Tat
-  Z[[nb.simul+2]]<-N
-  Z[[nb.simul+3]]<-T_atW
-  Z[[nb.simul+4]]<-HW
-  
-  X<-list(model_sol$X)
+  Z <- list(matrix(model_sol$X[1:n.Z],n.Z,nb.traj))
+  W <- list(matrix(model_sol$X[(n.Z+1):n.X],n.W,nb.traj))
   
   for (i in 2:nb.simul) {
-    #Shocks
-    Z[[nb.simul+1]][i,]    <-
+    W[[i]] <- matrix(0,n.W,nb.traj)
+    
+    eta <- param$Phi %*% eta + matrix(rnorm(n.eta * nb.traj),n.eta,nb.traj)
+    W[[i]][1:n.eta,] <- eta
+    
+    W[[i]][(n.eta+1),] <-
       rgamma(nb.traj,rpois(nb.traj,
-                           pmax(0,param$a_D/param$mu_D+
-                                  t(model_sol$ell1.D[1:model_sol$n.Z,drop=FALSE])%*%
-                                  Z[[i-1]])),scale=param$mu_D)
+                           pmax(0,(param$a_D/param$mu_D+
+                                     t(model_sol$ell1.D)%*%
+                                     rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_D)
     
-    Z[[nb.simul+2]][i,]    <-
-      rgamma(nb.traj,rpois(nb.traj,pmax(0,param$kappa_N^(i-1)*
-                                          (param$a_N/param$mu_N+
-                                             t(model_sol$ell1.N[1:model_sol$n.Z,drop=FALSE])%*%
-                                             Z[[i-1]]))),scale=param$mu_N)
+    W[[i]][(n.eta+2),] <-
+      rgamma(nb.traj,rpois(nb.traj,pmax(0,(param$kappa_N^(i-1)*param$a_N/param$mu_N+
+                                             param$kappa_N^(i-1)*t(model_sol$ell1.N)%*%
+                                             rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_N)
     
-    Z[[nb.simul+3]][i,]    <-
-      rgamma(nb.traj,rpois(nb.traj,pmax(0,0+
-                                          t(model_sol$ell1.T[1:model_sol$n.Z,drop=FALSE])%*%
-                                          Z[[i-1]])),scale=param$mu_T)
+    W[[i]][(n.eta+3),] <-
+      rgamma(nb.traj,rpois(nb.traj,pmax(0,(0+
+                                             t(model_sol$ell1.T)%*%
+                                             rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_T)
     
-    Z[[nb.simul+4]][i,]    <-
-      rgamma(nb.traj,rpois(nb.traj,pmax(0,param$a_H/param$mu_H+
-                                          t(model_sol$ell1.H[1:model_sol$n.Z,drop=FALSE])%*%
-                                          Z[[i-1]])),scale=param$mu_H)
-    
-    eta[1:model_sol$n.eta,]<-apply(eta,2,function(i)param$Phi%*%i)+
-      rnorm(model_sol$n.eta*nb.traj)
-    W                      <-rbind(eta,
-                                   Z[[nb.simul+1]][i,],
-                                   Z[[nb.simul+2]][i,],
-                                   Z[[nb.simul+3]][i,],
-                                   Z[[nb.simul+4]][i,])
+    W[[i]][(n.eta+4),] <-
+      rgamma(nb.traj,rpois(nb.traj,pmax(0,(param$a_H/param$mu_H+
+                                             t(model_sol$ell1.H)%*%
+                                             rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_H)
     
     #Climate variables
-    Z_1.0 <-apply(Z[[i-1]],2,
-                  function(x){A1[[i-1]]%*%x+omega0[[i-1]]})
-    Wz    <-apply(W,2,function(x){omega[[i-1]]%*%x})
-    Z[[i]]<-Z_1.0+Wz
-    X[[i]]<-rbind(Z[[i]],W)
+    Z_1.0  <- apply(Z[[i-1]],2,
+                    function(x){A1[[i-1]]%*%x+omega0[[i-1]]})
+    Wz     <- apply(W[[i]],2,function(x){omega[[i-1]]%*%x})
+    Z[[i]] <- Z_1.0+Wz
+    X[[i]] <- rbind(Z[[i]],W[[i]])
   }
   
   #extract path over time and remove time 0 (i.e., X_0)
-  delc   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[1,]),1:nb.traj)),
+  delc   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.delc,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  y_tilde<-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[2,]),1:nb.traj)),
+  y_tilde<-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.y_tilde,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  E      <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[3,]),1:nb.traj)),
+  E      <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.E,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  E_ind  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[4,]),1:nb.traj)),
+  E_ind  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.E_ind,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  Forc   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[5,]),1:nb.traj)),
+  Forc   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Forc,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  M_at   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[6,]),1:nb.traj)),
+  M_at   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.M_at,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  M_up   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[7,]),1:nb.traj)),
+  M_up   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.M_up,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  M_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[8,]),1:nb.traj)),
+  M_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.M_lo,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  T_at   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[9,]),1:nb.traj)),
+  T_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.T_lo,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  T_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[10,]),1:nb.traj)),
+  Cum_D  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_D,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  Cum_D  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[11,]),1:nb.traj)),
+  Cum_E  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_E,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  Cum_E  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[12,]),1:nb.traj)),
+  Cum_dc <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_dc,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  Cum_dc <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[13,]),1:nb.traj)),
+  H      <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.H,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  H      <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[14,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  D      <- Z[[nb.simul+1]][-1,]
-  N      <- Z[[nb.simul+2]][-1,]
-  T_atW  <- Z[[nb.simul+3]][-1,]
-  HW     <- Z[[nb.simul+4]][-1,]
+  
+  D    <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.D,]),1:nb.traj)),
+                 ncol=nb.traj)[-1,]
+  N    <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.N,]),1:nb.traj)),
+                 ncol=nb.traj)[-1,]
+  T_at <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.T_at,]),1:nb.traj)),
+                 ncol=nb.traj)[-1,]
+  HW   <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.HW,]),1:nb.traj)),
+                 ncol=nb.traj)[-1,]
+  
   X      <- X[-1]
   
   vec_date <- seq(model_sol$vec_date[2],
@@ -1955,9 +1923,9 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj){
   
   
   mylist<-c(list("delc"=delc,"y_tilde"=y_tilde,"E"=E,"E_ind"=E_ind,"Forc"=Forc,
-                 "M_at"=M_at,"M_up"=M_up,"M_lo"=M_lo,"T_at"=T_at,"T_lo"=T_lo,
+                 "M_at"=M_at,"M_up"=M_up,"M_lo"=M_lo,"T_lo"=T_lo,
                  "Cum_D"=Cum_D,"Cum_E"=Cum_E,"Cum_dc"=Cum_dc,"H"=H),
-            list("D"=D,"N"=N,"T_atW"=T_atW,"HW"=HW),
+            list("D"=D,"N"=N,"T_at"=T_at,"HW"=HW),
             list("X"=X))
   
   return(mylist)
@@ -2030,7 +1998,7 @@ b1.w.fct<-function(model_sol,U,t){
   b <- matrix(model_sol$ell1.D%o%
                 (u.D*param$mu_D/(1-u.D*param$mu_D))+
                 model_sol$ell1.N%o%
-              # ==============================================================
+                # ==============================================================
               # ==============================================================
               # ==============================================================
               # (u.N*param$mu_N*(param$kappa_N^(t+1))/

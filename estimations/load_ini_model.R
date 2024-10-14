@@ -58,7 +58,7 @@ remove(Eind,Ftot,Mat,Mup,Mlo,Tat,Tlo,H)
 #---- Economic parameters ------------------------------------------------------
 n.eta    <- 2
 Phi.prep <- matrix(0,n.eta,n.eta)
-n.Z <- length(vector.ini)
+n.Z <- length(vector.ini) - 1 # remove Tat
 n.W <- n.eta + 4
 
 param.econ<-list(
@@ -189,12 +189,12 @@ names(target_vector)<-c(
 #---- Names of variables in X --------------------------------------------------
 
 names.var.X <- c("delc","y_tilde","E","E_ind","Forc","M_at",
-                 "M_up","M_lo","T_at","T_lo","Cum_D","Cum_E",
+                 "M_up","M_lo","T_lo","Cum_D","Cum_E",
                  "Cum_dc","H",
                  "eta_A","eta_X",
                  #"eta_E",
                  #"eta_F",
-                 "D","N","T_atW","HW")
+                 "D","N","T_at","HW")
 
 
 #---- log-growth rate ----------------------------------------------------------

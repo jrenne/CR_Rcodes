@@ -20,7 +20,7 @@ library(expm)
 
 
 #Binary operators: 0 = NO, 1 = YES.
-indic_plots_paper  <- 0  #do you run some plots of the paper? see description below
+indic_plots_paper  <- 1  #do you run some plots of the paper? see description below
 indic_tables_paper <- 0  #do you run the tables of the paper?
 
 # For scripts using parallel computing:

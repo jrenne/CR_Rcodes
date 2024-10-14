@@ -4,11 +4,13 @@
 
 H <- model_sol$horiz.2100
 
+indic_T_at <- which(model_sol$names.var.X == "T_at")
+
 # Calculations ----
 tib<-list()
 chi<-c(0.5,1,2)
 for(i in 1:length(chi)){
-  tib[[i]]<-TIB(model_sol,chi[i],EV$EX[["T_at"]][1:H],H,9)
+  tib[[i]]<-TIB(model_sol,chi[i],EV$EX[["T_at"]][1:H],H,indic_T_at)
 }
 lty.tib<-c(2,1,4)
 chi.names<-c(expression(paste(chi,"=0.5")),
