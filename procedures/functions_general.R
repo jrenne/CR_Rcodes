@@ -1,6 +1,3 @@
-# ==============================================================================
-# Figure 
-# ==============================================================================
 
 #* CALIBRATION ----
 solveParam4c <- function(model,indic_CRRA=FALSE){
@@ -190,7 +187,7 @@ mu_T.bisection <- function(x,model){
   model$parameters$mu_T <- x
   model_new <- model_solve(model)
   
-  EV_new <- EV.fct(model_new,model$horiz.2100)
+  EV_new   <- EV.fct(model_new,model$horiz.2100)
   Var.T_at <- EV_new$VX$T_at[model$horiz.2100]
   
   return(sqrt(Var.T_at)-model$target_vector["stdTat2100"])
@@ -963,22 +960,25 @@ model_solve <- function(model,
   
   # Prepare "ell" components: --------------------------------------------------
   ell1.D   <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.D[indic.T_at]   <- model_sol$parameters$b_D/model_sol$parameters$mu_D
+  ell1.D[model$n.Z+indic.T_atW] <-
+    model_sol$parameters$b_D/model_sol$parameters$mu_D
   model_sol[["ell1.D"]]<- ell1.D
   
   ell1.N   <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.N[indic.T_at]   <- model_sol$parameters$b_N/model_sol$parameters$mu_N
+  ell1.N[model$n.Z+indic.T_atW] <-
+    model_sol$parameters$b_N/model_sol$parameters$mu_N
   model_sol[["ell1.N"]]<- ell1.N
   
   ell1.T   <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
   ell1.T[indic.Forc]   <- param$xi_1
-  ell1.T[indic.T_at]   <- 1-param$xi_1*(param$tau/param$nu + param$xi_2)
+  ell1.T[model$n.Z+indic.T_atW] <-
+    1-param$xi_1*(param$tau/param$nu + param$xi_2)
   ell1.T[indic.T_lo]   <- param$xi_1*param$xi_2
   ell1.T               <- ell1.T/param$mu_T
   model_sol[["ell1.T"]]<- ell1.T
   
   ell1.H                <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.H[indic.T_at]    <- param$b_H/param$mu_H
+  ell1.H[model$n.Z+indic.T_atW] <- param$b_H/param$mu_H
   model_sol[["ell1.H"]] <- ell1.H
   
   # Construct matrices determining dynamics after Tmax ("infinite"): -----------
@@ -1001,6 +1001,7 @@ model_solve <- function(model,
   omega.star.inf[indic.E,indic.N]        <-  1 #shock N
   omega.star.inf[indic.T_at,indic.T_atW] <-  1 
   omega.star.inf[indic.H,indic.HW]       <-  1 
+  omega.star.inf[indic.T_lo,indic.T_atW] <- param$xi_3
   
   model_sol[["omega.star.inf"]]<-omega.star.inf
   
@@ -1033,7 +1034,7 @@ model_solve <- function(model,
   A1.star.inf[indic.E_ind,indic.y_tilde]      <- 0
   A1.star.inf[indic.M_at,indic.E] <- model_sol$tstep/3.666
   A1.star.inf[indic.M_at:indic.M_lo,indic.M_at:indic.M_lo]  <- varphi%^%(model_sol$tstep)                           
-  A1.star.inf[indic.T_lo,indic.T_at]     <- param$xi_3
+  #A1.star.inf[indic.T_lo,indic.T_at]     <- param$xi_3
   A1.star.inf[indic.T_lo,indic.T_lo]     <- 1 - param$xi_3
   A1.star.inf[indic.Cum_D,indic.Cum_D]   <- 1
   A1.star.inf[indic.Cum_E,indic.Cum_E]   <- 1
@@ -1125,6 +1126,7 @@ model_solve <- function(model,
   Z[indic.Cum_dc]  <- model_sol$vector.ini$ini_Cumdelc
   Z[indic.H]       <- model_sol$vector.ini$ini_H
   W <- matrix(0,model_sol$n.W,1)
+  W[indic.T_atW]   <- model_sol$vector.ini$ini_Tat
   X <- rbind(Z,W)
   model_sol[["X"]]   <- X
   model_sol[["n.X"]] <- length(X)
@@ -1360,7 +1362,7 @@ mu_dep <- function(model_sol,
     A1_i[indic.E_ind,indic.y_tilde]<- lambda[i]
     A1_i[indic.M_at,indic.E]       <- model_sol$tstep/3.666
     A1_i[indic.M_at:indic.M_lo,indic.M_at:indic.M_lo]  <- model_sol$varphi%^%(model_sol$tstep)
-    A1_i[indic.T_lo,indic.T_at]    <- param$xi_3
+    #A1_i[indic.T_lo,indic.T_at]    <- param$xi_3
     A1_i[indic.T_lo,indic.T_lo]    <- 1-param$xi_3
     A1_i[indic.Cum_D,indic.Cum_D]  <- 1
     A1_i[indic.Cum_E,indic.Cum_E]  <- 1
@@ -1415,6 +1417,7 @@ mu_dep <- function(model_sol,
     omega_i[indic.E,indic.N]        <-  1 #shock N on E
     omega_i[indic.T_at,indic.T_atW] <-  1 
     omega_i[indic.H,indic.HW]       <-  1
+    omega_i[indic.T_lo,indic.T_atW] <- param$xi_3
     
     omega.star[[i]]      <- omega_i
   }
@@ -1549,9 +1552,9 @@ EV.fct<-function(model_sol,h=NaN){
   
   param <-model_sol$parameters
   if(t>(model_sol$Tmax-1)){
-    omega0<-model_sol$omega0
-    inf   <-rep(list(model_sol$omega0.inf),t-model_sol$Tmax+1)
-    omega0<-c(omega0,inf)
+    omega0 <-model_sol$omega0
+    inf    <-rep(list(model_sol$omega0.inf),t-model_sol$Tmax+1)
+    omega0 <-c(omega0,inf)
     
     omega <-model_sol$omega
     inf   <-rep(list(model_sol$omega.inf),t-model_sol$Tmax+1)
@@ -1561,9 +1564,9 @@ EV.fct<-function(model_sol,h=NaN){
     inf   <-rep(list(model_sol$A1.inf),t-model_sol$Tmax+1)
     A1    <-c(A1,inf)
   }else{
-    omega0<-model_sol$omega0
-    omega <-model_sol$omega
-    A1    <-model_sol$A1
+    omega0 <-model_sol$omega0
+    omega  <-model_sol$omega
+    A1     <-model_sol$A1
   }
   
   X     <-model_sol$X
@@ -1983,8 +1986,16 @@ a1.w.fct <- function(model_sol,U,t){
                                  dim(U)[2],1)+
     matrix(u.D*param$a_D/(1-u.D*param$mu_D),
            dim(U)[2],1)+
-    matrix((param$kappa_N^(t+1))*u.N*param$a_N/(1-u.N*param$mu_N),
-           dim(U)[2],1) + 
+    #===========================================================================
+  #===========================================================================
+  #===========================================================================
+  # matrix((param$kappa_N^(t+1))*u.N*param$a_N/(1-u.N*param$mu_N),
+  #        dim(U)[2],1) + 
+  #===========================================================================
+  #===========================================================================
+  #===========================================================================
+  matrix((param$kappa_N^t)*u.N*param$a_N/(1-u.N*param$mu_N),
+         dim(U)[2],1) + 
     matrix(0,
            dim(U)[2],1) + 
     matrix(u.H*param$a_H/(1-u.H*param$mu_H),
@@ -2019,8 +2030,16 @@ b1.w.fct<-function(model_sol,U,t){
   b <- matrix(model_sol$ell1.D%o%
                 (u.D*param$mu_D/(1-u.D*param$mu_D))+
                 model_sol$ell1.N%o%
-                (u.N*param$mu_N*(param$kappa_N^(t+1))/
-                   (1-u.N*param$mu_N))+
+              # ==============================================================
+              # ==============================================================
+              # ==============================================================
+              # (u.N*param$mu_N*(param$kappa_N^(t+1))/
+              #    (1-u.N*param$mu_N))+
+              # ==============================================================
+              # ==============================================================
+              # ==============================================================
+              (u.N*param$mu_N*(param$kappa_N^t)/
+                 (1-u.N*param$mu_N))+
                 model_sol$ell1.T%o%
                 (u.T*param$mu_T/(1-u.T*param$mu_T))+
                 model_sol$ell1.H%o%

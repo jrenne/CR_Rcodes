@@ -211,7 +211,9 @@ Cum_dc      <- list(muprice_0=0,muprice_1=Cum_dc1)
 ini_matx<-list()
 inf_matx<-list()
 model<-list("parameters"=param,"vec_date"=vec_date,"tstep"=tstep,
-            "MAXIT"=MAXIT,"n.eta"=n.eta,"n.W"=n.W,"n.Z"=n.Z,"Tmax"=Tmax,
+            "MAXIT"=MAXIT,
+            "n.eta"=n.eta,"n.W"=n.W,"n.Z"=n.Z,
+            "Tmax"=Tmax,
             "theta0"=theta0,"horiz.2100"=horiz,"target_vector"=target_vector,
             "ini_matx"=ini_matx,"inf_matx"=inf_matx,
             "mu_c"=0, # in case we impose a growth path
