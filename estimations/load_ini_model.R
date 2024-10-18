@@ -46,9 +46,9 @@ vector.ini<-list(
   ini_Mup    = Mup,                                                            
   ini_Mlo    = Mlo,                                                           
   ini_Tat    = Tat,                                                            
-  ini_Tlo    = Tlo,                                                           
-  ini_CumD   = 0,
-  ini_CumE   = Eind+eps_0,
+  ini_Tlo    = Tlo,
+  #ini_CumE   = Eind+eps_0,
+  ini_CumE   = 0,
   ini_Cumdelc= 0,
   ini_H      = H
 )
@@ -189,8 +189,8 @@ names(target_vector)<-c(
 #---- Names of variables in X --------------------------------------------------
 
 names.var.X <- c("delc","y_tilde","E","E_ind","Forc","M_at",
-                 "M_up","M_lo","T_lo","Cum_D","Cum_E",
-                 "Cum_dc","H",
+                 "M_up","M_lo","T_lo",
+                 "Cum_E","Cum_dc","H",
                  "eta_A","eta_X",
                  #"eta_E",
                  #"eta_F",
