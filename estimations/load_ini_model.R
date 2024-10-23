@@ -2,7 +2,7 @@
 # Initial model - solves model with initial parameters
 # ==============================================================================
 
-#number of periods before climatic risks disappear:
+#number of periods before stationary model:
 Tmax   <- 100
 
 #number of years in each period t \in(1:Tmax):
@@ -11,8 +11,9 @@ tstep  <- 5
 #vector of dates
 vec_date <- seq(2020,by=tstep,len=Tmax-1)
 
-#Initial values of theta_/_b for mitig optim. from DICE2016
-theta0  <- c(log(0.17),-1/21*log(0.17))
+#Initial values of theta_a/_b for mitig optim. ~ DICE2016
+#theta0  <- c(log(0.17),-1/21*log(0.17))
+theta0  <- c(-2,-.1)
 
 #Determine of max of iterations in mitig optim.
 MAXIT   <- 200

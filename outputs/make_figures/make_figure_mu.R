@@ -12,8 +12,8 @@ dice_data           <- read.csv("data/mu.csv",sep=";",header = F)
 row.names(dice_data)<- dice_data[,1]
 dice_data           <- dice_data[-1]
 
-mu_dice                    <-matrix(0,dim(dice_data)[2],1)
-mu_dice[1:length(mu_dice)] <-apply(dice_data[2,],2,function(x)min(x,1))
+mu_dice                    <- matrix(0,dim(dice_data)[2],1)
+mu_dice[1:length(mu_dice)] <- apply(dice_data[2,],2,function(x)min(x,1))
 
 #Plot
 FILE = paste("/outputs/Figures/Figure_Mitigation_comparison.pdf",sep="")
@@ -23,7 +23,7 @@ par(mfrow=c(2,2))
 par(plt=c(.15,.95,.15,.8))
 
 plot(model_sol$vec_date[2:length(model_sol$vec_date)],
-     model_sol$mu[1:(length(model_sol$vec_date)-1)],
+     model_sol$mu[2:length(model_sol$vec_date)],
      type="l", xlab="Year",ylab="",lwd=2,
      ylim=c(0,1),las=1,
      xlim=x.lim,las=1,main="(a) Mitigation rate, comparison with DICE")
@@ -31,20 +31,20 @@ lines(model_sol$vec_date[2:length(model_sol$vec_date)],
       mu_dice[2:length(model_sol$vec_date)],lwd=2,lty=2,
       col="grey")
 
-
 # (i) Check sensitivity to parametric function ---------------------------------
 
 t <- 0
 Xt <- model_sol$X
 
+# Baseline approach:
 RES.2param <- res.optim(model_sol,
                         model_sol$theta0,
                         Tend = model_sol$Tmax - t,
                         X = Xt)
 
-# use of a logit function to code mu_t:
+# Non-parametric function:
 theta <- .5 + .99*(model_sol$mu[(t+1):model_sol$Tmax] - .5)
-theta <- log(theta/(1-theta))
+theta <- log(theta/(1-theta)) # starting values
 RES.Tmax.param <- res.optim(model_sol,
                             theta,
                             Tend = model_sol$Tmax - t,
@@ -60,7 +60,7 @@ legend("bottomright",
 points(model_sol$vec_date[2:length(model_sol$vec_date)],
        mu.function(model_sol,
                   theta = RES.Tmax.param$par,
-                  t.ini = t)[1:(length(model_sol$vec_date)-1)],
+                  t.ini = t)[2:length(model_sol$vec_date)],
        col="black",pch=3)
 
 
@@ -83,9 +83,8 @@ all_mu <- foreach(t = 1:max.t,
                    .combine=rbind) %dopar% {
                      
                      Xt <- EV$EXh[[t]]
-                     
-                     Xt <- Xt
-                     
+                     Xt <- Xt + 0*sqrt(diag(EV$CovX[[t]]))
+
                      # Re-optimize future trajectory of mu_t's:
                      RES.2param <- res.optim(model_sol,
                                              model_sol$theta0,
@@ -100,18 +99,18 @@ all_mu <- foreach(t = 1:max.t,
                    }
 plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
-                 t.ini = t)[1:(length(model_sol$vec_date)-1)],
+                 t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
      ylim=c(0,1),las=1,xlab="years",ylab="",
      main="(b) Re-optimize - State vector = avg")
 for(t in 1:max.t){
   lines(model_sol$vec_date[2:length(model_sol$vec_date)],
-        all_mu[t,1:(length(model_sol$vec_date)-1)],col="black")
+        all_mu[t,2:length(model_sol$vec_date)],col="black")
 }
 lines(model_sol$vec_date[2:length(model_sol$vec_date)],
       mu.function(model_sol,
                  theta = RES.2param$par,
-                 t.ini = t)[1:(length(model_sol$vec_date)-1)],
+                 t.ini = t)[2:length(model_sol$vec_date)],
       type="l",col="dark grey",lty=3,lwd=4)
 legend("bottomright",
        legend=c("Baseline case","Re-optimized rates"),
@@ -124,7 +123,6 @@ all_mu <- foreach(t = 1:max.t,
                   .combine=rbind) %dopar% {
                     
                     Xt <- EV$EXh[[t]]
-                    
                     Xt <- Xt + sqrt(diag(EV$CovX[[t]]))
                     
                     # Re-optimize future trajectory of mu_t's:
@@ -141,18 +139,18 @@ all_mu <- foreach(t = 1:max.t,
                   }
 plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
-                 t.ini = t)[1:(length(model_sol$vec_date)-1)],
+                 t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
      ylim=c(0,1),las=1,xlab="years",ylab="",
      main="(c) Re-optimize - State vector = avg + 1 std.dev.")
 for(t in 1:max.t){
   lines(model_sol$vec_date[2:length(model_sol$vec_date)],
-        all_mu[t,1:(length(model_sol$vec_date)-1)],col="black")
+        all_mu[t,2:length(model_sol$vec_date)],col="black")
 }
 lines(model_sol$vec_date[2:length(model_sol$vec_date)],
       mu.function(model_sol,
                   theta = RES.2param$par,
-                  t.ini = t)[1:(length(model_sol$vec_date)-1)],
+                  t.ini = t)[2:length(model_sol$vec_date)],
       type="l",col="dark grey",lty=3,lwd=4)
 legend("bottomright",
        legend=c("Baseline case","Re-optimized rates"),
@@ -165,7 +163,6 @@ all_mu <- foreach(t = 1:max.t,
                   .combine=rbind) %dopar% {
                     
                     Xt <- EV$EXh[[t]]
-                    
                     Xt <- Xt - sqrt(diag(EV$CovX[[t]]))
                     
                     # Re-optimize future trajectory of mu_t's:
@@ -182,18 +179,18 @@ all_mu <- foreach(t = 1:max.t,
                   }
 plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
-                 t.ini = t)[1:(length(model_sol$vec_date)-1)],
+                 t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
      ylim=c(0,1),las=1,xlab="years",ylab="",
      main="(d) Re-optimize - State vector = avg - 1 std.dev.")
 for(t in 1:max.t){
   lines(model_sol$vec_date[2:length(model_sol$vec_date)],
-        all_mu[t,1:(length(model_sol$vec_date)-1)],col="black")
+        all_mu[t,2:length(model_sol$vec_date)],col="black")
 }
 lines(model_sol$vec_date[2:length(model_sol$vec_date)],
       mu.function(model_sol,
                   theta = RES.2param$par,
-                  t.ini = t)[1:(length(model_sol$vec_date)-1)],
+                  t.ini = t)[2:length(model_sol$vec_date)],
       type="l",col="dark grey",lty=3,lwd=4)
 legend("bottomright",
        legend=c("Baseline case","Re-optimized rates"),

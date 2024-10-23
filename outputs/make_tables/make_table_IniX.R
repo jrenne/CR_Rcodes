@@ -6,8 +6,11 @@
 nb.dec <- 2 # number of decimal numbers
 format.nb  <- paste("%.",nb.dec,"f",sep="")
 format.nb0 <- paste("%.",0,"f",sep="")
-format.nb1 <- paste("%.",1,"f",sep="")
-format.nb5 <- paste("%.",5,"f",sep="")
+# format.nb1 <- paste("%.",1,"f",sep="")
+# format.nb2 <- paste("%.",2,"f",sep="")
+# format.nb3 <- paste("%.",3,"f",sep="")
+# format.nb4 <- paste("%.",4,"f",sep="")
+# format.nb5 <- paste("%.",5,"f",sep="")
 
 latex.table <- rbind(
   paste("Initial emissions &",

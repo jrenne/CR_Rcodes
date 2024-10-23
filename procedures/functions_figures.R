@@ -5,7 +5,8 @@ make_figure_calibration_Damages <- function(model_sol,
                                             xD = exp(seq(-5,5,length.out = 2000)),   # to compute Riemann sum
                                             T.2100 = seq(1.5,5,length.out=20),
                                             vector.of.CI = c(0.5,0.8,0.9,0.95),
-                                            main.title = "2100 Fractional damages"){
+                                            main.title = "2100 Fractional damages",
+                                            trace_lines = TRUE){
   
   P.col.line <- brocolors("crayons")["Teal Blue"]
   P.col<-adjustcolor( P.col.line, alpha.f = 0.15)
@@ -56,27 +57,40 @@ make_figure_calibration_Damages <- function(model_sol,
             col=P.col,border = NA)
   }
   
-  lines(T.2100,median.damage,lwd=2,lty=2)
-  
   # Compute average damages:
   cond.mean.damage <- NULL
   for(i in 1:length(T.2100)){
     cond.mean.damage <- c(cond.mean.damage,
                           1 - LT.CumD(model_sol,u=-1,tstar=model_sol$horiz.2100,
                                       T0=model_sol$vector.ini$ini_Tat,Tstar = T.2100[i]))}
-  lines(T.2100,cond.mean.damage,lwd=2)
+  
+  if(trace_lines){
+    lines(T.2100,median.damage,lwd=2,lty=2)
+    lines(T.2100,cond.mean.damage,lwd=2)
+  }
+  
   
   points(c(2,4),
          c(1-model_sol$target_vector["ECumD2"],1-model_sol$target_vector["ECumD4"]),
          pch=15,col="red")
   
-  legend("topleft",
-         legend=c("mean","median","target (mean)"),
-         lty=c(1,2,NaN),
-         pch=c(NaN,NaN,15),
-         col=c("black","black","red"),
-         #cex=1.5,
-         lwd=2,bty = "n")
+  if(trace_lines){
+    legend("topleft",
+           legend=c("mean","median","target (mean)"),
+           lty=c(1,2,NaN),
+           pch=c(NaN,NaN,15),
+           col=c("black","black","red"),
+           #cex=1.5,
+           lwd=2,bty = "n")
+  }else{
+    legend("topleft",
+           legend=c("target (mean)"),
+           lty=c(NaN),
+           pch=c(15),
+           col=c("red"),
+           #cex=1.5,
+           lwd=2,bty = "n")
+  }
   
   return(1)
 }
@@ -377,7 +391,7 @@ compute_CMT <- function(model_sol,EV,Price.ZC,
                         maturities = c(2,10), # in number of periods
                         nb = model_sol$horiz.2100+1,
                         theta0 = list(c(log(0.17),-1/21*log(0.17)))
-                        ){
+){
   
   h_cst.1 <- maturities[1]
   h_cst.2 <- maturities[2]

@@ -872,10 +872,10 @@ mu_u.t.fct <- function(model_sol,
   param   <- model_sol$parameters
   
   # Load stationary values:
-  mu_c1   <- model_sol$mu_c1
   mu_c0   <- model_sol$mu_c0
-  mu_u1.t <- model_sol$mu_u1                                                          
+  mu_c1   <- model_sol$mu_c1
   mu_u0.t <- model_sol$mu_u0
+  mu_u1.t <- model_sol$mu_u1                                                          
   
   for (i in 2:Tend){
     b.t <- b1.fct(model_sol,
@@ -891,15 +891,16 @@ mu_u.t.fct <- function(model_sol,
 }
 
 # List with all mu_u1.t and mu_u0.t: -------------------------------------------
-#*from t=1 to t=98, inf(t=99) not in list
+#*from t=1 to t=Tmax-2, inf(i.e., from t=Tmax-1 onwards) not in list
 mu_u.t.fct.all <- function(model_sol){
+  
   param     <- model_sol$parameters
   mu_u1.inf <- model_sol$mu_u1
   mu_u0.inf <- model_sol$mu_u0
   Tmax      <- model_sol$Tmax
   
-  mu_c1  <- model_sol$mu_c1
-  mu_c0  <- model_sol$mu_c0
+  mu_c1 <- model_sol$mu_c1
+  mu_c0 <- model_sol$mu_c0
   
   mu_u1.t         <- list()
   mu_u1.t[[Tmax]] <- mu_u1.inf
@@ -910,7 +911,7 @@ mu_u.t.fct.all <- function(model_sol){
       b1.fct(model_sol,
              (1-param$gamma)*(mu_u1.t[[Tmax-i+1]] + mu_c1),
              Tmax-i-1)
-    mu_u0.t[Tmax-i]  <- param$delta*(mu_u0.t[Tmax-i+1] + mu_c0) +
+    mu_u0.t[Tmax-i] <- param$delta*(mu_u0.t[Tmax-i+1] + mu_c0) +
       param$delta/(1-param$gamma)*
       a1.fct(model_sol,
              (1-param$gamma)*(mu_u1.t[[Tmax-i+1]] + mu_c1),
@@ -938,7 +939,8 @@ mu_u.t.fct.all <- function(model_sol){
 model_solve <- function(model,
                         theta       = model$theta0,
                         indic_mitig = TRUE,
-                        mu.chosen   = rep(param$mu0,model$Tmax),
+                        mu.chosen   = rep(model$parameters$mu0,
+                                          model$Tmax),
                         mu_altern   = model$Cum_dc,
                         indic_CRRA  = FALSE){
   # Data preparation
@@ -1281,17 +1283,24 @@ model_solve <- function(model,
 mu.function <- function(model_sol,
                         theta,
                         t.ini = 0,
-                        max.mu.date.0=1){
+                        max.mu.date.0 = 1){
+  # This returns a vector of size Tmax
+  
   if(length(theta)==2){# We use the parametric approach
+    
     a <- -log(max.mu.date.0) + abs(theta[1])
     b <- abs(theta[2])
     if(t.ini==0){# modify mu_t since initial period
       mu  <- pmin(exp(- a + b*(1:model_sol$Tmax)),1)
     }else{# in that case, we replace only mu_t's for t>=t.ini
+      # This case is used to test the sensitivity of results to assumption
+      #    according to which agents do not re-optimize
       mu <- model_sol$mu
       mu[(t.ini+1):model_sol$Tmax] <- pmin(exp(- a + b*((t.ini+1):model_sol$Tmax)),1)
     }
+    
   }else{# We directly optimize on the mu_t's
+    
     if(length(theta)!= model_sol$Tmax - t.ini){# problem
       print("theta should be of length Tmax - t.ini")
       return(NaN)
@@ -1300,14 +1309,19 @@ mu.function <- function(model_sol,
       mu[(t.ini+1):model_sol$Tmax] <- exp(theta)/(1+exp(theta))
     }
   }
+  
+  mu[1] <- model_sol$parameters$mu0
+  
   return(mu)
 }
 
 
 # Compute the vectorial repr. of the model + exogenous dependent fct(mu) -------
+# mu is an entry argument.
+# Outputs are of length Tmax.
 mu_dep <- function(model_sol,
                    mu,
-                   mu_altern = model_sol$Cum_dc,
+                   mu_altern = model_sol$Cum_dc,#used, e.g., in pricing applications
                    indic_CRRA = FALSE){
   
   param <- model_sol$parameters
@@ -1316,7 +1330,7 @@ mu_dep <- function(model_sol,
   AC     <- matrix(NaN, nrow=Tmax, 1)
   lambda <- matrix(NaN, nrow=Tmax, 1)
   
-  #Exogenous equations independent of mu
+  #Exogenous equations independent of mu ---------------------------------------
   #rad. forcings
   f_ex   <- model_sol$f_ex                        
   #emissions from deforestation
@@ -1328,10 +1342,11 @@ mu_dep <- function(model_sol,
   bp     <- model_sol$bp            
   bc     <- model_sol$bc
   
-  #Exogenous equations dependent on mu
+  #Exogenous equations dependent on mu -----------------------------------------
   #Abatement Cost
-  AC[1]      <- bc[1]*param$mu0**(param$theta2) # bc[1]*mu[1]**(param$theta2)#                                   
-  AC[2:Tmax] <- bc[2:Tmax]*mu[2:Tmax]**param$theta2  
+  # AC[1]      <- bc[1]     *param$mu0 **(param$theta2) # bc[1]*mu[1]**(param$theta2)#                                   
+  # AC[2:Tmax] <- bc[2:Tmax]*mu[2:Tmax]**(param$theta2)
+  AC <- bc*mu**(param$theta2)
   
   #lambda
   for (i in 1:Tmax){
@@ -1476,6 +1491,8 @@ res.optim <-function(model_sol,
 }
 
 # Construction of u0 for optim of mitig rate mu: -------------------------------
+# This function computes (minus) the utility function at a given date, for a state X,
+#  it is aimed to be optimized (over theta) to determine the optimal mitigation path
 utility.optim <- function(model_sol,
                           theta,
                           Tend = model_sol$Tmax, # if Tend == Tmax, back to initial period
@@ -1516,7 +1533,8 @@ compute.utility.EZ <- function(model_sol,Tend,X){
   if(Tend == model_sol$Tmax){
     mu_u.1 <- mu_u.t.fct(model_sol,Tend)
   }else{
-    mu_u.1 <- mu_u.t.fct(model_sol,Tend + 1)
+    #mu_u.1 <- mu_u.t.fct(model_sol,Tend + 1)
+    mu_u.1 <- mu_u.t.fct(model_sol,Tend)
   }
   # ============================================================================
   if(is.na(mu_u.1[[1]])){
@@ -2399,9 +2417,10 @@ update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
 
 # Function that simulates Lemoine (2021)'s model -------------------------------
 
-simul.model.Lemoine <- function(model,X0,H,nb.replic=1){
-  
-  damage <- model$damage
+simul.model.Lemoine <- function(model,
+                                damage.type,
+                                X0,H,nb.replic=1,
+                                coef.multip = 1){
   
   all.C     <- matrix(NaN,H,nb.replic)
   all.Cexog <- matrix(NaN,H,nb.replic)
@@ -2422,45 +2441,21 @@ simul.model.Lemoine <- function(model,X0,H,nb.replic=1){
   delta.lt <- model$l0     * exp(- model$l1     * (1:H + 2014 - 1960))
   
   for(t in 1:H){
-    if(damage$damage.type=="G. Lemoine"){
-      D <- damage$coef.multip * damage$alpha * (T - T0)
+    
+    D <- compute_alternative_damage(T,damage.type,
+                                    time_step = 1,
+                                    coef.multip = coef.multip)
+    
+    if(stringr::str_sub(damage.type,1,1)=="G"){
+      # "Growth" specification
       C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
       Cexog <- C
-    }
-    if(damage$damage.type=="G. Nordhaus-Sztorc"){
-      D <- damage$coef.multip * damage$alpha * T
-      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
-      Cexog <- C
-    }
-    if(damage$damage.type=="G. Dell-Jones-Olken"){
-      D <- damage$coef.multip * damage$alpha * T
-      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
-      Cexog <- C
-    }
-    if(damage$damage.type=="G. Weitzman"){
-      D <- damage$coef.multip * damage$alpha[1] * T^damage$alpha[2]
-      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
-      Cexog <- C
-    }
-    if(damage$damage.type=="L. Nordhaus-Sztorc"){
-      D <- damage$coef.multip * damage$alpha*T^2
+    }else if(stringr::str_sub(damage.type,1,1)=="L"){
+      # "Level" specification
       Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
-      C <- Cexog * 1/(1 + D)
+      C <- Cexog * D
     }
-    if(damage$damage.type=="L. Weitzman"){
-      D <- damage$coef.multip * ((T/damage$alpha[1])^2 + 
-                                   (T/damage$alpha[2])^damage$alpha[3])
-      Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
-      C <- Cexog * 1/(1 + D)
-    }
-    if(damage$damage.type=="L. Barnett-Brock-Hansen"){
-      y.bar <- 2
-      D <- damage$coef.multip * (damage$alpha[1]*T + 
-                                   damage$alpha[2]*T^2 + 
-                                   damage$alpha[3] * (T - y.bar)^2 * (T > y.bar))
-      Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
-      C <- Cexog * exp(- D)
-    }
+    
     L <- L * exp(delta.lt[t])
     M1 <- M1 + model$psi1 * gammat[t] * C
     M2 <- M2 + model$psi2 * (1 - model$psi1) * gammat[t] * C -
@@ -2491,9 +2486,11 @@ sumE <- function(x,y=matrix(1,dim(x)[1],1)){
 }
 
 
-compute.SCC.Lemoine <- function(model,X0,H=500,nb.replic=100,
+compute.SCC.Lemoine <- function(model,
+                                damage.type = damage.type,
+                                X0,H=500,nb.replic=100,
                                 s.values = NaN,
-                                coef.multip.values = NaN,
+                                coef.multip.values = 1,
                                 seed0 = 123,
                                 shock = 1){
   # s.values and alpha.values have to be lists
@@ -2502,9 +2499,9 @@ compute.SCC.Lemoine <- function(model,X0,H=500,nb.replic=100,
     s.values <- list(model$s)
   }
   
-  if(is.na(coef.multip.values[1])){
-    coef.multip.values <- list(model$damage$coef.multip)
-  }
+  # if(is.na(coef.multip.values[1])){
+  #   coef.multip.values <- list(model$damage$coef.multip)
+  # }
   
   eta  <- model$eta
   beta <- model$beta
@@ -2526,19 +2523,24 @@ compute.SCC.Lemoine <- function(model,X0,H=500,nb.replic=100,
       
       seed <- seed0
       
-      model.new <- model
-      model.new$damage$coef.multip <- coef.multip
+      model.new   <- model
       model.new$s <- s
       
       set.seed(seed)
-      res.simul <- simul.model.Lemoine(model.new,X0,
-                                       H=H,nb.replic = nb.replic)
+      res.simul <- simul.model.Lemoine(model.new,
+                                       damage.type = damage.type,
+                                       X0,
+                                       H=H,nb.replic = nb.replic,
+                                       coef.multip = coef.multip)
       set.seed(seed)
       X1 <- X0
       X1[4] <- X0[4] - shock * model$psi1
       X1[5] <- X0[5] - shock * (1 - model$psi1) * model$psi2
-      res.simul.perturb <- simul.model.Lemoine(model.new,X0=X1,
-                                               H=H,nb.replic = nb.replic)
+      res.simul.perturb <- simul.model.Lemoine(model.new,
+                                               damage.type = damage.type,
+                                               X0=X1,
+                                               H=H,nb.replic = nb.replic,
+                                               coef.multip = coef.multip)
       
       all.sim.C         <- cbind(all.sim.C,res.simul$all.C)
       all.sim.C.perturb <- cbind(all.sim.C.perturb,res.simul.perturb$all.C)
@@ -2587,4 +2589,113 @@ compute.SCC.Lemoine <- function(model,X0,H=500,nb.replic=100,
   ))
 }
 
+# define_damages <- function(){
+#   
+#   all.damage <- list()
+#   
+#   all.damage[["G. Dell-Jones-Olken"]] <- list(
+#     alpha = .00137)
+#   
+#   # all.damage[[3]] <- list(
+#   #   damage.type = "G. Nordhaus-Sztorc",
+#   #   alpha = .00026,
+#   #   coef.multip = 1)
+#   # 
+#   # all.damage[[4]] <- list(
+#   #   damage.type = "G. Weitzman",
+#   #   alpha = c(.000075,3.25),
+#   #   coef.multip = 1)
+#   
+#   all.damage[["L. Nordhaus-Sztorc"]] <- list(
+#     alpha = .00266)
+#   
+#   all.damage[["L. Weitzman"]] <- list(
+#     alpha = c(20.64,6.081,6.754))
+#   
+#   all.damage[["L. Barnett-Brock-Hansen"]] <- list(
+#     alpha = c(0.0127,0.0005,.0005))
+#   
+#   all.damage[["L. Traeger"]] <- list(
+#     alpha = c(0.022,1/4)
+#     #alpha = c(0.11,1/4)
+#   )
+#   
+#   all.damage[["L. Dietz-Stern"]] <- list(
+#     alpha = c(0.00284,5.07e-6,6.754))
+#   
+#   # all.damage[[8]] <- list(
+#   #   damage.type = "L-Bansal",
+#   #   alpha = c(.0050,.0033,.0011,.0011),
+#   #   coef.multip = 1)
+#   
+#   return(all.damage)
+# }
+
+compute_alternative_damage <- function(T, type,
+                                       time_step = 1, # number of years per period
+                                       coef.multip = 1){
+  if(type=="G. Lemoine"){
+    alpha = c(.0018)
+    T0  <- .8794
+    D <- coef.multip * alpha[1] * time_step * (T - T0)
+  }
+  if(type=="G. Nordhaus-Sztorc"){
+    alpha = .00026
+    D <- coef.multip * alpha[1] * time_step * T
+  }
+  if(type=="G. Dell-Jones-Olken"){
+    alpha = .00137
+    D <- coef.multip * alpha[1] * time_step * T
+  }
+  if(type=="G. Weitzman"){
+    alpha = c(.000075,3.25)
+    D <- coef.multip * alpha[1] * time_step * T^alpha[2]
+  }
+  if(type=="G. Bansal-Kiku-Ochoa"){
+    alpha = c(0.01,0.01,0.05)
+    ell0 <- .01
+    ell1 <- .01
+    d    <- .05
+    D <- coef.multip * d * (ell0 + ell1 * T)
+  }
+  if(type=="L. Nordhaus-Sztorc"){
+    alpha = .00266
+    D <- coef.multip * alpha*T^2
+    D <- 1/(1 + D)
+  }
+  if(type=="L. Weitzman"){
+    # Using the Hambel et al. (2021) formulation:
+    alpha = c(20.64,6.081,6.754)
+    exponent <- alpha[3]
+    D <- coef.multip * ((T/alpha[1])^2 + 
+                          (T/alpha[2])^exponent)
+    D <- 1/(1 + D)
+  }
+  if(type=="L. Barnett-Brock-Hansen"){
+    y.bar <- 2
+    alpha = c(0.0127,0.0005,.0005)
+    D <- coef.multip * (alpha[1]*T + 
+                          alpha[2]*T^2 + 
+                          alpha[3] * (T - y.bar)^2 * (T > y.bar))
+    D <- exp(- D)
+  }
+  if(type=="L. Traeger"){
+    alpha = c(0.022,1/4)
+    xi0 <- alpha[1]
+    xi1 <- alpha[2]
+    D <- coef.multip * (
+      1 - exp(xi0 * (1 - exp(xi1*T)))
+    )
+    D <- 1 - D
+  }
+  if(type=="L. Dietz-Stern"){
+    alpha = c(0.00284,5.07e-6,6.754)
+    pi2      <- alpha[1]
+    pi3      <- alpha[2]
+    exponent <- alpha[3]
+    D <- coef.multip * (pi2*T^2 + pi3*T^exponent)
+    D <- 1/(1 + D)
+  }
+  return(D)
+}
 

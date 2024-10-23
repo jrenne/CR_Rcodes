@@ -2,7 +2,7 @@
 # An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 # ------------------------------------------------------------------------------
 # Pauline Chikhani and Jean-Paul Renne
-# This version: February 2024
+# This version: November 2024
 # ==============================================================================
 
 
@@ -58,8 +58,10 @@ toc()
 #*16 Confidence Interval SCC and Risk premiums
 #*17 Relationship between SCC and Temperature risk premium
 #*18 Relationship between SCC and Temperature risk premium, alternative models
+#*19 Illustrations of gamma-zero distribution
+#*20 Comparison of damages
 
-plots <- 0:18
+plots <- 0:20
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")

@@ -19,7 +19,7 @@
 #*17 Relationship between SCC and Temperature risk premium
 #*18 Relationship between SCC and Temperature risk premium, Lemoine approach
 #*19 Illustrations of gamma-zero distribution
-
+#*20 Comparison of damages
 
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
@@ -190,4 +190,14 @@ if(is.element(19,plots)){
   source("outputs/make_figures/make_figure_gamma0_distri.R",
          encoding = 'ISO8859-1')
 }
+
+#*******************************20*********************************************#
+#comparison of damage specifications
+if(is.element(20,plots)){
+  print("Preparing figure illustrating Gamma-zero distribution")
+  source("outputs/make_figures/make_figure_Damage_comparison.R",
+         encoding = 'ISO8859-1')
+}
+
+
 
