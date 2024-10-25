@@ -32,9 +32,12 @@ Make.entry <- function(x,Format){
 
 
 chosen_state_variables <- c("y_tilde",
-                            "E","E_ind","Forc","M_at",
-                            "M_up","M_lo","T_lo","H",
-                            "eta_A","eta_X","D","N","T_at","HW")
+                            "E",#"E_ind",
+                            "Forc","M_at",
+                            "M_up","M_lo","T_lo",
+                            #"H","eta_A","eta_X","D","N",
+                            "T_at"#,"HW"
+                            )
 
 matrix_names_Latex <- matrix(NaN,length(model_sol$names.var.X),2)
 matrix_names_Latex[,1] <- model_sol$names.var.X
@@ -46,7 +49,7 @@ matrix_names_Latex[,2] <- c("$\\Delta c_t$","$\\tilde{y}_t$",
                             "$Cum_{\\Delta c,t}$","$H_t$",
                             "$\\eta_{A,t}$","$\\eta_{X,t}$",
                             "$D_t$","$N_t$",
-                            "$T_{at,t}$","$H_t$")
+                            "$T_{at,t}$","$\\Delta H_t$")
 
 # Compute utility solution for initial period:
 mu_u.1 <- mu_u.t.fct(model_sol,model_sol$Tmax)

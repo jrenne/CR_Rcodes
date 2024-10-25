@@ -406,7 +406,7 @@ scc.fct <- function(model_sol,h,
   # returns SCC in USD per t CO2 (= per tC / 3.667)
   # if all = TRUE, vector of H \in(0, h).
   
-  mat     <- which(model_sol$names.var.X=="M_at")
+  mat <- which(model_sol$names.var.X=="M_at")
   
   mu.u1.c <- abs(extract(model_sol$mu_u1.t1,mat))
   if(h>(model_sol$Tmax-1)){
