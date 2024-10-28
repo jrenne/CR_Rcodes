@@ -411,7 +411,7 @@ scc.fct <- function(model_sol,h,
   mu.u1.c <- abs(extract(model_sol$mu_u1.t1,mat))
   if(h>(model_sol$Tmax-1)){
     mu.u1.c <- c(mu.u1.c,
-                 rep(model_sol$inf_matx$mu_u1[mat],h-model_sol$Tmax+1)) 
+                 rep(abs(model_sol$inf_matx$mu_u1[mat]),h-model_sol$Tmax+1)) 
   }
   
   omega_c <- matrix(0,model_sol$n.X,1)
@@ -1000,6 +1000,7 @@ model_solve <- function(model,
     t(mu_altern$muprice_1[(model_sol$n.Z+1):
                             (model_sol$n.Z+model_sol$n.W)])
   omega.star.inf[indic.delc,indic.D]     <- -1 # Infff
+  #omega.star.inf[indic.delc,indic.D]     <- 0 # Infff
   if(indic_CRRA){
     omega.star.inf[indic.delc,indic.D] <- 
       omega.star.inf[indic.delc,indic.D]/param$gamma
@@ -1013,6 +1014,7 @@ model_solve <- function(model,
   
   A0.star.inf <- diag(model_sol$n.Z)
   A0.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
+  #A0.star.inf[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
     A0.star.inf[indic.delc,indic.H] <- 
       A0.star.inf[indic.delc,indic.H]/param$gamma
@@ -1034,6 +1036,7 @@ model_solve <- function(model,
   
   A1.star.inf <- matrix(0,model_sol$n.Z,model_sol$n.Z)
   A1.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
+  #A1.star.inf[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
     A1.star.inf[indic.delc,indic.H] <- A1.star.inf[indic.delc,indic.H]/param$gamma
   }
