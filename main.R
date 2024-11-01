@@ -60,8 +60,9 @@ toc()
 #*18 Relationship between SCC and Temperature risk premium, alternative models
 #*19 Illustrations of gamma-zero distribution
 #*20 Comparison of damages
+#*21 IRF 1 Gt Carbon
 
-plots <- 0:20
+plots <- 0:21
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")

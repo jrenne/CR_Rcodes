@@ -1,5 +1,5 @@
 # ==============================================================================
-# Table illustrating sensitivity of SCC 
+# Table illustrating sensitivity of SCC (with Temp. RP, SLR RP, and LT rates)
 # ==============================================================================
 
 for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
@@ -37,6 +37,8 @@ for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
   
   targets <- model_sol$target_vector
   
+  # Define new models:
+  
   targets_smallD <- targets
   targets_smallD["ECumD2"] <- 1 - (1-targets["ECumD2"])/2
   targets_smallD["ECumD4"] <- 1 - (1-targets["ECumD4"])/2
@@ -56,6 +58,9 @@ for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
   
   targets_noN.uncert <- targets
   targets_noN.uncert["stdCumN4"] <- .00001
+  
+  targets_noT.uncert <- targets
+  targets_noT.uncert["stdTat2100"] <- NaN
   
   targets_smallH <- targets
   targets_smallH["EH2"] <- .00001
@@ -92,31 +97,27 @@ for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
   targets_smallD_no.uncert["ECumNinf"] <- .0001
   targets_smallD_no.uncert["stdCumN4"] <- sqrt(.00001)
   
-  all.targets <- rbind(
-    targets,
-    targets_no.uncert,
-    targets_noGrowth0.uncert,
-    targets_noD.uncert,
-    targets_smallD,
-    targets_noN.uncert,
-    targets_smallN,
-    #targets_smallGrowth0,
-    targets_noH.uncert,
-    targets_smallH
-    #,
-    #targets_smallD_no.uncert
+  all.targets <- rbind(targets,
+                       targets_no.uncert,
+                       targets_noGrowth0.uncert,
+                       targets_noD.uncert,
+                       targets_noN.uncert,
+                       targets_noH.uncert,
+                       targets_noT.uncert,
+                       targets_smallD,
+                       targets_smallN,
+                       targets_smallH
   )
   rownames(all.targets) <- c("Baseline",
                              "Deterministic model",
-                             "No exog. techno. uncertainty ($\\sigma_A=0$)",                           "No damage uncertainty ($\\mu_D=0$)",
-                             "Small damages (twice lower)",
+                             "No exog. techno. uncertainty ($\\sigma_A=0$)",
+                             "No Damage uncertainty ($\\mu_D=0$)",
                              "No permafrost uncertainty ($\\mu_N=0$)",
-                             "No permaf. releases ($a^{(N)}=b^{(N)}=0$)",
-                             #"small growth",
                              "No sea-level uncertainty ($\\mu_H=0$)",
+                             "No temperature uncertainty ($\\mu_T=0$)",
+                             "Small damages (twice lower)",
+                             "No permaf. releases ($a^{(N)}=b^{(N)}=0$)",
                              "No sea-level risks ($a^{(H)}=b^{(H)}=0$)"
-                             # ,
-                             # "Small damages, determ., no permaf."
   )
   
   all.specif <- cbind(values.of.gamma%x%matrix(1,dim(all.targets)[1],1),
@@ -436,6 +437,6 @@ for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
     latex.file <- paste("outputs/Tables/table_SCC_sensitiv.txt",sep="")
   }
   write(latex.table, file = latex.file)
-
+  
 }
 

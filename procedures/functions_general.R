@@ -19,7 +19,7 @@ solveParam4c <- function(model,indic_CRRA=FALSE){
   return(model)
 }
 
-solveParam4D <-function(model){
+solveParam4D <-function(model,alpha=.000001){
   T.2100  <- c(2,4)
   t.star  <- model$horiz.2100
   
@@ -30,9 +30,24 @@ solveParam4D <-function(model){
   
   ell.D<-matrix(c(0,0),ncol=1)
   
+  a_alpha_star <- (t.star*(1 - exp(-alpha)) - (1- exp(-alpha*t.star)))/
+    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*t.star)) - t.star*exp(-alpha*t.star)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
+  
+  ## Linear conditional trajectory:
+  # ell.D<-solve(matrix(c(t.star,t.star,
+  #                       .5*((t.star-1)*T.2100[1]+(t.star+1)*model$vector.ini$ini_Tat),
+  #                       .5*((t.star-1)*T.2100[2]+(t.star+1)*model$vector.ini$ini_Tat)),
+  #                     2,2))%*%
+  #   matrix((-1-mu_D)/(mu_D)*
+  #            c(log(model$target_vector["ECumD2"]),
+  #              log(model$target_vector["ECumD4"])),
+  #          ncol=1)
+  
   ell.D<-solve(matrix(c(t.star,t.star,
-                        .5*((t.star-1)*T.2100[1]+(t.star+1)*model$vector.ini$ini_Tat),
-                        .5*((t.star-1)*T.2100[2]+(t.star+1)*model$vector.ini$ini_Tat)),
+                        a_alpha_star*T.2100[1] + a_alpha_0*model$vector.ini$ini_Tat,
+                        a_alpha_star*T.2100[2] + a_alpha_0*model$vector.ini$ini_Tat),
                       2,2))%*%
     matrix((-1-mu_D)/(mu_D)*
              c(log(model$target_vector["ECumD2"]),
@@ -71,7 +86,8 @@ solveParam4H <-function(model){
 
 solveParam4N <-function(model,
                         T.2100 = c(2,4),
-                        T.2500 = 4){
+                        T.2500 = 4,
+                        alpha = .000001){
   
   t.star  <- model$horiz.2100
   
@@ -83,15 +99,34 @@ solveParam4N <-function(model,
                     model$target_vector["ECumN4"]),
                   ncol=1)
   
+  # # Linear parametric trajectory:
+  # ellN.condkapN<-apply(kapN,1,function(kN){
+  #   N<-matrix(c(rep((1-kN^t.star)/(1-kN),2),
+  #               (1-kN^t.star)/(1-kN)*model$vector.ini$ini_Tat+
+  #                 (T.2100[1]-model$vector.ini$ini_Tat)/t.star*
+  #                 (kN+((t.star-1)*kN-t.star)*kN^t.star)/(1-kN)^2,
+  #               (1-kN^t.star)/(1-kN)*model$vector.ini$ini_Tat+
+  #                 (T.2100[2]-model$vector.ini$ini_Tat)/t.star*
+  #                 (kN+((t.star-1)*kN-t.star)*kN^t.star)/(1-kN)^2),
+  #             2,2)*mu_N
+  #   ellN  <- matrix(c(0,0),ncol=1)
+  #   ellN  <- solve(N)%*%C
+  #   return(ellN)})
+  
   ellN.condkapN<-apply(kapN,1,function(kN){
+    b_alpha_star <- 1/(1 - exp(-alpha*t.star))*(
+      (1 - kN^t.star)/(1 - kN) -
+        (1 - kN^t.star*exp(-alpha*t.star))/(1 - kN*exp(-alpha))
+    )
+    b_alpha_0 <- - 1/(1 - exp(-alpha*t.star))*(
+      (1 - kN^t.star)*exp(-alpha*t.star)/(1 - kN) -
+        (1 - kN^t.star*exp(-alpha*t.star))/(1 - kN*exp(-alpha))
+    )
     N<-matrix(c(rep((1-kN^t.star)/(1-kN),2),
-                (1-kN^t.star)/(1-kN)*model$vector.ini$ini_Tat+
-                  (T.2100[1]-model$vector.ini$ini_Tat)/t.star*
-                  (kN+((t.star-1)*kN-t.star)*kN^t.star)/(1-kN)^2,
-                (1-kN^t.star)/(1-kN)*model$vector.ini$ini_Tat+
-                  (T.2100[2]-model$vector.ini$ini_Tat)/t.star*
-                  (kN+((t.star-1)*kN-t.star)*kN^t.star)/(1-kN)^2),
+                b_alpha_0*model$vector.ini$ini_Tat + b_alpha_star*T.2100[1],
+                b_alpha_0*model$vector.ini$ini_Tat + b_alpha_star*T.2100[2]),
               2,2)*mu_N
+    
     ellN  <- matrix(c(0,0),ncol=1)
     ellN  <- solve(N)%*%C
     return(ellN)})
@@ -385,7 +420,6 @@ Fourier.psi <- function(model,gamma,x,
   
   return(f.cdf)
 }
-
 
 LT.CumN.infinite <- function(model,u,
                              T0=NaN,

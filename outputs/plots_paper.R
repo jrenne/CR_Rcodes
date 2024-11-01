@@ -20,6 +20,7 @@
 #*18 Relationship between SCC and Temperature risk premium, Lemoine approach
 #*19 Illustrations of gamma-zero distribution
 #*20 Comparison of damages
+#*21 IRF 1 Gt Carbon
 
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
@@ -196,6 +197,14 @@ if(is.element(19,plots)){
 if(is.element(20,plots)){
   print("Preparing figure illustrating Gamma-zero distribution")
   source("outputs/make_figures/make_figure_Damage_comparison.R",
+         encoding = 'ISO8859-1')
+}
+
+#*******************************21*********************************************#
+#IRF 1 Gt Carbon
+if(is.element(21,plots)){
+  print("Preparing figure illustrating Gamma-zero distribution")
+  source("outputs/make_figures/make_figure_IRF100Gt.R",
          encoding = 'ISO8859-1')
 }
 

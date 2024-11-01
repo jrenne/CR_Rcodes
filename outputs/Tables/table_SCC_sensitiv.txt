@@ -6,11 +6,12 @@ Specification&\multicolumn{2}{c}{$\gamma=7$}&\multicolumn{2}{c}{$\gamma=2$}&\mul
 Baseline&{\bf 211}&&{\bf 181}&&{\bf 237}&\\
 Deterministic model&173&$-$\textit{18\%}&173&$-$\textit{4\%}&173&$-$\textit{27\%}\\
 No exog. techno. uncertainty ($\sigma_A=0$)&211&$+$\textit{0\%}&181&$+$\textit{0\%}&237&$+$\textit{0\%}\\
-No damage uncertainty ($\mu_D=0$)&181&$-$\textit{14\%}&174&$-$\textit{4\%}&186&$-$\textit{22\%}\\
-Small damages (twice lower)&92&$-$\textit{56\%}&86&$-$\textit{52\%}&96&$-$\textit{60\%}\\
+No Damage uncertainty ($\mu_D=0$)&181&$-$\textit{14\%}&174&$-$\textit{4\%}&186&$-$\textit{22\%}\\
 No permafrost uncertainty ($\mu_N=0$)&206&$-$\textit{2\%}&180&$-$\textit{0\%}&228&$-$\textit{4\%}\\
-No permaf. releases ($a^{(N)}=b^{(N)}=0$)&141&$-$\textit{33\%}&123&$-$\textit{32\%}&155&$-$\textit{35\%}\\
 No sea-level uncertainty ($\mu_H=0$)&207&$-$\textit{2\%}&180&$-$\textit{0\%}&231&$-$\textit{3\%}\\
+No temperature uncertainty ($\mu_T=0$)&210&$-$\textit{0\%}&181&$-$\textit{0\%}&235&$-$\textit{1\%}\\
+Small damages (twice lower)&92&$-$\textit{56\%}&86&$-$\textit{52\%}&96&$-$\textit{60\%}\\
+No permaf. releases ($a^{(N)}=b^{(N)}=0$)&141&$-$\textit{33\%}&123&$-$\textit{32\%}&155&$-$\textit{35\%}\\
 No sea-level risks ($a^{(H)}=b^{(H)}=0$)&122&$-$\textit{42\%}&99&$-$\textit{46\%}&143&$-$\textit{40\%}\\
 \hline
 \multicolumn{7}{c}{{\bf B. Temperature risk premium (in \degree C)}}\\
@@ -20,11 +21,12 @@ Specification&\multicolumn{2}{c}{$\gamma=7$}&\multicolumn{2}{c}{$\gamma=2$}&\mul
 Baseline&{\bf 0.367}&&{\bf 0.233}&&{\bf 0.506}&\\
 Deterministic model&0.203&$-$\textit{0.164\degree C}&0.203&$-$\textit{0.030\degree C}&0.203&$-$\textit{0.303\degree C}\\
 No exog. techno. uncertainty ($\sigma_A=0$)&0.395&$+$\textit{0.028\degree C}&0.241&$+$\textit{0.009\degree C}&0.543&$+$\textit{0.037\degree C}\\
-No damage uncertainty ($\mu_D=0$)&0.331&$-$\textit{0.036\degree C}&0.231&$-$\textit{0.002\degree C}&0.406&$-$\textit{0.099\degree C}\\
-Small damages (twice lower)&0.242&$-$\textit{0.125\degree C}&0.214&$-$\textit{0.019\degree C}&0.266&$-$\textit{0.240\degree C}\\
+No Damage uncertainty ($\mu_D=0$)&0.331&$-$\textit{0.036\degree C}&0.231&$-$\textit{0.002\degree C}&0.406&$-$\textit{0.099\degree C}\\
 No permafrost uncertainty ($\mu_N=0$)&0.204&$-$\textit{0.162\degree C}&0.200&$-$\textit{0.033\degree C}&0.213&$-$\textit{0.292\degree C}\\
+No sea-level uncertainty ($\mu_H=0$)&0.362&$-$\textit{0.005\degree C}&0.232&$-$\textit{0.000\degree C}&0.493&$-$\textit{0.012\degree C}\\
+No temperature uncertainty ($\mu_T=0$)&0.329&$-$\textit{0.037\degree C}&0.226&$-$\textit{0.006\degree C}&0.438&$-$\textit{0.068\degree C}\\
+Small damages (twice lower)&0.242&$-$\textit{0.125\degree C}&0.214&$-$\textit{0.019\degree C}&0.266&$-$\textit{0.240\degree C}\\
 No permaf. releases ($a^{(N)}=b^{(N)}=0$)&-0.016&$-$\textit{0.383\degree C}&-0.007&$-$\textit{0.240\degree C}&-0.018&$-$\textit{0.524\degree C}\\
-No sea-level uncertainty ($\mu_H=0$)&0.362&$-$\textit{0.005\degree C}&0.232&$-$\textit{0.000\degree C}&0.494&$-$\textit{0.012\degree C}\\
 No sea-level risks ($a^{(H)}=b^{(H)}=0$)&0.275&$-$\textit{0.091\degree C}&0.216&$-$\textit{0.016\degree C}&0.347&$-$\textit{0.159\degree C}\\
 \hline
 \multicolumn{7}{c}{{\bf C. SLR risk premium (in meters)}}\\
@@ -34,11 +36,12 @@ Specification&\multicolumn{2}{c}{$\gamma=7$}&\multicolumn{2}{c}{$\gamma=2$}&\mul
 Baseline&{\bf 0.209}&&{\bf 0.095}&&{\bf 0.304}&\\
 Deterministic model&0.059&$-$\textit{0.150 m}&0.059&$-$\textit{0.036 m}&0.059&$-$\textit{0.245 m}\\
 No exog. techno. uncertainty ($\sigma_A=0$)&0.213&$+$\textit{0.005 m}&0.096&$+$\textit{0.001 m}&0.311&$+$\textit{0.007 m}\\
-No damage uncertainty ($\mu_D=0$)&0.197&$-$\textit{0.011 m}&0.094&$-$\textit{0.001 m}&0.271&$-$\textit{0.033 m}\\
-Small damages (twice lower)&0.059&$-$\textit{0.150 m}&0.038&$-$\textit{0.057 m}&0.073&$-$\textit{0.231 m}\\
+No Damage uncertainty ($\mu_D=0$)&0.197&$-$\textit{0.011 m}&0.094&$-$\textit{0.001 m}&0.271&$-$\textit{0.033 m}\\
 No permafrost uncertainty ($\mu_N=0$)&0.154&$-$\textit{0.055 m}&0.084&$-$\textit{0.011 m}&0.201&$-$\textit{0.103 m}\\
-No permaf. releases ($a^{(N)}=b^{(N)}=0$)&0.062&$-$\textit{0.147 m}&0.017&$-$\textit{0.078 m}&0.091&$-$\textit{0.213 m}\\
 No sea-level uncertainty ($\mu_H=0$)&0.116&$-$\textit{0.092 m}&0.071&$-$\textit{0.024 m}&0.160&$-$\textit{0.144 m}\\
+No temperature uncertainty ($\mu_T=0$)&0.191&$-$\textit{0.018 m}&0.091&$-$\textit{0.004 m}&0.271&$-$\textit{0.033 m}\\
+Small damages (twice lower)&0.059&$-$\textit{0.150 m}&0.038&$-$\textit{0.057 m}&0.073&$-$\textit{0.231 m}\\
+No permaf. releases ($a^{(N)}=b^{(N)}=0$)&0.061&$-$\textit{0.147 m}&0.017&$-$\textit{0.078 m}&0.091&$-$\textit{0.213 m}\\
 No sea-level risks ($a^{(H)}=b^{(H)}=0$)&0.130&$-$\textit{0.079 m}&0.130&$+$\textit{0.035 m}&0.130&$-$\textit{0.174 m}\\
 \hline
 \multicolumn{7}{c}{{\bf D. Long-term rate (in percent; maturity: 2100)}}\\
@@ -48,9 +51,10 @@ Specification&\multicolumn{2}{c}{$\gamma=7$}&\multicolumn{2}{c}{$\gamma=2$}&\mul
 Baseline&{\bf 2.60}&&{\bf 2.80}&&{\bf 2.44}&\\
 Deterministic model&2.85&$+$\textit{24 bps}&2.85&$+$\textit{5 bps}&2.85&$+$\textit{40 bps}\\
 No exog. techno. uncertainty ($\sigma_A=0$)&2.71&$+$\textit{11 bps}&2.82&$+$\textit{3 bps}&2.60&$+$\textit{16 bps}\\
-No damage uncertainty ($\mu_D=0$)&2.71&$+$\textit{11 bps}&2.82&$+$\textit{2 bps}&2.65&$+$\textit{20 bps}\\
-Small damages (twice lower)&2.85&$+$\textit{25 bps}&2.96&$+$\textit{16 bps}&2.79&$+$\textit{34 bps}\\
+No Damage uncertainty ($\mu_D=0$)&2.71&$+$\textit{11 bps}&2.82&$+$\textit{2 bps}&2.65&$+$\textit{20 bps}\\
 No permafrost uncertainty ($\mu_N=0$)&2.62&$+$\textit{2 bps}&2.80&$+$\textit{0 bps}&2.48&$+$\textit{4 bps}\\
-No permaf. releases ($a^{(N)}=b^{(N)}=0$)&2.71&$+$\textit{11 bps}&2.87&$+$\textit{7 bps}&2.60&$+$\textit{15 bps}\\
 No sea-level uncertainty ($\mu_H=0$)&2.62&$+$\textit{1 bps}&2.80&$+$\textit{0 bps}&2.46&$+$\textit{2 bps}\\
+No temperature uncertainty ($\mu_T=0$)&2.61&$+$\textit{1 bps}&2.80&$+$\textit{0 bps}&2.46&$+$\textit{1 bps}\\
+Small damages (twice lower)&2.85&$+$\textit{25 bps}&2.96&$+$\textit{16 bps}&2.79&$+$\textit{34 bps}\\
+No permaf. releases ($a^{(N)}=b^{(N)}=0$)&2.71&$+$\textit{11 bps}&2.87&$+$\textit{7 bps}&2.60&$+$\textit{15 bps}\\
 No sea-level risks ($a^{(H)}=b^{(H)}=0$)&2.74&$+$\textit{13 bps}&2.91&$+$\textit{12 bps}&2.59&$+$\textit{15 bps}\\

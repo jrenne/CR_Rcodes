@@ -135,7 +135,7 @@ param.clim<-list(
   gback      = 0.05,                                                            #DICE2023
   pback      = 695,                                                             #DICE2023
   theta2     = 2.6,                                                             #DICE2023,expcost2
-  b_sk       = .1,
+  b_sk       = .1,# or .015/.7 XXXXXXXXXXXXXXXXXXXXXXXXXXX
   tol.GN     = 10^(-6),
   eps.GN     = 10^(-5),
   mu_T       = NaN,
