@@ -1,12 +1,12 @@
 
 
 
-T0    <- .5
-Tstar <- 3
+T0    <- 1.1
+Tstar <- 2
 tstar <- 16
 kappa <- .9
 
-alpha <- .2
+alpha <- .04
 
 Tinf <- (Tstar - T0 * exp(-alpha*tstar))/(1 - exp(-alpha*tstar))
 

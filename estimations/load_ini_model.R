@@ -233,7 +233,7 @@ print("***** calibration: done *****")
 
 
 # gamma <- 1.45
-# gamma <- 7
+# #gamma <- 7
 # model.CRRA <- model
 # model.CRRA$parameters$gamma <- gamma
 # # model.CRRA$target_vector["mu_c0"] <- .04

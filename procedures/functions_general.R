@@ -19,16 +19,15 @@ solveParam4c <- function(model,indic_CRRA=FALSE){
   return(model)
 }
 
-solveParam4D <-function(model,alpha=.000001){
-  T.2100  <- c(2,4)
-  t.star  <- model$horiz.2100
+solveParam4D <-function(model,alpha=.04){
+  T.2100 <- c(2,4)
+  t.star <- model$horiz.2100
+  Tat0   <- model$vector.ini$ini_Tat
   
   cst     <-log(model$target_vector["stdCumD4"]^2+model$target_vector["ECumD4"]^2)/
     log(model$target_vector["ECumD4"])
   
   mu_D    <-(2-cst)/(2*cst-2)
-  
-  ell.D<-matrix(c(0,0),ncol=1)
   
   a_alpha_star <- (t.star*(1 - exp(-alpha)) - (1- exp(-alpha*t.star)))/
     ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
@@ -45,38 +44,49 @@ solveParam4D <-function(model,alpha=.000001){
   #              log(model$target_vector["ECumD4"])),
   #          ncol=1)
   
-  ell.D<-solve(matrix(c(t.star,t.star,
-                        a_alpha_star*T.2100[1] + a_alpha_0*model$vector.ini$ini_Tat,
-                        a_alpha_star*T.2100[2] + a_alpha_0*model$vector.ini$ini_Tat),
-                      2,2))%*%
-    matrix((-1-mu_D)/(mu_D)*
+  ab.D<-solve(matrix(c(t.star,t.star,
+                        a_alpha_star*T.2100[1] + a_alpha_0*Tat0,
+                        a_alpha_star*T.2100[2] + a_alpha_0*Tat0),2,2))%*%
+    matrix((-1-mu_D)*
              c(log(model$target_vector["ECumD2"]),
                log(model$target_vector["ECumD4"])),
            ncol=1)
   
   model$parameters$mu_D <- mu_D
-  model$parameters$a_D  <- ell.D[1] * mu_D
-  model$parameters$b_D  <- ell.D[2] * mu_D
+  model$parameters$a_D  <- ab.D[1]
+  model$parameters$b_D  <- ab.D[2]
   
   return(model)
 }
 
-solveParam4H <-function(model){
+solveParam4H <-function(model,
+                        alpha=.04){
   T.2100 <- c(2,4)
   t.star <- model$horiz.2100
+  Tat0   <- model$vector.ini$ini_Tat
   
   C<-matrix(c(model$target_vector["EH2"]-model$vector.ini$ini_H,
               model$target_vector["EH4"]-model$vector.ini$ini_H),
             ncol=1)
   
-  S<-matrix(c(.5*((t.star-1)*T.2100[1]+(t.star+1)*model$vector.ini$ini_Tat),
-              .5*((t.star-1)*T.2100[2]+(t.star+1)*model$vector.ini$ini_Tat),
-              t.star,t.star),
-            2,2)
+  a_alpha_star <- (t.star*(1 - exp(-alpha)) - (1- exp(-alpha*t.star)))/
+    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*t.star)) - t.star*exp(-alpha*t.star)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
+  S<-matrix(c(t.star,t.star,
+              a_alpha_star*T.2100[1] + a_alpha_0*Tat0,
+              a_alpha_star*T.2100[2] + a_alpha_0*Tat0),2,2)
+  
+  ## Linear conditional trajectory:
+  # S<-matrix(c(.5*((t.star-1)*T.2100[1]+(t.star+1)*model$vector.ini$ini_Tat),
+  #             .5*((t.star-1)*T.2100[2]+(t.star+1)*model$vector.ini$ini_Tat),
+  #             t.star,t.star),
+  #           2,2)
+  
   SAT <- solve(S)%*%C
   
-  model$parameters$b_H <- SAT[1]
-  model$parameters$a_H <- SAT[2]
+  model$parameters$a_H <- SAT[1]
+  model$parameters$b_H <- SAT[2]
   
   model$parameters$mu_H  <- model$target_vector["stdH4"]^2/
     (2*model$target_vector["EH4"])
@@ -87,11 +97,12 @@ solveParam4H <-function(model){
 solveParam4N <-function(model,
                         T.2100 = c(2,4),
                         T.2500 = 4,
-                        alpha = .000001){
+                        alpha = .04){
   
-  t.star  <- model$horiz.2100
+  t.star <- model$horiz.2100
+  Tat0   <- model$vector.ini$ini_Tat
   
-  mu_N  <- model$target_vector["stdCumN4"]^2/(2*model$target_vector["ECumN4"])
+  mu_N   <- model$target_vector["stdCumN4"]^2/(2*model$target_vector["ECumN4"])
   
   kapN  <- matrix(seq(0.6,0.98,length=5000),ncol=1)
   
@@ -113,7 +124,7 @@ solveParam4N <-function(model,
   #   ellN  <- solve(N)%*%C
   #   return(ellN)})
   
-  ellN.condkapN<-apply(kapN,1,function(kN){
+  abN.condkapN<-apply(kapN,1,function(kN){
     b_alpha_star <- 1/(1 - exp(-alpha*t.star))*(
       (1 - kN^t.star)/(1 - kN) -
         (1 - kN^t.star*exp(-alpha*t.star))/(1 - kN*exp(-alpha))
@@ -123,31 +134,42 @@ solveParam4N <-function(model,
         (1 - kN^t.star*exp(-alpha*t.star))/(1 - kN*exp(-alpha))
     )
     N<-matrix(c(rep((1-kN^t.star)/(1-kN),2),
-                b_alpha_0*model$vector.ini$ini_Tat + b_alpha_star*T.2100[1],
-                b_alpha_0*model$vector.ini$ini_Tat + b_alpha_star*T.2100[2]),
-              2,2)*mu_N
+                b_alpha_0*Tat0 + b_alpha_star*T.2100[1],
+                b_alpha_0*Tat0 + b_alpha_star*T.2100[2]),
+              2,2)
     
-    ellN  <- matrix(c(0,0),ncol=1)
-    ellN  <- solve(N)%*%C
-    return(ellN)})
+    abN  <- matrix(c(0,0),ncol=1)
+    abN  <- solve(N)%*%C
+    return(abN)})
   
-  CumN.inf    <- c(mu_N/(1-kapN)) *
-    c(matrix(c(1,T.2500),nrow=1) %*% ellN.condkapN)
+  # CumN.inf    <- c(1/(1-kapN)) *
+  #   c(matrix(c(1,T.2500),nrow=1) %*% abN.condkapN)
   
-  param.CumN  <-rbind(t(kapN),ellN.condkapN,t(CumN.inf),
+  # ==========================================
+  # ==========================================
+  alpha <- 100
+  CumN.inf <- c(apply(rbind(c(1/(1-kapN)),
+                            c(T.2500/(1-kapN) - T.2500/(1-kapN*exp(-alpha)) +
+                                Tat0/(1-kapN*exp(-alpha)))
+                            #c(T.2500/(1-kapN)) # Previous methodology
+                            ) * abN.condkapN,2,sum))
+  # ==========================================
+  # ==========================================
+  
+  param.CumN  <-rbind(t(kapN),abN.condkapN,t(CumN.inf),
                       rep(model$target_vector["ECumNinf"],length(kapN)),
                       t(CumN.inf-model$target_vector["ECumNinf"]))
-  rownames(param.CumN)<-c("kappaN","ell0.N","ell1.N","CumN.inf",
+  rownames(param.CumN)<-c("kappaN","a.N","b.N","CumN.inf",
                           "Target",
                           "Diff")
   
-  ellN.kapN  <-param.CumN[,which(abs(param.CumN["Diff",])==
-                                   min(abs(param.CumN["Diff",])))]
+  abN.kapN  <-param.CumN[,which(abs(param.CumN["Diff",])==
+                                  min(abs(param.CumN["Diff",])))]
   
   model$parameters$mu_N    <- mu_N
-  model$parameters$kappa_N <- ellN.kapN["kappaN"]
-  model$parameters$a_N     <- ellN.kapN["ell0.N"] * mu_N
-  model$parameters$b_N     <- ellN.kapN["ell1.N"] * mu_N
+  model$parameters$kappa_N <- abN.kapN["kappaN"]
+  model$parameters$a_N     <- abN.kapN["a.N"]
+  model$parameters$b_N     <- abN.kapN["b.N"]
   
   return(model)
 }
@@ -567,22 +589,34 @@ varphi<-function(model_sol,
                  omega.varphi,
                  H,
                  X=model_sol$X,t=0){
-  if((t+H)>=(model_sol$Tmax-1)){
-    P.pi    <-model_sol$pi
+  # if((t+H)>=(model_sol$Tmax-1)){
+  #   P.pi    <-model_sol$pi
+  #   inf     <-rep(list(model_sol$inf_matx$pi.inf),t+H-(model_sol$Tmax-1)+1)
+  #   P.pi    <-c(P.pi,inf)
+  #   
+  #   P.eta_1 <-model_sol$eta1
+  #   inf     <-rep(list(model_sol$inf_matx$eta1.inf),t+H-(model_sol$Tmax-1)+1)
+  #   P.eta_1 <-c(P.eta_1,inf)
+  #   
+  #   P.eta_0 <-model_sol$eta0
+  #   inf     <-matrix(model_sol$inf_matx$eta0.inf,t+H-(model_sol$Tmax-1)+1,1)
+  #   P.eta_0 <-rbind(P.eta_0,inf)
+  # }else{
+  #   P.pi    <-model_sol$pi
+  #   P.eta_1 <-model_sol$eta1
+  #   P.eta_0 <-model_sol$eta0
+  # }
+  
+  P.pi    <-model_sol$pi
+  P.eta_1 <-model_sol$eta1
+  P.eta_0 <-model_sol$eta0
+  if((t+H)>=(model_sol$Tmax-1)){# maturity beyond Tmax
     inf     <-rep(list(model_sol$inf_matx$pi.inf),t+H-(model_sol$Tmax-1)+1)
     P.pi    <-c(P.pi,inf)
-    
-    P.eta_1 <-model_sol$eta1
     inf     <-rep(list(model_sol$inf_matx$eta1.inf),t+H-(model_sol$Tmax-1)+1)
     P.eta_1 <-c(P.eta_1,inf)
-    
-    P.eta_0 <-model_sol$eta0
     inf     <-matrix(model_sol$inf_matx$eta0.inf,t+H-(model_sol$Tmax-1)+1,1)
     P.eta_0 <-rbind(P.eta_0,inf)
-  }else{
-    P.pi    <-model_sol$pi
-    P.eta_1 <-model_sol$eta1
-    P.eta_0 <-model_sol$eta0
   }
   
   #List of all our U.sh
@@ -1037,7 +1071,7 @@ model_solve <- function(model,
   #omega.star.inf[indic.delc,indic.D]     <- 0 # Infff
   if(indic_CRRA){
     omega.star.inf[indic.delc,indic.D] <- 
-      omega.star.inf[indic.delc,indic.D]/param$gamma
+      omega.star.inf[indic.delc,indic.D]#/param$gamma
   }
   #omega.star.inf[indic.Cum_D,indic.D]    <- -1 
   omega.star.inf[indic.E,indic.N]        <-  1 #shock N
@@ -1051,7 +1085,7 @@ model_solve <- function(model,
   #A0.star.inf[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
     A0.star.inf[indic.delc,indic.H] <- 
-      A0.star.inf[indic.delc,indic.H]/param$gamma
+      A0.star.inf[indic.delc,indic.H]#/param$gamma
   }
   A0.star.inf[indic.E,indic.E_ind]   <- -1
   A0.star.inf[indic.Forc,indic.M_at] <- -param$tau/(log(2)*param$m_pi*param$m0)
@@ -1072,7 +1106,7 @@ model_solve <- function(model,
   A1.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
   #A1.star.inf[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
-    A1.star.inf[indic.delc,indic.H] <- A1.star.inf[indic.delc,indic.H]/param$gamma
+    A1.star.inf[indic.delc,indic.H] <- A1.star.inf[indic.delc,indic.H]#/param$gamma
   }
   A1.star.inf[indic.y_tilde,indic.y_tilde]    <- 1
   A1.star.inf[indic.E_ind,indic.y_tilde]      <- 0
@@ -1414,7 +1448,7 @@ mu_dep <- function(model_sol,
   A0.star <- model_sol$A0.star.inf
   A0.star[indic.delc,indic.H] <- param$b_sk # Infff
   if(indic_CRRA){
-    A0.star[indic.delc,indic.H] <- A0.star[indic.delc,indic.H]/param$gamma
+    A0.star[indic.delc,indic.H] <- A0.star[indic.delc,indic.H]#/param$gamma
   }
   
   A1.star<-list()
@@ -1432,7 +1466,7 @@ mu_dep <- function(model_sol,
     A1_i[indic.H,indic.H]          <- 1
     A1_i[indic.delc,indic.H]       <-  param$b_sk
     if(indic_CRRA){
-      A1_i[indic.delc,indic.H] <- A1_i[indic.delc,indic.H]/param$gamma
+      A1_i[indic.delc,indic.H] <- A1_i[indic.delc,indic.H]#/param$gamma
     }
     A1.star[[i]] <- A1_i 
   }
@@ -1473,7 +1507,7 @@ mu_dep <- function(model_sol,
     
     omega_i[indic.delc,indic.D]     <- -1 #shock D
     if(indic_CRRA){
-      omega_i[indic.delc,indic.D] <- omega_i[indic.delc,indic.D]/param$gamma
+      omega_i[indic.delc,indic.D] <- omega_i[indic.delc,indic.D]#/param$gamma
     }
     #omega_i[indic.Cum_D,indic.D]    <- -1 #shock D
     omega_i[indic.E,indic.N]        <-  1 #shock N on E

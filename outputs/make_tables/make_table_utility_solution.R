@@ -44,12 +44,12 @@ matrix_names_Latex[,1] <- model_sol$names.var.X
 matrix_names_Latex[,2] <- c("$\\Delta c_t$","$\\tilde{y}_t$",
                             "$\\mathcal{E}_t$","$\\mathcal{E}_{Ind,t}$",
                             "$F_t$","$M_{at,t}$",
-                            "$M_{up,t}$","$M_{lo,t}$",
-                            "$T_{lo,t}$","$Cum_{\\mathcal{E},t}$",
+                            "$M_{UP,t}$","$M_{LO,t}$",
+                            "$T_{LO,t}$","$Cum_{\\mathcal{E},t}$",
                             "$Cum_{\\Delta c,t}$","$H_t$",
                             "$\\eta_{A,t}$","$\\eta_{X,t}$",
                             "$D_t$","$N_t$",
-                            "$T_{at,t}$","$\\Delta H_t$")
+                            "$T_{AT,t}$","$\\Delta H_t$")
 
 # Compute utility solution for initial period:
 mu_u.1 <- mu_u.t.fct(model_sol,model_sol$Tmax)
