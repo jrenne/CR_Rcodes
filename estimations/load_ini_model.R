@@ -67,7 +67,7 @@ param.econ<-list(
   sigma_a    = NaN,                                                             #will be calibrated
   Phi        = Phi.prep,
   gamma      = 7,
-  delta      = (1 - .015)^5,
+  delta      = (1 - .01)^5,
   delta_K    = 0.27,                                                            
   c0         = 299                                                              #Ini consumpt. (in tn) over tstep
 )
@@ -80,9 +80,9 @@ b23     <- 0.0082
 mateq   <- 607
 mueq    <- 489
 mleq    <- 1281
-c1      <- 0.137*tstep
+c1      <- 0.137 #*tstep
 c3      <- 0.73
-c4      <- 0.00689*tstep
+c4      <- 0.00689 #*tstep
 f2co2   <- 3.45
 t2co2   <- 3.25
 
@@ -135,7 +135,7 @@ param.clim<-list(
   gback      = 0.05,                                                            #DICE2023
   pback      = 695,                                                             #DICE2023
   theta2     = 2.6,                                                             #DICE2023,expcost2
-  b_sk       = .1,# or .015/.7 XXXXXXXXXXXXXXXXXXXXXXXXXXX
+  b_sk       = .015/.7,# .1 or .015/.7 XXXXXXXXXXXXXXXXXXXXXXXXXXX
   tol.GN     = 10^(-6),
   eps.GN     = 10^(-5),
   mu_T       = NaN,

@@ -40,7 +40,7 @@ all.pdf <- matrix(NaN,length(CumN.values.interpol)-1,length(all.Ttilde))
 
 for(i in 1:length(all.Ttilde)){
   aux <- Fourier.psi(model_sol,CumN.values,xN,
-                     T0=NaN,
+                     T0=model$vector.ini$ini_Tat,
                      Tstar = all.Ttilde[i],
                      tstar=NaN,
                      psi.LT=LT.CumN.infinite)
@@ -67,7 +67,7 @@ abline(v=model_sol$target_vector[["ECumNinf"]],col="red",lwd=2)
 
 legend("topright",
        legend=paste(all.Ttilde,"\u00B0C",sep=""),
-       title=expression(paste("Long-term value of ",tilde(T),":",sep="")),
+       title=expression(paste("Long-term value of ",T[infinity],":",sep="")),
        lty=c(2,1,3),
        col=c("grey","black","grey"),
        #cex=1.5,

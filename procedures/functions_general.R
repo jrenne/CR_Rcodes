@@ -21,7 +21,7 @@ solveParam4c <- function(model,indic_CRRA=FALSE){
 
 solveParam4D <-function(model,alpha=.04){
   T.2100 <- c(2,4)
-  t.star <- model$horiz.2100
+  tstar <- model$horiz.2100
   Tat0   <- model$vector.ini$ini_Tat
   
   cst     <-log(model$target_vector["stdCumD4"]^2+model$target_vector["ECumD4"]^2)/
@@ -29,24 +29,24 @@ solveParam4D <-function(model,alpha=.04){
   
   mu_D    <-(2-cst)/(2*cst-2)
   
-  a_alpha_star <- (t.star*(1 - exp(-alpha)) - (1- exp(-alpha*t.star)))/
-    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
-  a_alpha_0 <- ((1 - exp(-alpha*t.star)) - t.star*exp(-alpha*t.star)*(1-exp(-alpha)))/
-    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
   
   ## Linear conditional trajectory:
-  # ell.D<-solve(matrix(c(t.star,t.star,
-  #                       .5*((t.star-1)*T.2100[1]+(t.star+1)*model$vector.ini$ini_Tat),
-  #                       .5*((t.star-1)*T.2100[2]+(t.star+1)*model$vector.ini$ini_Tat)),
+  # ell.D<-solve(matrix(c(tstar,tstar,
+  #                       .5*((tstar-1)*T.2100[1]+(tstar+1)*model$vector.ini$ini_Tat),
+  #                       .5*((tstar-1)*T.2100[2]+(tstar+1)*model$vector.ini$ini_Tat)),
   #                     2,2))%*%
   #   matrix((-1-mu_D)/(mu_D)*
   #            c(log(model$target_vector["ECumD2"]),
   #              log(model$target_vector["ECumD4"])),
   #          ncol=1)
   
-  ab.D<-solve(matrix(c(t.star,t.star,
-                        a_alpha_star*T.2100[1] + a_alpha_0*Tat0,
-                        a_alpha_star*T.2100[2] + a_alpha_0*Tat0),2,2))%*%
+  ab.D<-solve(matrix(c(tstar,tstar,
+                       a_alpha_star*T.2100[1] + a_alpha_0*Tat0,
+                       a_alpha_star*T.2100[2] + a_alpha_0*Tat0),2,2))%*%
     matrix((-1-mu_D)*
              c(log(model$target_vector["ECumD2"]),
                log(model$target_vector["ECumD4"])),
@@ -62,25 +62,25 @@ solveParam4D <-function(model,alpha=.04){
 solveParam4H <-function(model,
                         alpha=.04){
   T.2100 <- c(2,4)
-  t.star <- model$horiz.2100
+  tstar <- model$horiz.2100
   Tat0   <- model$vector.ini$ini_Tat
   
   C<-matrix(c(model$target_vector["EH2"]-model$vector.ini$ini_H,
               model$target_vector["EH4"]-model$vector.ini$ini_H),
             ncol=1)
   
-  a_alpha_star <- (t.star*(1 - exp(-alpha)) - (1- exp(-alpha*t.star)))/
-    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
-  a_alpha_0 <- ((1 - exp(-alpha*t.star)) - t.star*exp(-alpha*t.star)*(1-exp(-alpha)))/
-    ((1- exp(-alpha*t.star))*(1- exp(-alpha)))
-  S<-matrix(c(t.star,t.star,
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  S<-matrix(c(tstar,tstar,
               a_alpha_star*T.2100[1] + a_alpha_0*Tat0,
               a_alpha_star*T.2100[2] + a_alpha_0*Tat0),2,2)
   
   ## Linear conditional trajectory:
-  # S<-matrix(c(.5*((t.star-1)*T.2100[1]+(t.star+1)*model$vector.ini$ini_Tat),
-  #             .5*((t.star-1)*T.2100[2]+(t.star+1)*model$vector.ini$ini_Tat),
-  #             t.star,t.star),
+  # S<-matrix(c(.5*((tstar-1)*T.2100[1]+(tstar+1)*model$vector.ini$ini_Tat),
+  #             .5*((tstar-1)*T.2100[2]+(tstar+1)*model$vector.ini$ini_Tat),
+  #             tstar,tstar),
   #           2,2)
   
   SAT <- solve(S)%*%C
@@ -99,7 +99,7 @@ solveParam4N <-function(model,
                         T.2500 = 4,
                         alpha = .04){
   
-  t.star <- model$horiz.2100
+  tstar <- model$horiz.2100
   Tat0   <- model$vector.ini$ini_Tat
   
   mu_N   <- model$target_vector["stdCumN4"]^2/(2*model$target_vector["ECumN4"])
@@ -112,28 +112,28 @@ solveParam4N <-function(model,
   
   # # Linear parametric trajectory:
   # ellN.condkapN<-apply(kapN,1,function(kN){
-  #   N<-matrix(c(rep((1-kN^t.star)/(1-kN),2),
-  #               (1-kN^t.star)/(1-kN)*model$vector.ini$ini_Tat+
-  #                 (T.2100[1]-model$vector.ini$ini_Tat)/t.star*
-  #                 (kN+((t.star-1)*kN-t.star)*kN^t.star)/(1-kN)^2,
-  #               (1-kN^t.star)/(1-kN)*model$vector.ini$ini_Tat+
-  #                 (T.2100[2]-model$vector.ini$ini_Tat)/t.star*
-  #                 (kN+((t.star-1)*kN-t.star)*kN^t.star)/(1-kN)^2),
+  #   N<-matrix(c(rep((1-kN^tstar)/(1-kN),2),
+  #               (1-kN^tstar)/(1-kN)*model$vector.ini$ini_Tat+
+  #                 (T.2100[1]-model$vector.ini$ini_Tat)/tstar*
+  #                 (kN+((tstar-1)*kN-tstar)*kN^tstar)/(1-kN)^2,
+  #               (1-kN^tstar)/(1-kN)*model$vector.ini$ini_Tat+
+  #                 (T.2100[2]-model$vector.ini$ini_Tat)/tstar*
+  #                 (kN+((tstar-1)*kN-tstar)*kN^tstar)/(1-kN)^2),
   #             2,2)*mu_N
   #   ellN  <- matrix(c(0,0),ncol=1)
   #   ellN  <- solve(N)%*%C
   #   return(ellN)})
   
   abN.condkapN<-apply(kapN,1,function(kN){
-    b_alpha_star <- 1/(1 - exp(-alpha*t.star))*(
-      (1 - kN^t.star)/(1 - kN) -
-        (1 - kN^t.star*exp(-alpha*t.star))/(1 - kN*exp(-alpha))
+    b_alpha_star <- 1/(1 - exp(-alpha*tstar))*(
+      (1 - kN^tstar)/(1 - kN) -
+        (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
     )
-    b_alpha_0 <- - 1/(1 - exp(-alpha*t.star))*(
-      (1 - kN^t.star)*exp(-alpha*t.star)/(1 - kN) -
-        (1 - kN^t.star*exp(-alpha*t.star))/(1 - kN*exp(-alpha))
+    b_alpha_0 <- - 1/(1 - exp(-alpha*tstar))*(
+      (1 - kN^tstar)*exp(-alpha*tstar)/(1 - kN) -
+        (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
     )
-    N<-matrix(c(rep((1-kN^t.star)/(1-kN),2),
+    N<-matrix(c(rep((1-kN^tstar)/(1-kN),2),
                 b_alpha_0*Tat0 + b_alpha_star*T.2100[1],
                 b_alpha_0*Tat0 + b_alpha_star*T.2100[2]),
               2,2)
@@ -147,12 +147,11 @@ solveParam4N <-function(model,
   
   # ==========================================
   # ==========================================
-  alpha <- 100
+  #alpha <- 100
   CumN.inf <- c(apply(rbind(c(1/(1-kapN)),
-                            c(T.2500/(1-kapN) - T.2500/(1-kapN*exp(-alpha)) +
-                                Tat0/(1-kapN*exp(-alpha)))
+                            c(T.2500/(1-kapN) - (T.2500 - Tat0)/(1-kapN*exp(-alpha)))
                             #c(T.2500/(1-kapN)) # Previous methodology
-                            ) * abN.condkapN,2,sum))
+  ) * abN.condkapN,2,sum))
   # ==========================================
   # ==========================================
   
@@ -163,8 +162,7 @@ solveParam4N <-function(model,
                           "Target",
                           "Diff")
   
-  abN.kapN  <-param.CumN[,which(abs(param.CumN["Diff",])==
-                                  min(abs(param.CumN["Diff",])))]
+  abN.kapN  <-param.CumN[,which.min(abs(param.CumN["Diff",]))]
   
   model$parameters$mu_N    <- mu_N
   model$parameters$kappa_N <- abN.kapN["kappaN"]
@@ -381,11 +379,18 @@ extract<-function(list, n){
 LT.CumD <- function(model,u,
                     T0=model$vector.ini$ini_Tat,
                     Tstar,
-                    tstar){
+                    tstar,
+                    alpha=.04){
   param <- model$parameters
-  a <- tstar * u*param$mu_D/(1-u*param$mu_D) * param$a_D / param$mu_D
-  b <- u*param$mu_D/(1-u*param$mu_D) * param$b_D / param$mu_D /2 * ((tstar-1)*Tstar + (tstar+1)*T0)
-  return(exp(a+b))
+  
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  
+  res <- u/(1-u*param$mu_D) * (tstar*param$a_D +
+                                 param$b_D * (a_alpha_star*Tstar + a_alpha_0*T0))
+  return(exp(res))
 }
 
 #------- Laplace transform approximation for permafrost-related emissions:
@@ -402,31 +407,73 @@ LT.CumN <- function(model,u,
 LT.SLR <- function(model,u,
                    T0=model$vector.ini$ini_Tat,
                    Tstar,
-                   tstar){
+                   tstar,
+                   alpha=.04){
   param <- model$parameters
-  a <- u*model$vector.ini$ini_H +
-    tstar * u*param$mu_H/(1-u*param$mu_H) * param$a_H/param$mu_H
-  b <- u*param$mu_H/(1-u*param$mu_H) * param$b_H/param$mu_H/2 * ((tstar-1)*Tstar + (tstar+1)*T0)
-  return(exp(a+b))
+  
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  
+  res <- u*model$vector.ini$ini_H +
+    u/(1-u*param$mu_H) * (tstar*param$a_H +
+                            param$b_H * (a_alpha_star*Tstar + a_alpha_0*T0))
+  
+  return(exp(res))
 }
 
-Param.Gamma0.CumN <- function(model,T0=model$vector.ini$ini_Tat,Tstar,tstar){
+Param.Gamma0.CumN <- function(model,
+                              T0 = model$vector.ini$ini_Tat,
+                              Tstar,
+                              tstar,
+                              alpha = .04){
   param  <- model$parameters
   kN     <- param$kappa_N
-  ell0.N <- param$a_N / param$mu_N
-  ell1.N <- param$b_N / param$mu_N
-  mu_N   <- param$mu_N
-  lambda <- (1-kN^tstar)/(1-kN)*(ell0.N + ell1.N * T0) + 
-    ell1.N * (Tstar - T0)/tstar * (kN+((tstar-1)*kN-tstar)*kN^tstar)/(1-kN)^2
+  
+  b_alpha_star <- 1/(1 - exp(-alpha*tstar))*(
+    (1 - kN^tstar)/(1 - kN) -
+      (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
+  )
+  b_alpha_0 <- - 1/(1 - exp(-alpha*tstar))*(
+    (1 - kN^tstar)*exp(-alpha*tstar)/(1 - kN) -
+      (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
+  )
+  
+  lambda <- (1-kN^tstar)/(1-kN)*param$a_N/param$mu_N +
+    (b_alpha_0 * T0 + b_alpha_star * Tstar)*param$b_N/param$mu_N
+  
   return(list(lambda=lambda,
-              mu=mu_N))
+              mu=param$mu_N))
 }
+
+Param.Gamma0.H <- function(model,
+                           T0 = model$vector.ini$ini_Tat,
+                           Tstar,
+                           tstar,
+                           alpha = .04){
+  param  <- model$parameters
+  
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  
+  lambda <- model$vector.ini$ini_H/param$mu_H + tstar*param$a_H/param$mu_H +
+    (a_alpha_0 * T0 + a_alpha_star * Tstar)*param$b_H/param$mu_H
+  
+  return(list(lambda=lambda,
+              mu=param$mu_H))
+}
+
+
 
 #------- Fourier transform for permafrost-related emissions:
 Fourier.psi <- function(model,gamma,x,
                         T0=model$vector.ini$ini_Tat,
                         Tstar,
-                        tstar,psi.LT){
+                        tstar,
+                        psi.LT){
   u       <- c(1i*x)
   psiCumD <- matrix(psi.LT(model,u,T0,Tstar,tstar),ncol=1)
   
@@ -444,11 +491,15 @@ Fourier.psi <- function(model,gamma,x,
 }
 
 LT.CumN.infinite <- function(model,u,
-                             T0=NaN,
-                             Tstar = 4,
-                             tstar=NaN){
+                             T0 = model$vector.ini$ini_Tat,
+                             Tinf = 4,
+                             tstar = NaN,
+                             alpha = .04){
   param <- model$parameters
-  aux <- 1/(1-param$kappa_N) * u/(1-u*param$mu_N) * (param$a_N + param$b_N * Tstar)
+  aux <- u/(1-u*param$mu_N) * 
+    (param$a_N / (1-param$kappa_N) +
+       param$b_N * Tinf / (1 - param$kappa_N) -
+       param$b_N * (Tinf - T0) / (1 - param$kappa_N * exp(-alpha)))
   return(exp(aux))
 }
 
@@ -1042,11 +1093,11 @@ model_solve <- function(model,
     model_sol$parameters$b_N/model_sol$parameters$mu_N
   model_sol[["ell1.N"]] <- ell1.N
   
-  ell1.T   <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.T[indic.Forc]   <- param$xi_1
+  ell1.T <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
+  ell1.T[indic.Forc]   <- param$xi_1*model_sol$tstep
   ell1.T[model$n.Z+indic.T_at] <-
-    1-param$xi_1*(param$tau/param$nu + param$xi_2)
-  ell1.T[indic.T_lo]    <- param$xi_1*param$xi_2
+    1 - param$xi_1*model_sol$tstep*(param$tau/param$nu + param$xi_2)
+  ell1.T[indic.T_lo]    <- param$xi_1*model_sol$tstep*param$xi_2
   ell1.T                <- ell1.T/param$mu_T
   model_sol[["ell1.T"]] <- ell1.T
   
@@ -1068,7 +1119,7 @@ model_solve <- function(model,
     t(mu_altern$muprice_1[(model_sol$n.Z+1):
                             (model_sol$n.Z+model_sol$n.W)])
   omega.star.inf[indic.delc,indic.D]     <- -1 # Infff
-  #omega.star.inf[indic.delc,indic.D]     <- 0 # Infff
+  omega.star.inf[indic.delc,indic.D]     <- 0 # Infff
   if(indic_CRRA){
     omega.star.inf[indic.delc,indic.D] <- 
       omega.star.inf[indic.delc,indic.D]#/param$gamma
@@ -1076,7 +1127,7 @@ model_solve <- function(model,
   #omega.star.inf[indic.Cum_D,indic.D]    <- -1 
   omega.star.inf[indic.E,indic.N]        <-  1 #shock N
   omega.star.inf[indic.H,indic.HW]       <-  1 
-  omega.star.inf[indic.T_lo,indic.T_at] <- param$xi_3
+  omega.star.inf[indic.T_lo,indic.T_at] <- param$xi_3*model_sol$tstep
   
   model_sol[["omega.star.inf"]] <- omega.star.inf
   
@@ -1111,9 +1162,15 @@ model_solve <- function(model,
   A1.star.inf[indic.y_tilde,indic.y_tilde]    <- 1
   A1.star.inf[indic.E_ind,indic.y_tilde]      <- 0
   A1.star.inf[indic.M_at,indic.E] <- model_sol$tstep/3.666
+  # ============================================
+  # ============================================
   A1.star.inf[indic.M_at:indic.M_lo,indic.M_at:indic.M_lo]  <- varphi%^%(model_sol$tstep)                           
-  #A1.star.inf[indic.T_lo,indic.T_at]     <- param$xi_3
-  A1.star.inf[indic.T_lo,indic.T_lo]     <- 1 - param$xi_3
+  # A1.star.inf[indic.M_at:indic.M_lo,indic.M_at:indic.M_lo]  <- 
+  #   diag(3) + model_sol$tstep * (varphi - diag(3))                          
+  # ============================================
+  # ============================================
+  #A1.star.inf[indic.T_lo,indic.T_at]     <- param$xi_3*model_sol$tstep
+  A1.star.inf[indic.T_lo,indic.T_lo]     <- 1 - param$xi_3*model_sol$tstep
   #A1.star.inf[indic.Cum_D,indic.Cum_D]   <- 1
   A1.star.inf[indic.Cum_E,indic.Cum_E]   <- 1
   A1.star.inf[indic.Cum_dc,indic.Cum_dc] <- 1
@@ -1185,7 +1242,6 @@ model_solve <- function(model,
   model_sol[["bc"]]     <- bc
   
   # Construct initial states: --------------------------------------------------
-  
   Z <- matrix(NaN,model_sol$n.Z,1)
   Z[indic.delc] <- log(param$delta) + 
     log((1 - bc[1]*param$mu0**(param$theta2))*param$A_bar + 1 - param$delta_K)
@@ -1265,7 +1321,7 @@ model_solve <- function(model,
     mu        <- mu.function(model_sol,theta.opt)
     model_sol[["theta.opt"]] <- theta.opt
     model_sol[["u0"]]        <- abs(opt[[2]])
-  }else{# User does not want to optimize over mu_t
+  }else{# User does not want to optimize over mu_t:
     mu <- mu.chosen
   }
   
@@ -1295,7 +1351,7 @@ model_solve <- function(model,
     P.mu_u1.t1 <- P.mu_u.t1[[2]]
     P.pi <- lapply(1:(Tmax-2),                                                    
                    function(t){
-                     (1 - param$gamma) * P.mu_u1.t1[[t]] - param$gamma*mu_c1})
+                     (1 - param$gamma) * P.mu_u1.t1[[t]] - param$gamma * mu_c1})
     
     # Determine short-term interest rate specification:
     P.eta_0  <- matrix(unlist(lapply(1:(length(P.pi)),function(t){
@@ -1304,7 +1360,7 @@ model_solve <- function(model,
         a1.fct(model_sol,P.pi[[t]],t-1)})), length(P.pi),1)
     P.eta_1  <-lapply(1:(length(P.pi)),
                       function(t){b1.fct(model_sol,
-                                         (1-param$gamma)*(P.mu_u1.t1[[t]]+mu_c1),
+                                         (1-param$gamma)*(P.mu_u1.t1[[t]] + mu_c1),
                                          t-1)-
                           b1.fct(model_sol,P.pi[[t]],t-1)}) #t=0 for b.t
     
@@ -1329,7 +1385,8 @@ model_solve <- function(model,
     
     # Determine short-term interest rate specification:
     P.eta_0  <- matrix(unlist(lapply(1:(length(P.pi)),function(t){
-      - log(param$delta) - a1.fct(model_sol,P.pi[[t]],t-1)})), length(P.pi),1)
+      - log(param$delta) + param$gamma*mu_c0 - a1.fct(model_sol,P.pi[[t]],t-1)})),
+      length(P.pi),1)
     P.eta_1  <-lapply(1:(length(P.pi)),
                       function(t){-b1.fct(model_sol,P.pi[[t]],t-1)}) #t=0 for b.t
     
@@ -1337,7 +1394,8 @@ model_solve <- function(model,
     inf_matx <- list()
     
     inf_matx[["pi.inf"]]   <- - param$gamma*mu_c1
-    inf_matx[["eta0.inf"]] <- - log(param$delta) - a1.fct.inf(model_sol,inf_matx$pi.inf)
+    inf_matx[["eta0.inf"]] <- - log(param$delta) + param$gamma*mu_c0 -
+      a1.fct.inf(model_sol,inf_matx$pi.inf)
     inf_matx[["eta1.inf"]] <- - b1.fct.inf(model_sol,inf_matx$pi.inf)
   }
   
@@ -1447,6 +1505,7 @@ mu_dep <- function(model_sol,
   
   A0.star <- model_sol$A0.star.inf
   A0.star[indic.delc,indic.H] <- param$b_sk # Infff
+  #A0.star[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
     A0.star[indic.delc,indic.H] <- A0.star[indic.delc,indic.H]#/param$gamma
   }
@@ -1457,9 +1516,15 @@ mu_dep <- function(model_sol,
     A1_i[indic.y_tilde,indic.y_tilde] <- 1
     A1_i[indic.E_ind,indic.y_tilde]<- lambda[i]
     A1_i[indic.M_at,indic.E]       <- model_sol$tstep/3.666
+    # ============================================
+    # ============================================
     A1_i[indic.M_at:indic.M_lo,indic.M_at:indic.M_lo]  <- model_sol$varphi%^%(model_sol$tstep)
-    #A1_i[indic.T_lo,indic.T_at]    <- param$xi_3
-    A1_i[indic.T_lo,indic.T_lo]    <- 1-param$xi_3
+    # A1_i[indic.M_at:indic.M_lo,indic.M_at:indic.M_lo]  <- 
+    #   diag(3) + model_sol$tstep * (model_sol$varphi - diag(3))                          
+    # ============================================
+    # ============================================
+    #A1_i[indic.T_lo,indic.T_at]    <- param$xi_3*model_sol$tstep
+    A1_i[indic.T_lo,indic.T_lo]    <- 1-param$xi_3*model_sol$tstep
     #A1_i[indic.Cum_D,indic.Cum_D]  <- 1
     A1_i[indic.Cum_E,indic.Cum_E]  <- 1
     A1_i[indic.Cum_dc,indic.Cum_dc]<- 1
@@ -1512,7 +1577,7 @@ mu_dep <- function(model_sol,
     #omega_i[indic.Cum_D,indic.D]    <- -1 #shock D
     omega_i[indic.E,indic.N]        <-  1 #shock N on E
     omega_i[indic.H,indic.HW]       <-  1
-    omega_i[indic.T_lo,indic.T_at] <- param$xi_3
+    omega_i[indic.T_lo,indic.T_at] <- param$xi_3*model_sol$tstep
     
     omega.star[[i]]      <- omega_i
   }
@@ -1553,8 +1618,7 @@ res.optim <-function(model_sol,
                      indic_CRRA = indic_CRRA,
                      gr = NULL,
                      method="Nelder-Mead",
-                     control=list(trace = F,
-                                  maxit = model_sol$MAXIT * sqrt(length(theta))),
+                     control=list(maxit = model_sol$MAXIT * sqrt(length(theta))),
                      hessian=FALSE)
   mylist<-list("res.optim$par"=res.optim$par,
                "res.optim$value"=res.optim$value)
@@ -1898,7 +1962,12 @@ EV.fct<-function(model_sol,h=NaN){
 #*nb.simul is number of periods for 1 simulation \in(1,99)
 #*nb.traj is the number of simulations done for nb.simul periods
 #*for t>99, time-independent matrices
-simul.function<-function(model_sol,nb.simul.t,nb.traj){
+simul.function<-function(model_sol,nb.simul.t,nb.traj,setseed=NaN){
+  
+  if(!is.na(setseed)){
+    set.seed(setseed)
+  }
+  
   #useful parameters
   nb.simul<-nb.simul.t+1 #take into account t=0
   
@@ -1976,7 +2045,7 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj){
                                              t(model_sol$ell1.H)%*%
                                              rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_H)
     
-    #Climate variables
+    # Z variables:
     Z_1.0  <- apply(Z[[i-1]],2,
                     function(x){A1[[i-1]]%*%x+omega0[[i-1]]})
     Wz     <- apply(W[[i]],2,function(x){omega[[i-1]]%*%x})
@@ -2733,6 +2802,16 @@ compute_alternative_damage <- function(T, type,
     alpha = .00266
     D <- coef.multip * alpha*T^2
     D <- 1/(1 + D)
+  }
+  if(type=="L. Barrage-Nordhaus"){
+    alpha = 0.003467
+    D <- coef.multip * alpha*T^2
+    D <- 1 - D
+  }
+  if(type=="L. Howard-Sterner"){
+    alpha = 0.007438
+    D <- coef.multip * alpha*T^2
+    D <- 1 - D
   }
   if(type=="L. Weitzman"){
     # Using the Hambel et al. (2021) formulation:

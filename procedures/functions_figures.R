@@ -9,7 +9,7 @@ make_figure_calibration_Damages <- function(model_sol,
                                             trace_lines = TRUE){
   
   P.col.line <- brocolors("crayons")["Teal Blue"]
-  P.col<-adjustcolor( P.col.line, alpha.f = 0.15)
+  P.col <- adjustcolor( P.col.line, alpha.f = 0.15)
   
   damage.values.interpol <- seq(damage.values[1],
                                 damage.values[length(damage.values)],
@@ -62,7 +62,8 @@ make_figure_calibration_Damages <- function(model_sol,
   for(i in 1:length(T.2100)){
     cond.mean.damage <- c(cond.mean.damage,
                           1 - LT.CumD(model_sol,u=-1,tstar=model_sol$horiz.2100,
-                                      T0=model_sol$vector.ini$ini_Tat,Tstar = T.2100[i]))}
+                                      T0 = model_sol$vector.ini$ini_Tat,
+                                      Tstar = T.2100[i]))}
   
   if(trace_lines){
     lines(T.2100,median.damage,lwd=2,lty=2)
@@ -141,7 +142,9 @@ make_figure_calibration_N <- function(model_sol,
   indic.median.CumN <- apply(all.cdf,2,function(x){which(x>.5)[1]})
   median.CumN <- CumN.values.interpol[indic.median.CumN]
   
-  plot(T.2100,median.CumN,type="l",ylim=c(0,model_sol$target_vector["ECumN4"]+3*model_sol$target_vector["stdCumN4"]),col="white",
+  plot(T.2100,median.CumN,type="l",
+       ylim=c(0,model_sol$target_vector["ECumN4"]+3*model_sol$target_vector["stdCumN4"]),
+       col="white",
        xlab="Temperature in 2100 (in \u00B0C)",
        ylab="Permafrost-related emissions (in GtC)",las=1,
        main=main.title)
@@ -243,11 +246,12 @@ make_figure_calibration_SLR <- function(model_sol,
   lines(T.2100,median.H,lwd=2,lty=2)
   
   # Add expectation:
-  H.2100 <- model_sol$vector.ini$ini_H + 
-    model_sol$parameters$a_H * t.star +
-    model_sol$parameters$b_H * (.5*((t.star-1)*T.2100+
-                                      (t.star+1)*model_sol$vector.ini$ini_Tat))
-  lines(T.2100,H.2100,lwd=2)
+  res <- Param.Gamma0.H(model_sol,
+                        T0=model_sol$vector.ini$ini_Tat,
+                        Tstar=T.2100,
+                        tstar=model_sol$horiz.2100)
+  cond.mean.H <- res$lambda * res$mu
+  lines(T.2100,cond.mean.H,lwd=2)
   
   points(c(2,4),c(model_sol$target_vector[["EH2"]],
                   model_sol$target_vector[["EH4"]]),pch=15,col="red")

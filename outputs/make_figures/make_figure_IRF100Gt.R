@@ -2,47 +2,274 @@
 # Response of temperature to a 1-GtC shock (M_at)
 # ==============================================================================
 
-indic.M_at <- which(model_sol$names.var.X=="M_at")
+# model_sol$parameters$m0 <- 3
+
+#model$parameters$m0 <- 2.4
+
+# model$parameters$varphi_11 <- .947
+# model$parameters$varphi_12 <- .053
+# 
+# model$parameters$varphi_11 <- .95
+# model$parameters$varphi_12 <- .05
+
+# model_sol$parameters$mu_D <- .000001
+# model_sol$parameters$mu_N <- .000001
+# model_sol$parameters$mu_T <- .000001
+# model_sol$parameters$mu_H <- .000001
+# model_sol$parameters$sigma_a <- .000001
+#model_sol <- model_solve(model,indic_CRRA = FALSE)
+
+
+# CDICE: -----------------------------------------------------------------------
+for(dt in c(1,5)){
+  # MATeq <- 607
+  # MUOeq <- 489
+  # MLOeq <- 1281
+  MATeq <- model_sol$vector.ini$ini_Mat + 00
+  MUOeq <- model_sol$vector.ini$ini_Mup
+  MLOeq <- model_sol$vector.ini$ini_Mlo
+  r1 <- MATeq/MUOeq
+  r2 <- MUOeq/MLOeq
+  b12 <- 0.054
+  b11 <- - b12
+  b23 <- 0.0082
+  b13 <- 0
+  b21 <- b12 * r1
+  b22 <- - b21 - b23
+  b31 <- 0
+  b32 <- b23 * r2
+  b33 <- - b32
+  B <- matrix(c(b11,b12,b13,b21,b22,b23,b31,b32,b33),3,3)
+  c1 <- .137
+  c3 <- .73
+  c4 <- .00689
+  lambda <- 1.06
+  F2XCO2 <- 3.45
+  shock <- c(1,0,0)
+  dates <- seq(2030,2300,by=dt)
+  all.M <- NULL
+  all.F <- NULL
+  all.TAT <- NULL
+  all.TLO <- NULL
+  all.M.shock <- NULL
+  all.F.shock <- NULL
+  all.TAT.shock <- NULL
+  all.TLO.shock <- NULL
+  for(y in dates){
+    if(y==dates[1]){
+      M <- matrix(c(MATeq,
+                    MUOeq,MLOeq),ncol=1)
+      M.shock <- matrix(c(MATeq+1,
+                          MUOeq,MLOeq),ncol=1)
+      TAT <- model$vector.ini$ini_Tat
+      TLO <- model$vector.ini$ini_Tlo
+      TAT.shock <- model$vector.ini$ini_Tat
+      TLO.shock <- model$vector.ini$ini_Tlo
+    }else{
+      M <- (diag(3) + dt*B) %*% M
+      M.shock <- (diag(3) + dt*B) %*% M.shock
+    }
+    F <- F2XCO2 * log(M[1]/MATeq)/log(2)
+    F.shock <- F2XCO2 * log(M.shock[1]/MATeq)/log(2)
+    
+    all.M         <- cbind(all.M,M)
+    all.F         <- cbind(all.F,F)
+    all.TAT       <- cbind(all.TAT,TAT)
+    all.TLO       <- cbind(all.TLO,TLO)
+    
+    all.M.shock   <- cbind(all.M.shock,M.shock)
+    all.F.shock   <- cbind(all.F.shock,F.shock)
+    all.TAT.shock <- cbind(all.TAT.shock,TAT.shock)
+    all.TLO.shock <- cbind(all.TLO.shock,TLO.shock)
+    
+    TAT_1 <- TAT # to be used un TLO
+    TAT <- TAT + c1*dt * (F - lambda * TAT - c3 * (TAT - TLO))
+    TLO <- TLO + c4*dt * (TAT_1 - TLO)
+    
+    TAT.shock_1 <- TAT.shock # to be used un TLO
+    TAT.shock   <- TAT.shock + c1*dt * (F.shock - lambda * TAT.shock - 
+                                          c3 * (TAT.shock - TLO.shock))
+    TLO.shock <- TLO.shock + c4*dt * (TAT.shock_1 - TLO.shock)
+  }
+  if(dt==1){
+    IRF_CDICE.dt1 <- all.TAT.shock - all.TAT
+    IRF_CDICE.dt1_dates <- dates
+  }
+  if(dt==5){
+    IRF_CDICE.dt5 <- all.TAT.shock - all.TAT
+    IRF_CDICE.dt5_dates <- dates
+  }
+}
+
+# ------------------------------------------------------------------------------
+
+# CR: -----------------------------------------------------------------------
+values_iniMat <- c(model_sol$vector.ini$ini_Mat,1800)
+for(largeMat in c(TRUE,FALSE)){
+  for(indic_lineariz in c(TRUE,FALSE)){
+    for(dt in c(1,5)){
+      MATeq <- ifelse(largeMat,values_iniMat[2],values_iniMat[1])
+      MUOeq <- model_sol$vector.ini$ini_Mup
+      MLOeq <- model_sol$vector.ini$ini_Mlo
+      ksi1 <- model_sol$parameters$xi_1
+      ksi2 <- model_sol$parameters$xi_2
+      ksi3 <- model_sol$parameters$xi_3
+      tau  <- model_sol$parameters$tau
+      nu   <- model_sol$parameters$nu
+      shock <- c(1,0,0)
+      dates <- seq(2030,2300,by=dt)
+      all.M <- NULL
+      all.F <- NULL
+      all.TAT <- NULL
+      all.TLO <- NULL
+      all.M.shock <- NULL
+      all.F.shock <- NULL
+      all.TAT.shock <- NULL
+      all.TLO.shock <- NULL
+      for(y in dates){
+        if(y==dates[1]){
+          M <- matrix(c(MATeq,
+                        MUOeq,MLOeq),ncol=1)
+          M.shock <- matrix(c(MATeq+1,
+                              MUOeq,MLOeq),ncol=1)
+          TAT <- model$vector.ini$ini_Tat
+          TLO <- model$vector.ini$ini_Tlo
+          TAT.shock <- model$vector.ini$ini_Tat
+          TLO.shock <- model$vector.ini$ini_Tlo
+        }else{
+          M <- (model_sol$varphi%^%dt) %*% M
+          M.shock <- (model_sol$varphi%^%dt) %*% M.shock
+        }
+        if(indic_lineariz){
+          F <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
+            M[1]
+          F.shock <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
+            M.shock[1]
+        }else{
+          F <- tau * log(M[1]/MATeq)/log(2)
+          F.shock <- tau * log(M.shock[1]/MATeq)/log(2)
+        }
+        
+        all.M         <- cbind(all.M,M)
+        all.F         <- cbind(all.F,F)
+        all.TAT       <- cbind(all.TAT,TAT)
+        all.TLO       <- cbind(all.TLO,TLO)
+        
+        all.M.shock   <- cbind(all.M.shock,M.shock)
+        all.F.shock   <- cbind(all.F.shock,F.shock)
+        all.TAT.shock <- cbind(all.TAT.shock,TAT.shock)
+        all.TLO.shock <- cbind(all.TLO.shock,TLO.shock)
+        
+        TAT <- TAT + ksi1*dt * (F - tau/nu * TAT - ksi2 * (TAT - TLO))
+        TLO <- TLO + ksi3*dt * (TAT - TLO)
+        
+        TAT.shock   <- TAT.shock + ksi1*dt * (F.shock - tau/nu * TAT.shock - 
+                                                ksi2 * (TAT.shock - TLO.shock))
+        TLO.shock <- TLO.shock + ksi3*dt * (TAT.shock - TLO.shock)
+      }
+      if((dt==1)&indic_lineariz&!largeMat){
+        IRF_CR.linear.dt1 <- all.TAT.shock - all.TAT
+        IRF_CR.linear.dt1_dates <- dates
+      }
+      if((dt==5)&indic_lineariz&!largeMat){
+        IRF_CR.linear.dt5 <- all.TAT.shock - all.TAT
+        IRF_CR.linear.dt5_dates <- dates
+      }
+      if((dt==1)&!indic_lineariz&!largeMat){
+        IRF_CR.nonlinear.dt1 <- all.TAT.shock - all.TAT
+        IRF_CR.nonlinear.dt1_dates <- dates
+      }
+      if((dt==5)&!indic_lineariz&!largeMat){
+        IRF_CR.nonlinear.dt5 <- all.TAT.shock - all.TAT
+        IRF_CR.nonlinear.dt5_dates <- dates
+      }
+      if((dt==1)&indic_lineariz&largeMat){
+        IRF_CR.linear.largeMat.dt1 <- all.TAT.shock - all.TAT
+        IRF_CR.linear.largeMat.dt1_dates <- dates
+      }
+      if((dt==5)&indic_lineariz&largeMat){
+        IRF_CR.linear.largeMat.dt5 <- all.TAT.shock - all.TAT
+        IRF_CR.linear.largeMat.dt5_dates <- dates
+      }
+      if((dt==1)&!indic_lineariz&largeMat){
+        IRF_CR.nonlinear.largeMat.dt1 <- all.TAT.shock - all.TAT
+        IRF_CR.nonlinear.largeMat.dt1_dates <- dates
+      }
+      if((dt==5)&!indic_lineariz&largeMat){
+        IRF_CR.nonlinear.largeMat.dt5 <- all.TAT.shock - all.TAT
+        IRF_CR.nonlinear.largeMat.dt5_dates <- dates
+      }
+    }
+  }
+}
+# ------------------------------------------------------------------------------
+
 
 # Load EPA data:
 load(file="/Users/jrenne/Dropbox/Research/TIBs/CR_Rcodes/data/Figure223_EPA_data.Rdat")
-
-shock <- 1 # Gt Carbon
-
-model_sol_shock <- model_sol
-model_sol_shock$vector.ini$ini_Mat <- model_sol_shock$vector.ini$ini_Mat + shock
-model_sol_shock$X[indic.M_at]      <- model_sol_shock$vector.ini$ini_Mat
-
-end.date <- 2300
-h.end <- (end.date-model_sol$vec_date[1])/model_sol$tstep - 1
-EV       <- EV.fct(model_sol,h=h.end)
-EV_shock <- EV.fct(model_sol_shock,h=h.end)
-
-IRF <- EV_shock$EX$M_at - EV$EX$M_at
-#plot(IRF,type="l")
-IRF <- EV_shock$EX$T_at - EV$EX$T_at
-
 lower.bound.01 <- fair$q01
 upper.bound.99 <- fair$q99
 lower.bound.05 <- fair$q05
 upper.bound.95 <- fair$q95
 
 
-FILE = "/outputs/Figures/Figure_IRF1GtC.pdf"
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=8, height=4)
+shock <- 1 # Gt Carbon
 
-par(mfrow=c(1,1))
-par(plt=c(.15,.95,.15,.95))
+indic.M_at <- which(model_sol$names.var.X=="M_at")
+indic.Forc <- which(model_sol$names.var.X=="Forc")
+
+model_noN       <- model_sol
+model_noN$parameters$a_N <- 0
+model_noN$parameters$b_N <- 0*model_noN$parameters$b_N
+model_sol_noN <- model_solve(model_noN,indic_CRRA = FALSE)
+
+model_sol_shock     <- model_sol
+model_sol_noN_shock <- model_sol_noN
+
+# implement shock:
+model_sol_shock$vector.ini$ini_Mat <- model_sol_shock$vector.ini$ini_Mat + shock
+model_sol_shock$vector.ini$ini_F   <- model_sol_shock$vector.ini$ini_F - 
+  model_sol$A0.star.inf[5,6] * shock
+model_sol_shock$X[indic.M_at] <- model_sol_shock$vector.ini$ini_Mat
+model_sol_shock$X[indic.Forc] <- model_sol_shock$vector.ini$ini_F
+
+model_sol_noN_shock$vector.ini$ini_Mat <- model_sol_shock$vector.ini$ini_Mat
+model_sol_noN_shock$X[indic.M_at]      <- model_sol_shock$vector.ini$ini_Mat
+model_sol_noN_shock$vector.ini$ini_F   <- model_sol_shock$vector.ini$ini_F
+model_sol_noN_shock$X[indic.Forc]      <- model_sol_shock$vector.ini$ini_F
+
+end.date <- 2300
+h.end <- (end.date-model_sol$vec_date[1])/model_sol$tstep - 1
+
+EV       <- EV.fct(model_sol,h=h.end)
+EV_shock <- EV.fct(model_sol_shock,h=h.end)
+IRF_TAT  <- EV_shock$EX$T_at - EV$EX$T_at
+
+EV_noN       <- EV.fct(model_sol_noN,h=h.end)
+EV_noN_shock <- EV.fct(model_sol_noN_shock,h=h.end)
+IRF_noN_TAT  <- EV_noN_shock$EX$T_at - EV_noN$EX$T_at
+
+
+
+
+
+
+
+FILE = "/outputs/Figures/Figure_IRF1GtC.pdf"
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=9, width=12, height=5)
+
+par(mfrow=c(1,2))
+par(plt=c(.16,1,.1,.90))
 #par(mar=c(5, 6, 4, 2))
 
-plot(EV$date+5,IRF,col="white",las=1,
+plot(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),col="white",las=1,
      xlim=c(2025,2300),
-     ylim=c(0,1.1*max(upper.bound.99)),
+     ylim=c(0,1.5*max(upper.bound.99)),
      xlab="",
-     ylab="")
+     ylab="",main="(a)")
 grid()
 
-title(ylab='Temperature Anomaly from 1GtC in 2030', line=5,
+title(ylab='Temperature Anomaly from 1GtC in 2030, in °C', line=5,
       cex.lab=1)
 
 polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.01,rev(upper.bound.99)),
@@ -50,20 +277,68 @@ polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.01,rev(upper.bound.99)),
 polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.05,rev(upper.bound.95)),
         col='grey80',border=NaN)
 
-lines(EV$date+5,IRF,lwd=1,pch=3,type="b")
-lines(fair$year,fair$mean,lwd=2,col="black")
+lines(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),lwd=2,pch=3,type="b")
+lines(EV$date+5,c(0,IRF_noN_TAT[1:(h.end-1)]),lwd=2)
+lines(fair$year,fair$mean,lwd=2,col="dark grey")
 lines(hector$year,hector$temp.delta,col="#E69F00",lty=3,lwd=3)
 lines(magicc$year,magicc$temp.delta,col="#56B4E9",lty=2,lwd=3)
 
+#lines(IRF_CDICE.dt1_dates,IRF_CDICE.dt1,col="red",lwd=2,lty=2)
+lines(IRF_CDICE.dt5_dates,IRF_CDICE.dt5,col="red",lwd=2,lty=4)
+
 legend("topleft",
-       legend=c("CR","HECTOR 2.5","MAGICC 7.5.3",
-                           "FaIR 1.6.2 (mean)"),
-       col=c("black","#E69F00", "#56B4E9","black"),
-       lty=c(NaN,3,2,1,NaN,NaN),
-       lwd=c(1,3,3,2),
-       pch=c(3,NaN,NaN,NaN),
+       legend=c("CR (with N)","CR (w/o N)","HECTOR 2.5","MAGICC 7.5.3",
+                "FaIR 1.6.2 (mean)","CDICE (5yr time step)"),
+       col=c("black","black","#E69F00", "#56B4E9","dark grey","red"),
+       lty=c(NaN,1,3,2,1,4),
+       lwd=c(2,2,3,3,2,2),
+       pch=c(3,NaN,NaN,NaN,NaN,NaN),
        bty = "n",cex=1,
        bg="white",
-       ncol=2)
+       seg.len = 2,
+       ncol=3)
+
+
+
+plot(EV$date,c(0,IRF_TAT[1:(h.end-1)]),col="white",las=1,
+     xlim=c(2025,2300),
+     ylim=c(0,1.5*max(upper.bound.99)),
+     xlab="",
+     ylab="",main="(b)")
+grid()
+
+# title(ylab='Temperature Anomaly from 1GtC in 2030, in °C', line=5,
+#       cex.lab=1)
+
+#lines(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),lwd=1,pch=3,type="b")
+lines(EV$date+5,c(0,IRF_noN_TAT[1:(h.end-1)]),col="black",lty=1,lwd=2)
+#lines(IRF_CR.linear.dt5_dates,IRF_CR.linear.dt5,col="black",lty=1,lwd=2)
+lines(IRF_CR.linear.dt1_dates,IRF_CR.linear.dt1,col="black",lty=2,lwd=2)
+
+lines(IRF_CR.nonlinear.dt1_dates,
+      IRF_CR.nonlinear.dt1,col="#0571B0",lwd=2,lty=2)
+lines(IRF_CR.nonlinear.dt5_dates,
+      IRF_CR.nonlinear.dt5,col="#0571B0",lwd=2,lty=1)
+
+lines(IRF_CR.nonlinear.largeMat.dt1_dates,
+      IRF_CR.nonlinear.largeMat.dt1,col="#56B4AA",lwd=2,lty=2)
+lines(IRF_CR.nonlinear.largeMat.dt5_dates,
+      IRF_CR.nonlinear.largeMat.dt5,col="#56B4AA",lwd=2,lty=1)
+
+legend("topright",
+       legend=c("Linear (1yr time step)",
+                "Linear (5yrs time step)",
+                "Nonlinear (1yr time step)",
+                "Nonlinear (5yrs time step)",
+                "Nonlinear, high starting value (1yr time step)",
+                "Nonlinear, high starting value (5yrs time step)"),
+       col=c("black","black","#0571B0", "#0571B0",
+             "#56B4AA", "#56B4AA"),
+       lty=c(1,2,1,2,1,2),
+       lwd=2,
+       pch=NaN,
+       bty = "n",cex=1,
+       bg="white",
+       ncol=1)
 
 dev.off()

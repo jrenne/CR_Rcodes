@@ -2,6 +2,8 @@
 # Figure illustrating the linearization of radiative forcings' equation
 # ==============================================================================
 
+#model_sol$parameters$m0 <- 1.8
+
 interm.year <- 2050
 H40 <- which(model_sol$vec_date==interm.year)-1
 
@@ -202,26 +204,26 @@ for(linearized in 0:1){
     all.F.nonlinear   <- all.F
   }
 }
-# 
-# years <- seq(model_sol$vec_date[1],2500,by=model_sol$tstep)
-# plot(years,all.Tat.nonlinear,type="l",lwd=2,
-#      xlab="year",ylab="Atm. temperature (Degrees Celsius)",
-#      ylim=c(1,3.5),
-#      main=expression(paste("(c) Effect of linearization on atm. temperature trajectory")))
-# points(years,all.Tat.linear,pch=3,col="#00000044",lwd=2)
-# #lines(c(model_sol$vector.ini$ini_Tat,EV$EX$T_at),col="blue")
-# 
-# legend("bottomright",
-#        legend=c("Linearized","Non-linearized"),
-#        lty=c(NaN,1),
-#        col=c("#00000044","black"),
-#        pch=c(3,NaN),
-#        lwd=c(2,2),seg.len = 3,
-#        bty = "n",cex=1)
-# 
-# # plot(all.F.nonlinear,type="l")
-# # lines(all.F.linear,col="red")
-# # lines(c(model_sol$vector.ini$ini_F,EV$EX$Forc),col="blue")
+
+years <- seq(model_sol$vec_date[1],2500,by=model_sol$tstep)
+plot(years,all.Tat.nonlinear,type="l",lwd=2,
+     xlab="year",ylab="Atm. temperature (Degrees Celsius)",
+     ylim=c(1,4.5),
+     main=expression(paste("(c) Effect of linearization on atm. temperature trajectory")))
+points(years,all.Tat.linear,pch=3,col="#00000044",lwd=2)
+#lines(c(model_sol$vector.ini$ini_Tat,EV$EX$T_at),col="blue")
+
+legend("bottomright",
+       legend=c("Linearized","Non-linearized"),
+       lty=c(NaN,1),
+       col=c("#00000044","black"),
+       pch=c(3,NaN),
+       lwd=c(2,2),seg.len = 3,
+       bty = "n",cex=1)
+
+# plot(all.F.nonlinear,type="l")
+# lines(all.F.linear,col="red")
+# lines(c(model_sol$vector.ini$ini_F,EV$EX$Forc),col="blue")
 
 dev.off()
 

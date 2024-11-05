@@ -32,13 +32,15 @@ all.damages <- c(
   "G. Dell-Jones-Olken",
   "G. Bansal-Kiku-Ochoa",
   "L. Nordhaus-Sztorc",
+  "L. Barrage-Nordhaus",
+  "L. Howard-Sterner",
   "L. Weitzman",
   "L. Barnett-Brock-Hansen",
   "L. Traeger",
   "L. Dietz-Stern"
 )
 
-all.Temp    <- seq(1.5,5,length.out=30)
+all.Temp    <- seq(1.5,5,length.out=15)
 
 All_damages <- matrix(NaN,length(all.damages),length(all.Temp))
 
@@ -64,8 +66,21 @@ for(j in 1:length(all.Temp)){
 }
 
 for(i in 1:length(all.damages)){
-  lines(all.Temp,All_damages[i,],col=1+i,lwd=2)
+  lines(all.Temp,All_damages[i,],col=1+i,lwd=2,type="b",pch=i)
+  #points(all.Temp,All_damages[i,],col=1+i,lwd=2,pch=i)
 }
+
+# Add line for CR average damage function:
+x2 <- 2
+y2 <- 1 - model$target_vector["ECumD2"]
+x4 <- 4
+y4 <- 1 - model$target_vector["ECumD4"]
+x0 <- 0
+y0 <- y2 + (y4 - y2)/(x4 - x2)*(x0 - x2)
+x10 <- 10
+y10 <- y2 + (y4 - y2)/(x4 - x2)*(x10 - x2)
+lines(c(x0,x10),c(y0,y10),lwd=3,col="black",lty=1)
+points(c(x2,x4),c(y2,y4),pch=15,col="red",cex=1.3)
 
 plot.new()
 
@@ -76,7 +91,9 @@ legend("topleft",
        #title="Alternative",
        lty=1,
        col = 1+(1:length(all.damages)),
+       pch = 1:length(all.damages),
        #cex=1.5,
+       seg.len = 3,
        lwd=2,bty = "n")
 
 dev.off()
