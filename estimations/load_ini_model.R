@@ -233,6 +233,7 @@ print("***** calibration: done *****")
 
 
 # gamma <- 1.45
+# gamma <- 1.00001
 # #gamma <- 7
 # model.CRRA <- model
 # model.CRRA$parameters$gamma <- gamma
@@ -249,15 +250,14 @@ print("***** calibration: done *****")
 # model_CRRA_sol <- model_solve(model.CRRA,
 #                               indic_mitig = T,
 #                               indic_CRRA = T)
-# res.scc <- scc.fct.CRRA(model_CRRA_sol,t = 0,H = 100)
+# res.scc <- scc.fct.CRRA(model_CRRA_sol,t = 0,H = 200)
 # print(res.scc$SCC.CO2)
-# plot(res.scc$scc.decomp)
-# omega.ZC <- matrix(0,model_CRRA_sol$n.X,1)
-# prices.ZCRF.bonds   <- varphi(model_CRRA_sol,
-#                               omega.varphi = omega.ZC,
-#                               H = 100)
-# plot(prices.ZCRF.bonds$r.t)
-
+# # plot(res.scc$scc.decomp)
+# # omega.ZC <- matrix(0,model_CRRA_sol$n.X,1)
+# # prices.ZCRF.bonds   <- varphi(model_CRRA_sol,
+# #                               omega.varphi = omega.ZC,
+# #                               H = 100)
+# # plot(prices.ZCRF.bonds$r.t)
 
 
 tic("***** Solve Initial Model *****")

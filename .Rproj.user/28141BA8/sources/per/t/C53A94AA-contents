@@ -2,7 +2,7 @@
 # An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 # ------------------------------------------------------------------------------
 # Pauline Chikhani and Jean-Paul Renne
-# This version: November 2023
+# This version: November 2024
 # ==============================================================================
 
 
@@ -20,11 +20,11 @@ library(expm)
 
 
 #Binary operators: 0 = NO, 1 = YES.
-indic_plots_paper  <- 0  #do you run some plots of the paper? see description below
-indic_tables_paper <- 0  #do you run the tables of the paper?
+indic_plots_paper  <- 1  #do you run some plots of the paper? see description below
+indic_tables_paper <- 1  #do you run the tables of the paper?
 
 # For scripts using parallel computing:
-number.of.cores <- 4
+number.of.cores <- 8
 
 #Load libraries of functions:
 source("procedures/functions_general.R")
@@ -57,19 +57,19 @@ toc()
 #*15 Housing prices
 #*16 Confidence Interval SCC and Risk premiums
 #*17 Relationship between SCC and Temperature risk premium
-#*18 Relationship between SCC and Temperature risk premium, Lemoine approach
+#*18 Relationship between SCC and Temperature risk premium, alternative models
+#*19 Illustrations of gamma-zero distribution
+#*20 Comparison of damages
+#*21 IRF 1 Gt Carbon
 
-plots <- 0:18
-#plots <- 12
-
-#plots <- 17
+plots <- 0:21
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
 }
 
 if(indic_tables_paper==1){
-  print("Preparing tables (about 10 seconds)")
+  print("Preparing tables (couple of minutes)")
   source("outputs/tables_paper.R")
 }
 

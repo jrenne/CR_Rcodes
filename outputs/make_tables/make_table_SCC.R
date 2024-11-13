@@ -4,8 +4,6 @@
 
 for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
   
-  
-  
   # Define format of figures:
   nb.dec <- 2 # number of decimal numbers
   format.nb  <- paste("%.",nb.dec,"f",sep="")

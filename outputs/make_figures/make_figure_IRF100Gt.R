@@ -22,12 +22,12 @@
 
 # CDICE: -----------------------------------------------------------------------
 for(dt in c(1,5)){
-  # MATeq <- 607
-  # MUOeq <- 489
-  # MLOeq <- 1281
-  MATeq <- model_sol$vector.ini$ini_Mat + 00
-  MUOeq <- model_sol$vector.ini$ini_Mup
-  MLOeq <- model_sol$vector.ini$ini_Mlo
+  MATeq <- 851
+  MUOeq <- 628
+  MLOeq <- 1323
+  #MATeq <- model_sol$vector.ini$ini_Mat + 00
+  #MUOeq <- model_sol$vector.ini$ini_Mup
+  #MLOeq <- model_sol$vector.ini$ini_Mlo
   r1 <- MATeq/MUOeq
   r2 <- MUOeq/MLOeq
   b12 <- 0.054
@@ -118,6 +118,7 @@ for(largeMat in c(TRUE,FALSE)){
       nu   <- model_sol$parameters$nu
       shock <- c(1,0,0)
       dates <- seq(2030,2300,by=dt)
+
       all.M <- NULL
       all.F <- NULL
       all.TAT <- NULL
@@ -141,29 +142,30 @@ for(largeMat in c(TRUE,FALSE)){
           M.shock <- (model_sol$varphi%^%dt) %*% M.shock
         }
         if(indic_lineariz){
-          F <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
+          
+          Forc <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
             M[1]
-          F.shock <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
+          Forc.shock <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
             M.shock[1]
         }else{
-          F <- tau * log(M[1]/MATeq)/log(2)
-          F.shock <- tau * log(M.shock[1]/MATeq)/log(2)
+          Forc <- tau * log(M[1]/MATeq)/log(2)
+          Forc.shock <- tau * log(M.shock[1]/MATeq)/log(2)
         }
         
         all.M         <- cbind(all.M,M)
-        all.F         <- cbind(all.F,F)
+        all.F         <- cbind(all.F,Forc)
         all.TAT       <- cbind(all.TAT,TAT)
         all.TLO       <- cbind(all.TLO,TLO)
         
         all.M.shock   <- cbind(all.M.shock,M.shock)
-        all.F.shock   <- cbind(all.F.shock,F.shock)
+        all.F.shock   <- cbind(all.F.shock,Forc.shock)
         all.TAT.shock <- cbind(all.TAT.shock,TAT.shock)
         all.TLO.shock <- cbind(all.TLO.shock,TLO.shock)
         
-        TAT <- TAT + ksi1*dt * (F - tau/nu * TAT - ksi2 * (TAT - TLO))
+        TAT <- TAT + ksi1*dt * (Forc - tau/nu * TAT - ksi2 * (TAT - TLO))
         TLO <- TLO + ksi3*dt * (TAT - TLO)
         
-        TAT.shock   <- TAT.shock + ksi1*dt * (F.shock - tau/nu * TAT.shock - 
+        TAT.shock   <- TAT.shock + ksi1*dt * (Forc.shock - tau/nu * TAT.shock - 
                                                 ksi2 * (TAT.shock - TLO.shock))
         TLO.shock <- TLO.shock + ksi3*dt * (TAT.shock - TLO.shock)
       }

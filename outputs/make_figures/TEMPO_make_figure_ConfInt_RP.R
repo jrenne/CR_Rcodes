@@ -42,13 +42,17 @@ all.res <- foreach(i = 1:Nb.draws, .combine=rbind) %dopar% {
   model_sol_new <- model_sol
   
   # Delta:
-  rho <- 1 - model_sol$parameters$delta^(1/model$tstep)
+  rho <- 1 - model_sol$parameters$delta^(1/model_sol$tstep)
   rho_new <- rho * (1 + max.chge*runif(1,min=-1,max=1))
-  model_sol_new$parameters$delta <- (1 - rho_new)^model$tstep
+  model_sol_new$parameters$delta <- (1 - rho_new)^model_sol$tstep
   
   # Gamma:
   model_sol_new$parameters$gamma <-
     model_sol_new$parameters$gamma * (1 + max.chge*runif(1,min=-1,max=1))
+  
+  # Tau:
+  model_sol_new$parameters$tau <-
+    model_sol_new$parameters$tau * (1 + max.chge*runif(1,min=-1,max=1))
   
   # Damage targets:
   model_sol_new$target_vector["ECumD2"] <- 1 - (1-model_sol$target_vector["ECumD2"]) *
@@ -118,7 +122,8 @@ all.res <- foreach(i = 1:Nb.draws, .combine=rbind) %dopar% {
   H.RP <- c(EH.Q - EH.P)
   
   c(SCC,T.RP,H.RP,ZCB$r.t,
-    model_sol_new$target_vector,mu_T,model_sol_new$parameters$gamma,rho_new)
+    model_sol_new$target_vector,mu_T,
+    model_sol_new$parameters$gamma,rho_new,model_sol_new$parameters$tau)
 }
 
 
@@ -126,8 +131,8 @@ colnames(all.res) <- c("scc",
                        paste("T.RP.",1:H,sep=""),
                        paste("H.RP.",1:H,sep=""),
                        paste("yld.",1:H,sep=""),
-                       names(model$target_vector),
-                       "mu_T","gamma","rho")
+                       names(model_sol$target_vector),
+                       "mu_T","gamma","rho","tau")
 
 stopCluster(cl)
 file.remove("outputs/toto.Rdata")
@@ -141,10 +146,14 @@ eq <- lm(scc~X)
 summary(eq)
 
 X_red <- X[,c("ECumD2","ECumD4","stdCumD4","ECumN4",
-              "gamma","rho")]
+              "gamma","rho","tau")]
 eq_red <- lm(scc~X_red)
 summary(eq_red)
 
+X_red <- X[,c("ECumD2","ECumD4","stdCumD4",
+              "gamma","rho")]
+eq_red <- lm(scc~X_red)
+summary(eq_red)
 
 
 

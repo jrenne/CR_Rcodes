@@ -1,4 +1,11 @@
+# ==============================================================================
+# Figure showing relationship between SCC RP and Temperature RP
+# ==============================================================================
 
+# Load baseline model:
+aux   <- make.Lemoine.model()
+model <- aux$model
+X0    <- aux$X0
 
 H <- 200
 nb.replic <- 500
@@ -12,61 +19,15 @@ all.damage <- c(
   "G. Dell-Jones-Olken",
   "G. Bansal-Kiku-Ochoa",
   "L. Nordhaus-Sztorc",
+  "L. Barrage-Nordhaus",
+  "L. Howard-Sterner",
   "L. Weitzman",
   "L. Barnett-Brock-Hansen",
   "L. Traeger",
   "L. Dietz-Stern"
 )
 
-# Baseline model (Lemoine, 2021):
-mu0    <- .047
-mu1    <- .0134
-sigma  <- .014
-l0     <- .022
-l1     <- .012
-psi1   <- .2
-psi2   <- .393
-psi    <- .0023
-nu     <- 5.35
-Mpre   <- 605
-gamma0 <- .28
-gamma1 <- .015
-phi    <- .0394
-S      <- 3.13
-s      <- nu * log(2) / S
-
-eta    <- 1.45
-beta   <- 1 - .015
-
 all.sigmas <- seq(0,2*sigma,length.out=8)
-
-model <- list(
-  eta    = eta,
-  beta   = beta,
-  mu0    = mu0,
-  mu1    = mu1,
-  sigma  = sigma,
-  l0     = l0,
-  l1     = l1,
-  psi1   = psi1,
-  psi2   = psi2,
-  psi    = psi,
-  nu     = nu,
-  Mpre   = Mpre,
-  gamma0 = gamma0,
-  gamma1 = gamma1,
-  phi    = phi,
-  s      = s
-)
-
-# Initial values:
-C0  <- 55 * 1.1772 # in trillion USD 2014
-L0  <- 7.1 * 10^9
-T0  <- .8794
-M10 <- 706
-M20 <- 148
-X0 <- c(C0,L0,T0,M10,M20)
-
 
 coef.multip.values <- c(1 - percent_chge/100,1,1 + percent_chge/100)
 

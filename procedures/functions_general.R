@@ -1,5 +1,5 @@
 
-#* CALIBRATION ----
+#* CALIBRATION -----------------------------------------------------------------
 solveParam4c <- function(model,indic_CRRA=FALSE){
   gamma   <- model$parameters$gamma
   delta   <- model$parameters$delta
@@ -504,7 +504,7 @@ LT.CumN.infinite <- function(model,u,
 }
 
 
-# SCC --------------------------------------------------------------------------
+#* SCC -------------------------------------------------------------------------
 
 scc.fct <- function(model_sol,h,
                     all=F,
@@ -574,7 +574,7 @@ scc.fct.CRRA <- function(model_sol,
 
 
 
-#* PRICING ----
+#* PRICING ---------------------------------------------------------------------
 
 #--------------Yield curve for ZCB
 #* Compute yield curve for a ZCB of maturity h
@@ -807,7 +807,7 @@ varphi.bar<-function(model_sol,omega.v.bar,H,x,a,b,X=model_sol$X,t=0){
 }
 
 
-#* FOURIER TRANSFORM ----
+#* FOURIER TRANSFORM -----------------------------------------------------------
 
 #------------------------Fourier defined for cdf (u=0)
 #*i is the variable in X we are interested in
@@ -850,7 +850,7 @@ fourier_complete<-function(model_sol,x,
 }
 
 
-#* MULTI LT, SIMPLE + COMPLETE ----
+#* MULTI LT, SIMPLE + COMPLETE -------------------------------------------------
 
 #----------------------------------Proposition: Multi-horizon LapT of X
 #*U is a matrix of dimension "dim(X)*H", with H>1, the maturity
@@ -978,7 +978,7 @@ multi.lt.fct.N <- function(model_sol,U,h,
 }
 
 
-#* SOLVING SDF ----
+#* SOLVING SDF -----------------------------------------------------------------
 
 #  Function that returns mu_u1 and mu_u0 @0 ------------------------------------
 #*Tend: General case with Tmax=100, ends up with t=2020
@@ -2554,298 +2554,4 @@ update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
 }
 
 
-
-# Function that simulates Lemoine (2021)'s model -------------------------------
-
-simul.model.Lemoine <- function(model,
-                                damage.type,
-                                X0,H,nb.replic=1,
-                                coef.multip = 1){
-  
-  all.C     <- matrix(NaN,H,nb.replic)
-  all.Cexog <- matrix(NaN,H,nb.replic)
-  all.L  <- matrix(NaN,H,nb.replic)
-  all.T  <- matrix(NaN,H,nb.replic)
-  all.M1 <- matrix(NaN,H,nb.replic)
-  all.M2 <- matrix(NaN,H,nb.replic)
-  
-  C     <- matrix(X0[1],1,nb.replic)
-  Cexog <- matrix(X0[1],1,nb.replic)
-  L  <- matrix(X0[2],1,nb.replic)
-  T  <- matrix(X0[3],1,nb.replic)
-  M1 <- matrix(X0[4],1,nb.replic)
-  M2 <- matrix(X0[5],1,nb.replic)
-  
-  mut      <- model$mu0    * exp(- model$mu1    * (1:H + 2014 - 1960))
-  gammat   <- model$gamma0 * exp(- model$gamma1 * (1:H + 2014 - 1960))
-  delta.lt <- model$l0     * exp(- model$l1     * (1:H + 2014 - 1960))
-  
-  for(t in 1:H){
-    
-    D <- compute_alternative_damage(T,damage.type,
-                                    time_step = 1,
-                                    coef.multip = coef.multip)
-    
-    if(stringr::str_sub(damage.type,1,1)=="G"){
-      # "Growth" specification
-      C <- C * (1 + mut[t] - D + model$sigma * rnorm(nb.replic))
-      Cexog <- C
-    }else if(stringr::str_sub(damage.type,1,1)=="L"){
-      # "Level" specification
-      Cexog <- Cexog * (1 + mut[t] + model$sigma * rnorm(nb.replic))
-      C <- Cexog * D
-    }
-    
-    L <- L * exp(delta.lt[t])
-    M1 <- M1 + model$psi1 * gammat[t] * C
-    M2 <- M2 + model$psi2 * (1 - model$psi1) * gammat[t] * C -
-      model$psi * M2
-    M  <- M1 + M2
-    #F  <- model$nu * (log(model$M0/model$Mpre) + M/model$M0 - 1)
-    F  <- model$nu * log(M/model$Mpre)
-    T  <- T + model$phi * (F - model$s * T)
-    
-    all.C[t,]      <- C
-    all.Cexog[t,]  <- Cexog
-    all.L[t,]  <- L
-    all.T[t,]  <- T
-    all.M1[t,] <- M1
-    all.M2[t,] <- M2
-  }
-  return(list(
-    all.C  = all.C,
-    all.L  = all.L,
-    all.T  = all.T,
-    all.M1 = all.M1,
-    all.M2 = all.M2
-  ))
-}
-
-sumE <- function(x,y=matrix(1,dim(x)[1],1)){
-  return(sum(apply(x,1,mean)*apply(y,1,mean)))
-}
-
-
-compute.SCC.Lemoine <- function(model,
-                                damage.type = damage.type,
-                                X0,H=500,nb.replic=100,
-                                s.values = NaN,
-                                coef.multip.values = 1,
-                                seed0 = 123,
-                                shock = 1){
-  # s.values and alpha.values have to be lists
-  
-  if(is.na(s.values[1])){
-    s.values <- list(model$s)
-  }
-  
-  # if(is.na(coef.multip.values[1])){
-  #   coef.multip.values <- list(model$damage$coef.multip)
-  # }
-  
-  eta  <- model$eta
-  beta <- model$beta
-  C0 <- X0[1]
-  L0 <- X0[2]
-  
-  matrix.beta.h <- matrix(exp(-(1-beta)*(1:H)),H,nb.replic*
-                            length(s.values)*length(coef.multip.values))
-  
-  seed <- seed0
-  
-  all.sim.L <- NULL
-  all.sim.T <- NULL
-  all.sim.C <- NULL
-  all.sim.C.perturb <- NULL
-  
-  for(s in s.values){
-    for(coef.multip in coef.multip.values){
-      
-      seed <- seed0
-      
-      model.new   <- model
-      model.new$s <- s
-      
-      set.seed(seed)
-      res.simul <- simul.model.Lemoine(model.new,
-                                       damage.type = damage.type,
-                                       X0,
-                                       H=H,nb.replic = nb.replic,
-                                       coef.multip = coef.multip)
-      set.seed(seed)
-      X1 <- X0
-      X1[4] <- X0[4] - shock * model$psi1
-      X1[5] <- X0[5] - shock * (1 - model$psi1) * model$psi2
-      res.simul.perturb <- simul.model.Lemoine(model.new,
-                                               damage.type = damage.type,
-                                               X0=X1,
-                                               H=H,nb.replic = nb.replic,
-                                               coef.multip = coef.multip)
-      
-      all.sim.C         <- cbind(all.sim.C,res.simul$all.C)
-      all.sim.C.perturb <- cbind(all.sim.C.perturb,res.simul.perturb$all.C)
-      all.sim.L         <- cbind(all.sim.L,res.simul$all.L)
-      all.sim.T         <- cbind(all.sim.T,res.simul$all.T)
-    }
-  }
-  
-  C.L <- all.sim.C/all.sim.L
-  U   <- matrix.beta.h * C.L^(1-eta)/(1-eta)
-  U   <- sumE(U)
-  
-  C.L.perturb <- all.sim.C.perturb/all.sim.L
-  U.perturb   <- matrix.beta.h * C.L.perturb^(1-eta)/(1-eta)
-  U.perturb   <- sumE(U.perturb)
-  
-  SCC <- (U.perturb - U)/shock/((C0/L0)^(-eta)/L0) * 10^12/10^9 / 3.667
-  
-  B         <- (C.L.perturb - C.L)/shock
-  M         <- matrix.beta.h * (C.L)^(-eta)/(C0/L0)^(-eta)
-  M.perturb <- matrix.beta.h * (C.L.perturb)^(-eta)/(C0/L0)^(-eta)
-  MM <- .5*(M + M.perturb)
-  SCC.check <- L0 * sumE(MM*B) * 10^12/10^9 / 3.667
-  
-  NPV <- L0 * sumE(MM,B) * 10^12/10^9 / 3.667
-  NPV <- L0 * sum(apply(MM,1,mean) * apply(B,1,mean)) * 10^12/10^9 / 3.667
-  
-  # Compute Temperature risk premium:
-  E.T <- apply(all.sim.T,1,mean)
-  E.T.risk.adj <- apply(MM*all.sim.T,1,mean)/apply(MM,1,mean)
-  
-  return(list(
-    U = U,
-    U.perturb = U.perturb,
-    SCC = SCC,
-    SCC.check = SCC.check,
-    NPV = NPV,
-    E.T = E.T,
-    E.T.risk.adj = E.T.risk.adj,
-    all.sim.C = all.sim.C,
-    all.sim.C.perturb = all.sim.C.perturb,
-    all.sim.L = all.sim.L,
-    all.sim.T = all.sim.T,
-    aux.M = apply(MM,1,mean),
-    aux.B = apply(B,1,mean)
-  ))
-}
-
-# define_damages <- function(){
-#   
-#   all.damage <- list()
-#   
-#   all.damage[["G. Dell-Jones-Olken"]] <- list(
-#     alpha = .00137)
-#   
-#   # all.damage[[3]] <- list(
-#   #   damage.type = "G. Nordhaus-Sztorc",
-#   #   alpha = .00026,
-#   #   coef.multip = 1)
-#   # 
-#   # all.damage[[4]] <- list(
-#   #   damage.type = "G. Weitzman",
-#   #   alpha = c(.000075,3.25),
-#   #   coef.multip = 1)
-#   
-#   all.damage[["L. Nordhaus-Sztorc"]] <- list(
-#     alpha = .00266)
-#   
-#   all.damage[["L. Weitzman"]] <- list(
-#     alpha = c(20.64,6.081,6.754))
-#   
-#   all.damage[["L. Barnett-Brock-Hansen"]] <- list(
-#     alpha = c(0.0127,0.0005,.0005))
-#   
-#   all.damage[["L. Traeger"]] <- list(
-#     alpha = c(0.022,1/4)
-#     #alpha = c(0.11,1/4)
-#   )
-#   
-#   all.damage[["L. Dietz-Stern"]] <- list(
-#     alpha = c(0.00284,5.07e-6,6.754))
-#   
-#   # all.damage[[8]] <- list(
-#   #   damage.type = "L-Bansal",
-#   #   alpha = c(.0050,.0033,.0011,.0011),
-#   #   coef.multip = 1)
-#   
-#   return(all.damage)
-# }
-
-compute_alternative_damage <- function(T, type,
-                                       time_step = 1, # number of years per period
-                                       coef.multip = 1){
-  if(type=="G. Lemoine"){
-    alpha = c(.0018)
-    T0  <- .8794
-    D <- coef.multip * alpha[1] * time_step * (T - T0)
-  }
-  if(type=="G. Nordhaus-Sztorc"){
-    alpha = .00026
-    D <- coef.multip * alpha[1] * time_step * T
-  }
-  if(type=="G. Dell-Jones-Olken"){
-    alpha = .00137
-    D <- coef.multip * alpha[1] * time_step * T
-  }
-  if(type=="G. Weitzman"){
-    alpha = c(.000075,3.25)
-    D <- coef.multip * alpha[1] * time_step * T^alpha[2]
-  }
-  if(type=="G. Bansal-Kiku-Ochoa"){
-    alpha = c(0.01,0.01,0.05)
-    ell0 <- .01
-    ell1 <- .01
-    d    <- .05
-    D <- coef.multip * d * (ell0 + ell1 * T)
-  }
-  if(type=="L. Nordhaus-Sztorc"){
-    alpha = .00266
-    D <- coef.multip * alpha*T^2
-    D <- 1/(1 + D)
-  }
-  if(type=="L. Barrage-Nordhaus"){
-    alpha = 0.003467
-    D <- coef.multip * alpha*T^2
-    D <- 1 - D
-  }
-  if(type=="L. Howard-Sterner"){
-    alpha = 0.007438
-    D <- coef.multip * alpha*T^2
-    D <- 1 - D
-  }
-  if(type=="L. Weitzman"){
-    # Using the Hambel et al. (2021) formulation:
-    alpha = c(20.64,6.081,6.754)
-    exponent <- alpha[3]
-    D <- coef.multip * ((T/alpha[1])^2 + 
-                          (T/alpha[2])^exponent)
-    D <- 1/(1 + D)
-  }
-  if(type=="L. Barnett-Brock-Hansen"){
-    y.bar <- 2
-    alpha = c(0.0127,0.0005,.0005)
-    D <- coef.multip * (alpha[1]*T + 
-                          alpha[2]*T^2 + 
-                          alpha[3] * (T - y.bar)^2 * (T > y.bar))
-    D <- exp(- D)
-  }
-  if(type=="L. Traeger"){
-    alpha = c(0.022,1/4)
-    xi0 <- alpha[1]
-    xi1 <- alpha[2]
-    D <- coef.multip * (
-      1 - exp(xi0 * (1 - exp(xi1*T)))
-    )
-    D <- 1 - D
-  }
-  if(type=="L. Dietz-Stern"){
-    alpha = c(0.00284,5.07e-6,6.754)
-    pi2      <- alpha[1]
-    pi3      <- alpha[2]
-    exponent <- alpha[3]
-    D <- coef.multip * (pi2*T^2 + pi3*T^exponent)
-    D <- 1/(1 + D)
-  }
-  return(D)
-}
 

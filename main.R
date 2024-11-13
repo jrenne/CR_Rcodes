@@ -29,6 +29,7 @@ number.of.cores <- 8
 #Load libraries of functions:
 source("procedures/functions_general.R")
 source("procedures/functions_figures.R")
+source("procedures/functions_other_models.R")
 
 tic("Calibration")
 source("estimations/load_ini_model.R")
@@ -61,6 +62,7 @@ toc()
 #*19 Illustrations of gamma-zero distribution
 #*20 Comparison of damages
 #*21 IRF 1 Gt Carbon
+#*22 Comparison of SCC with ACE model
 
 plots <- 0:21
 

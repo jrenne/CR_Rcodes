@@ -21,6 +21,7 @@
 #*19 Illustrations of gamma-zero distribution
 #*20 Comparison of damages
 #*21 IRF 1 Gt Carbon
+#*22 Comparison of SCC with ACE model
 
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
@@ -87,7 +88,7 @@ if(is.element(4,plots)){
 #********************************5*********************************************#
 #Sensitivity to mu_D
 if(is.element(5,plots)){
-  print("Preparing sensitivity-to-mu_D plot (about 30 sec)")
+  print("Preparing sensitivity-to-mu_D plot (takes about 30 sec)")
   source("outputs/make_figures/make_figure_sensitiv_muD.R")
   source("outputs/make_figures/make_figure_SCC.R")
 }
@@ -163,7 +164,7 @@ if(is.element(15,plots)){
 #*******************************16*********************************************#
 #Confidence intervals for SCC and risk premiums
 if(is.element(16,plots)){
-  print("Preparing figure Confidence int. for SCC and Risk premiums (a few minutes)")
+  print("Preparing figure Confidence int. for SCC and Risk premiums (takes a few minutes)")
   source("outputs/make_figures/make_figure_ConfInt_RP.R",
          encoding = 'ISO8859-1')
 }
@@ -171,7 +172,7 @@ if(is.element(16,plots)){
 #*******************************17*********************************************#
 #Relationship between SCC and Temperature risk premium
 if(is.element(17,plots)){
-  print("Preparing figure Relationship SCC and Temp. risk premium (a few minutes)")
+  print("Preparing figure Relationship SCC and Temp. risk premium (takes a few minutes)")
   source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
          encoding = 'ISO8859-1')
 }
@@ -208,5 +209,12 @@ if(is.element(21,plots)){
          encoding = 'ISO8859-1')
 }
 
+#*******************************22*********************************************#
+#Comparison of SCC with ACE model
+if(is.element(22,plots)){
+  print("Preparing figure comparing SCC with ACE model (takes about 3 minutes)")
+  source("outputs/make_figures/make_figure_compar_SCC_Traeger.R",
+         encoding = 'ISO8859-1')
+}
 
 
