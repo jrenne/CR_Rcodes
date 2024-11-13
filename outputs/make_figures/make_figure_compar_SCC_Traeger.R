@@ -141,28 +141,29 @@ dev.off()
 
 data_ACE$r <- data_ACE$prpp + .019
 data_ACE$D <- .03*(data_ACE$Damages=="baseline")+.10*(data_ACE$Damages=="HSP")
-plot(0,0,col="white",xlim=c(0.01,.05),ylim=c(0,.15))
+plot(0,0,col="white",xlim=c(0.015,.045),ylim=c(log(10),log(20000)))
 for(i in 1:dim(data_ACE)[1]){
-  points(data_ACE$r[i],data_ACE$D[i],pch=19,col="#00000033",cex=log(data_ACE$SCC[i])/3)
+  points(data_ACE$r[i],log(data_ACE$SCC[i]),pch=19,col="#00000033",cex=8*sqrt(data_ACE$D[i]))
 }
 eq <- lm(SCC~r+I(r^2)+D,data=data_ACE)
+eq <- lm(SCC~I(r)+I(D^2),data=data_ACE)
 summary(eq)
 
 for(i in 1:length(all_rho)){
-  points(all_5yrRates_EZ[i],1-model_sol$target_vector["ECumD4"],
-         pch=19,col="#77000033",cex=log(all_scc_EZ[i])/3)
+  points(all_5yrRates_EZ[i],log(all_scc_EZ[i]),
+         pch=19,col="#77000033",cex=8*sqrt(1-model_sol$target_vector["ECumD4"]))
 }
 for(i in 1:length(all_rho)){
-  points(all_5yrRates_EZ_lowDamage[i],factor_mult_Damage*(1-model_sol$target_vector["ECumD4"]),
-         pch=19,col="#77000033",cex=log(all_scc_EZ_lowDamage[i])/3)
+  points(all_5yrRates_EZ_lowDamage[i],log(all_scc_EZ_lowDamage[i]),
+         pch=19,col="#77000033",cex=8*sqrt(factor_mult_Damage*(1-model_sol$target_vector["ECumD4"])))
 }
 for(i in 1:length(all_rho)){
-  points(all_5yrRates_CRRA[i],1-model_sol$target_vector["ECumD4"],
-         pch=19,col="#77000033",cex=log(all_scc_CRRA[i])/3)
+  points(all_5yrRates_CRRA[i],log(all_scc_CRRA[i]),
+         pch=19,col="#77000033",cex=8*sqrt(1-model_sol$target_vector["ECumD4"]))
 }
 for(i in 1:length(all_rho)){
-  points(all_5yrRates_CRRA_lowDamage[i],factor_mult_Damage*(1-model_sol$target_vector["ECumD4"]),
-         pch=19,col="#77000033",cex=log(all_scc_CRRA_lowDamage[i])/3)
+  points(all_5yrRates_CRRA_lowDamage[i],log(all_scc_CRRA_lowDamage[i]),
+         pch=19,col="#77000033",cex=8*sqrt(factor_mult_Damage*(1-model_sol$target_vector["ECumD4"])))
 }
 
 
