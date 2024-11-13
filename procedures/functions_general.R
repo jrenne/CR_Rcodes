@@ -1084,25 +1084,25 @@ model_solve <- function(model,
   
   # Prepare "ell" components: --------------------------------------------------
   ell1.D   <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.D[model$n.Z+indic.T_at] <-
+  ell1.D[model$n.Z+indic.dT_at] <-
     model_sol$parameters$b_D/model_sol$parameters$mu_D
   model_sol[["ell1.D"]] <- ell1.D
   
   ell1.N   <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.N[model$n.Z+indic.T_at] <-
+  ell1.N[model$n.Z+indic.dT_at] <-
     model_sol$parameters$b_N/model_sol$parameters$mu_N
   model_sol[["ell1.N"]] <- ell1.N
   
   ell1.T <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
   ell1.T[indic.Forc]   <- param$xi_1*model_sol$tstep
-  ell1.T[model$n.Z+indic.T_at] <-
+  ell1.T[model$n.Z+indic.dT_at] <-
     1 - param$xi_1*model_sol$tstep*(param$tau/param$nu + param$xi_2)
   ell1.T[indic.T_lo]    <- param$xi_1*model_sol$tstep*param$xi_2
   ell1.T                <- ell1.T/param$mu_T
   model_sol[["ell1.T"]] <- ell1.T
   
   ell1.H                <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
-  ell1.H[model$n.Z+indic.T_at] <- param$b_H/param$mu_H
+  ell1.H[model$n.Z+indic.dT_at] <- param$b_H/param$mu_H
   model_sol[["ell1.H"]] <- ell1.H
   
   # Construct matrices determining dynamics after Tmax ("infinite"): -----------
@@ -1126,12 +1126,14 @@ model_solve <- function(model,
   }
   #omega.star.inf[indic.Cum_D,indic.D]    <- -1 
   omega.star.inf[indic.E,indic.N]        <-  1 #shock N
-  omega.star.inf[indic.H,indic.HW]       <-  1 
-  omega.star.inf[indic.T_lo,indic.T_at] <- param$xi_3*model_sol$tstep
-  
+  omega.star.inf[indic.T_at,indic.dT_at] <-  1 
+  omega.star.inf[indic.H,indic.dH]       <-  1
+  omega.star.inf[indic.T_lo,indic.dT_at] <- param$xi_3*model_sol$tstep
+
   model_sol[["omega.star.inf"]] <- omega.star.inf
   
   A0.star.inf <- diag(model_sol$n.Z)
+  #A0.star.inf[indic.T_at,indic.dT_at] <- - 1
   A0.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
   #A0.star.inf[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
@@ -1255,13 +1257,13 @@ model_solve <- function(model,
   Z[indic.M_at]    <- model_sol$vector.ini$ini_Mat
   Z[indic.M_up]    <- model_sol$vector.ini$ini_Mup
   Z[indic.M_lo]    <- model_sol$vector.ini$ini_Mlo
+  Z[indic.T_at]    <- model_sol$vector.ini$ini_Tat
   Z[indic.T_lo]    <- model_sol$vector.ini$ini_Tlo
-  #Z[indic.Cum_D]   <- model_sol$vector.ini$ini_CumD
   Z[indic.Cum_E]   <- model_sol$vector.ini$ini_CumE
   Z[indic.Cum_dc]  <- model_sol$vector.ini$ini_Cumdelc
   Z[indic.H]       <- model_sol$vector.ini$ini_H
   W <- matrix(0,model_sol$n.W,1)
-  W[indic.T_at] <- model_sol$vector.ini$ini_Tat
+  W[indic.dT_at] <- model_sol$vector.ini$ini_Tat
   X <- rbind(Z,W)
   model_sol[["X"]]   <- X
   model_sol[["n.X"]] <- length(X)
@@ -1504,6 +1506,7 @@ mu_dep <- function(model_sol,
                                  "')-model_sol$n.Z",sep=""))))}
   
   A0.star <- model_sol$A0.star.inf
+  #A0.star[indic.T_at,indic.dT_at] <- - 1
   A0.star[indic.delc,indic.H] <- param$b_sk # Infff
   #A0.star[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
@@ -1576,9 +1579,10 @@ mu_dep <- function(model_sol,
     }
     #omega_i[indic.Cum_D,indic.D]    <- -1 #shock D
     omega_i[indic.E,indic.N]        <-  1 #shock N on E
-    omega_i[indic.H,indic.HW]       <-  1
-    omega_i[indic.T_lo,indic.T_at] <- param$xi_3*model_sol$tstep
-    
+    omega_i[indic.T_at,indic.dT_at] <-  1
+    omega_i[indic.H,indic.dH]       <-  1
+    omega_i[indic.T_lo,indic.dT_at] <- param$xi_3*model_sol$tstep
+
     omega.star[[i]]      <- omega_i
   }
   A1      <-lapply(1:Tmax,function(i)solve(A0.star)%*%
@@ -2035,12 +2039,12 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj,setseed=NaN){
                                              param$kappa_N^(i-1)*t(model_sol$ell1.N)%*%
                                              rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_N)
     
-    W[[i]][indic.T_at,] <-
+    W[[i]][indic.dT_at,] <-
       rgamma(nb.traj,rpois(nb.traj,pmax(0,(0+
                                              t(model_sol$ell1.T)%*%
                                              rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_T)
     
-    W[[i]][indic.HW,] <-
+    W[[i]][indic.dH,] <-
       rgamma(nb.traj,rpois(nb.traj,pmax(0,(param$a_H/param$mu_H+
                                              t(model_sol$ell1.H)%*%
                                              rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_H)
@@ -2070,10 +2074,10 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj,setseed=NaN){
                   ncol=nb.traj)[-1,]
   M_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.M_lo,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
+  T_at   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.T_at,]),1:nb.traj)),
+                  ncol=nb.traj)[-1,]
   T_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.T_lo,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
-  # Cum_D  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_D,]),1:nb.traj)),
-  #                 ncol=nb.traj)[-1,]
   Cum_E  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_E,]),1:nb.traj)),
                   ncol=nb.traj)[-1,]
   Cum_dc <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_dc,]),1:nb.traj)),
@@ -2085,9 +2089,9 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj,setseed=NaN){
                  ncol=nb.traj)[-1,]
   N    <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.N,]),1:nb.traj)),
                  ncol=nb.traj)[-1,]
-  T_at <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.T_at,]),1:nb.traj)),
+  dT_at <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.dT_at,]),1:nb.traj)),
                  ncol=nb.traj)[-1,]
-  HW   <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.HW,]),1:nb.traj)),
+  dH   <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.dH,]),1:nb.traj)),
                  ncol=nb.traj)[-1,]
   
   X      <- X[-1]
@@ -2097,9 +2101,9 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj,setseed=NaN){
   
   
   mylist<-c(list("delc"=delc,"y_tilde"=y_tilde,"E"=E,"E_ind"=E_ind,"Forc"=Forc,
-                 "M_at"=M_at,"M_up"=M_up,"M_lo"=M_lo,"T_lo"=T_lo,
+                 "M_at"=M_at,"M_up"=M_up,"M_lo"=M_lo,"T_lo"=T_lo,"T_at"=T_at,
                  "Cum_E"=Cum_E,"Cum_dc"=Cum_dc,"H"=H),
-            list("D"=D,"N"=N,"T_at"=T_at,"HW"=HW),
+            list("D"=D,"N"=N,"dT_at"=dT_at,"dH"=dH),
             list("X"=X))
   
   return(mylist)

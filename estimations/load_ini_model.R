@@ -59,7 +59,7 @@ remove(Eind,Ftot,Mat,Mup,Mlo,Tat,Tlo,H)
 #---- Economic parameters ------------------------------------------------------
 n.eta    <- 2
 Phi.prep <- matrix(0,n.eta,n.eta)
-n.Z <- length(vector.ini) - 1 # remove Tat
+n.Z <- length(vector.ini)
 n.W <- n.eta + 4
 
 param.econ<-list(
@@ -141,6 +141,9 @@ param.clim<-list(
   mu_T       = NaN,
   mu_H       = NaN
 )
+
+param.clim$lb_dT_at <- -.1 # lower bound for dT_at
+
 remove(b12,b23,c1,c3,c4,mateq,mueq,mleq,f2co2,
        t2co2,q0,mu0,exp.mat.2100.rcp45_6)
 
@@ -190,12 +193,12 @@ names(target_vector)<-c(
 #---- Names of variables in X --------------------------------------------------
 
 names.var.X <- c("delc","y_tilde","E","E_ind","Forc","M_at",
-                 "M_up","M_lo","T_lo",
+                 "M_up","M_lo","T_at","T_lo",
                  "Cum_E","Cum_dc","H",
                  "eta_A","eta_X",
                  #"eta_E",
                  #"eta_F",
-                 "D","N","T_at","HW")
+                 "D","N","dT_at","dH")
 
 
 #---- log-growth rate ----------------------------------------------------------

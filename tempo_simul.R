@@ -1,12 +1,12 @@
 # tempo check conditional means:
 
-model$parameters$mu_T <- .00000000000001
-model$parameters$mu_D <- .00000000000001
-model$parameters$mu_H <- .00000000000001
-model$parameters$mu_N <- .00000000000001
-model$parameters$a_N <- .0000001
-model$parameters$b_N <- 0*model$parameters$b_N
-model$parameters$sigma_a <- .00000000000001
+# model$parameters$mu_T <- .00000000000001
+# model$parameters$mu_D <- .00000000000001
+# model$parameters$mu_H <- .00000000000001
+# model$parameters$mu_N <- .00000000000001
+# model$parameters$a_N <- .0000001
+# model$parameters$b_N <- 0*model$parameters$b_N
+# model$parameters$sigma_a <- .00000000000001
 model_sol <- model_solve(model,indic_CRRA = FALSE)
 
 nb.t <- 100
