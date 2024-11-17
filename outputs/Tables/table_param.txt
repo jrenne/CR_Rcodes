@@ -1,6 +1,6 @@
 Time step &$\Delta t $ &&$5$&years &\\
 Risk aversion&$\gamma$&\eqref{eq:logU}&$7.0$& &\\
-Discount factor (annual) &$1-\delta^{\frac{1}{\Delta t}}$ &\eqref{eq:logU}&$1.50$&percent per year&\\
+Discount factor (annual) &$1-\delta^{\frac{1}{\Delta t}}$ &\eqref{eq:logU}&$1.00$&percent per year&\\
 Capital depreciation rate &$dep$&\eqref{eq:KDmainText}&$6$&percent per year&\\
 Avg ratio $M_{AT}\big/M_{PI}$ over 2020-2100&$m_0$&\eqref{eq:Fradiat}&$1.92$&&CDICE+RCP\\
 Decline rate of decarbonization &$\delta_{\sigma} $ &\eqref{eq:carboIntensity}&$-4.00$&percent per period&DICE2023\\
@@ -21,9 +21,9 @@ Equilibrium concentration in upper strata &$mueq $ &\eqref{eq:carboncycleAppendi
 Equilibrium concentration in lower strata &$mleq $ &\eqref{eq:carboncycleAppendix}&$1281$&GtC &CDICE\\
 Transfer coef. from atm. to up. ocean &$\varphi_{12} $ &\eqref{eq:carboncycleAppendix}&$0.05300$&&CDICE\\
 Transfer coef. from up. to lo. ocean &$\varphi_{23} $ &\eqref{eq:carboncycleAppendix}&$0.00820$&&CDICE\\
-Climate eq. coefficient for upper level &$\xi_1 $ &\eqref{eq:Tat}&$0.68500$&per period&CDICE\\
+Climate eq. coefficient for upper level &$\xi_1 $ &\eqref{eq:Tat}&$0.13700$&per period&CDICE\\
 Transfer coef. upper to lower stratum &$\xi_2 $ &\eqref{eq:Tat}&$0.73000$&per period &CDICE\\
-Transfer coef. for lower stratum &$\xi_3 $ &\eqref{eq:TLO}&$0.03445$&per period&CDICE\\
+Transfer coef. for lower stratum &$\xi_3 $ &\eqref{eq:TLO}&$0.00689$&per period&CDICE\\
 Forcings of equilibrium CO$_2$ doubling &$\tau $ &\eqref{eq:Fradiat}+\eqref{eq:Tat}&$3.45$&W/m$^2$&CDICE\\
 Equilibrium temperature impact &$\nu $ &\eqref{eq:Tat}&3.25&\degree C per doubling CO$_2$&CDICE\\
-Destruction of capital due to rising SL&$b_{SK} $ &\eqref{eq:DeltaC}&$0.10$& &\citet{Diaz_2016}\\
+Destruction of capital due to rising SL&$b_{SK} $ &\eqref{eq:DeltaC}&$0.02$& &\citet{Diaz_2016}\\

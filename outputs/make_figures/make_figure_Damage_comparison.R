@@ -72,9 +72,9 @@ for(i in 1:length(all.damages)){
 
 # Add line for CR average damage function:
 x2 <- 2
-y2 <- 1 - model$target_vector["ECumD2"]
+y2 <- 1 - model_sol$target_vector["ECumD2"]
 x4 <- 4
-y4 <- 1 - model$target_vector["ECumD4"]
+y4 <- 1 - model_sol$target_vector["ECumD4"]
 x0 <- 0
 y0 <- y2 + (y4 - y2)/(x4 - x2)*(x0 - x2)
 x10 <- 10

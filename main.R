@@ -20,8 +20,8 @@ library(expm)
 
 
 #Binary operators: 0 = NO, 1 = YES.
-indic_plots_paper  <- 0  #do you run some plots of the paper? see description below
-indic_tables_paper <- 0  #do you run the tables of the paper?
+indic_plots_paper  <- 1  #do you run some plots of the paper? see description below
+indic_tables_paper <- 1  #do you run the tables of the paper?
 
 # For scripts using parallel computing:
 number.of.cores <- 8
@@ -63,8 +63,10 @@ toc()
 #*20 Comparison of damages
 #*21 IRF 1 Gt Carbon
 #*22 Comparison of SCC with ACE model
+#*23 Comparison of risk-free yield curves with alternative approaches
 
-plots <- 0:21
+
+plots <- 0:23
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")

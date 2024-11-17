@@ -4,7 +4,7 @@
 
 # Load baseline model:
 aux   <- make.Lemoine.model()
-model <- aux$model
+model_baseline <- aux$model
 X0    <- aux$X0
 
 H <- 200
@@ -27,7 +27,7 @@ all.damage <- c(
   "L. Dietz-Stern"
 )
 
-all.sigmas <- seq(0,2*sigma,length.out=8)
+all.sigmas <- seq(0,2*model_baseline$sigma,length.out=8)
 
 coef.multip.values <- c(1 - percent_chge/100,1,1 + percent_chge/100)
 
@@ -44,8 +44,8 @@ all.res <- foreach(i = 1:length(all.damage), .combine=rbind) %dopar% {
   
   damage.type <- all.damage[[i]]
   
-  s.values     <- list((1-percent_chge/100)*model$s,
-                       model$s,(1+percent_chge/100)*model$s)
+  s.values     <- list((1-percent_chge/100)*model_baseline$s,
+                       model_baseline$s,(1+percent_chge/100)*model_baseline$s)
   
   all.SCC   <- NULL
   all.NPV   <- NULL
@@ -54,9 +54,9 @@ all.res <- foreach(i = 1:length(all.damage), .combine=rbind) %dopar% {
   
   for(sigma in all.sigmas){
     
-    model$sigma <- sigma
+    model_baseline$sigma <- sigma
     
-    res.SCC <- compute.SCC.Lemoine(model,
+    res.SCC <- compute.SCC.Lemoine(model_baseline,
                                    damage.type = damage.type,
                                    X0,H=H,nb.replic=nb.replic,
                                    s.values = s.values,
@@ -88,10 +88,10 @@ load(file="outputs/results/SCC_vs_TRP_CR.Rdat") # Load results from CR model
 par(mfrow=c(1,1))
 par(plt=c(.15,.95,.2,.95))
 plot(0,0,
-     ylim=c(min(-.8,min(all.SCC.RP,all.SCC.RP.CR)),
-            max(+.6,max(all.SCC.RP,all.SCC.RP.CR))),
-     xlim=c(min(-.4,min(all.T.RP,all.T.RP.CR)),
-            max(+.6,max(all.T.RP,all.T.RP.CR))),
+     ylim=c(min(-.6,min(all.SCC.RP,all.SCC.RP.CR)),
+            max(+.3,max(all.SCC.RP,all.SCC.RP.CR))),
+     xlim=c(min(-.1,min(all.T.RP,all.T.RP.CR)),
+            max(+.1,max(all.T.RP,all.T.RP.CR))),
      # xlim=c(-.3,1),
      # ylim=c(-10,1),
      col="white",
@@ -106,7 +106,7 @@ for(i in 1:length(all.damage)){
 }
 
 for(i in 1:dim(all.T.RP.CR)[1]){
-  lines(all.T.RP.CR[i,],all.SCC.RP.CR[i,],lty=i,lwd=2)
+  lines(all.T.RP.CR[i,],all.SCC.RP.CR[i,],lty=i+1,lwd=2)
   points(all.T.RP.CR[i,1],all.SCC.RP.CR[i,1],lwd=2,pch=0)
 }
 
@@ -115,7 +115,7 @@ legend("topleft",
                 expression(paste("CR, EZ, ",gamma," = 7",sep="")),
                 expression(paste("CR, EZ, ",gamma," = 1.001",sep="")),
                 expression(paste("CR, CRRA, ",gamma," = 1.45",sep=""))),
-       lty=c(rep(1,length(all.damage)),1:3),
+       lty=c(rep(1,length(all.damage)),2:4),
        cex=1,
        col=c(1+(1:length(all.damage)),rep("black",3)),
        lwd=2,bty = "n")

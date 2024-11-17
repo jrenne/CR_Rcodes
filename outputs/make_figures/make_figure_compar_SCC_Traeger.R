@@ -2,8 +2,10 @@
 # Figure comparing SCC with ACE model (Traeger, 2023)
 # ==============================================================================
 
+data_ACE <- read.csv("data/ACE_Traeger_2023.csv")
+
 Damage_Traeger_4 <- 1 - compute_alternative_damage(T=4, type="L. Traeger")
-Damage_CR_4 <- 1 - model$target_vector["ECumD4"]
+Damage_CR_4 <- 1 - model_sol$target_vector["ECumD4"]
 factor_mult_Damage <- Damage_Traeger_4/Damage_CR_4
 
 omega_ZCB <- matrix(0,model_sol$n.X)
@@ -25,7 +27,7 @@ for(lowDamage in c(TRUE,FALSE)){
     print("--- Baseline damages ---")
   }
   
-  model_base <- model
+  model_base <- model_sol
   
   if(lowDamage){
     model_base$parameters$a_D  <- model_base$parameters$a_D * factor_mult_Damage
@@ -38,7 +40,7 @@ for(lowDamage in c(TRUE,FALSE)){
     
     model_new <- model_base
     #model_new$target_vector["mu_c0"] <- .2
-    model_new$parameters$delta <- (1 - rho)^model$tstep
+    model_new$parameters$delta <- (1 - rho)^model_sol$tstep
     #model_new <- solveParam4c(model_new)
     #model_new <- solveParam4T(model_new)
     model_new_sol <- model_solve(model_new,indic_CRRA = FALSE)
@@ -46,7 +48,7 @@ for(lowDamage in c(TRUE,FALSE)){
     gamma <- 1.45
     model.CRRA <- model_base
     model.CRRA$parameters$gamma <- gamma
-    model.CRRA$parameters$delta <- (1 - rho)^model$tstep
+    model.CRRA$parameters$delta <- (1 - rho)^model_sol$tstep
     model.CRRA <- solveParam4c(model.CRRA,indic_CRRA=TRUE)
     model_CRRA_sol <- model_solve(model.CRRA,
                                   indic_mitig = TRUE,
@@ -92,11 +94,9 @@ pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=6, height=4)
 
 par(plt=c(.19,.95,.2,.95))
 
-data_ACE <- read.csv("data/ACE_Traeger_2023.csv")
-
 plot(log(all_scc_EZ),pch=15,col="red",ylim=c(2,12),
      cex=1.6,
-     xlab=expression(paste("Pure rate of preference for present ",(1-delta)^{1/5},sep="")),
+     xlab=expression(paste("Pure rate of preference for present ",-log(delta)/5,sep="")),
      ylab="",
      xaxt = "n", yaxt = "n",
      xlim=c(0.3,3.7))

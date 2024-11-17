@@ -3,8 +3,8 @@
 \multicolumn{5}{l}{{\bf Production function}}\\
 \multicolumn{3}{l}{\textit{Target: avg mean growth in the absence of climate risks}} &$8.0$ & \%/period (5yrs)\\
 \multicolumn{3}{l}{\textit{Target: Std dev. of growth in the absence of climate risks}} &$3.0$ & \%/period (5yrs)\\
-Average TFP&$\bar{A}$ &\eqref{eq:AKmainText}&$0.44$&\\
-Standard deviation of TFP shock&$\sigma_A$ &\eqref{eq:AKmainText}&$3.50$& \%\\
+Average TFP&$\bar{A}$ &\eqref{eq:AKmainText}&$0.41$&\\
+Standard deviation of TFP shock&$\sigma_A$ &\eqref{eq:AKmainText}&$3.42$& \%\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Damage specification}}\\
@@ -22,9 +22,9 @@ Slope coefficient in damage specification &$b^{(D)}$ &\eqref{eq:damagemainText}&
 \multicolumn{3}{l}{\textit{Target: Std dev. of 2100 release conditional on $T_{AT}=4\degree C$}} &$191.7$ &GtCO$_2$ \\
 \multicolumn{3}{l}{\textit{Target: Expected release conditional on $\widetilde{T}_{AT}=4\degree C$}} &$1378.8$ &GtCO$_2$ \\
 Uncertainty parameter&$\mu_N$ &\eqref{eq:damage_NmainText}&$49.6$&\\
-Constant term in carbon-release specification &$a^{(N)}$ &\eqref{eq:damage_NmainText}&$-5.0$\\
-Slope coefficient in carbon-release specification &$b^{(N)}$ &\eqref{eq:damage_NmainText}&$14.3$\\
-Decay rate of releases &$\kappa_N$ &\eqref{eq:damage_NmainText}&$0.96$\\
+Constant term in carbon-release specification &$a^{(N)}$ &\eqref{eq:damage_NmainText}&$-4.0$\\
+Slope coefficient in carbon-release specification &$b^{(N)}$ &\eqref{eq:damage_NmainText}&$12.5$\\
+Decay rate of releases &$\kappa_N$ &\eqref{eq:damage_NmainText}&$0.98$\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Sea-level rise (SLR)}}\\
@@ -38,10 +38,10 @@ Coefficient on $T_{AT}$ in SLR specif. &$b^{(H)}$ &\eqref{eq:SeaL}&$0.0288$& m/p
 \hline
 \multicolumn{5}{l}{{\bf Uncertainty about temperature process}}\\
 \multicolumn{3}{l}{\textit{Target: Std dev. of 2100 atmospheric temperature}} &0.75 & \degree C \\
-Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0604$&\\
+Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0630$&\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Mitigation process}}\\
 \multicolumn{3}{l}{\textit{Based on agents' optimization on initial date}} \\
-Coef. on imposed function form of $\mu_t$ &$\theta_{a,opt} $ &\eqref{eq:mu}&$-1.368$&\\
+Coef. on imposed function form of $\mu_t$ &$\theta_{a,opt} $ &\eqref{eq:mu}&$-1.275$&\\
 Coef. on imposed function form of $\mu_t$ &$\theta_{b,opt} $ &\eqref{eq:mu}&$0.071$&\\

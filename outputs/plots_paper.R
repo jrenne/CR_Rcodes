@@ -22,6 +22,7 @@
 #*20 Comparison of damages
 #*21 IRF 1 Gt Carbon
 #*22 Comparison of SCC with ACE model
+#*23 Comparison of risk-free yield curves with alternative approaches
 
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
@@ -110,7 +111,7 @@ if(is.element(7,plots)){
 #********************************8*********************************************#
 #Mitigation vs DICE2016
 if(is.element(8,plots)){
-  print("Preparing figure mu plot (about 30 sec)")
+  print("Preparing figure mu plot (takes about 30 sec)")
   source("outputs/make_figures/make_figure_mu.R")
 }
 
@@ -204,7 +205,7 @@ if(is.element(20,plots)){
 #*******************************21*********************************************#
 #IRF 1 Gt Carbon
 if(is.element(21,plots)){
-  print("Preparing figure illustrating Gamma-zero distribution")
+  print("Preparing figure showing temperature dynamic effect of 1Gt carbon pulse")
   source("outputs/make_figures/make_figure_IRF100Gt.R",
          encoding = 'ISO8859-1')
 }
@@ -214,6 +215,14 @@ if(is.element(21,plots)){
 if(is.element(22,plots)){
   print("Preparing figure comparing SCC with ACE model (takes about 3 minutes)")
   source("outputs/make_figures/make_figure_compar_SCC_Traeger.R",
+         encoding = 'ISO8859-1')
+}
+
+#*******************************23*********************************************#
+#Comparison of risk-free yield curves with alternative approaches
+if(is.element(23,plots)){
+  print("Preparing figure comparing risk-free yield curves (takes about 20 seconds)")
+  source("outputs/make_figures/make_figure_YC_RF.R",
          encoding = 'ISO8859-1')
 }
 

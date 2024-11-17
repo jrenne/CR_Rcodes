@@ -4,13 +4,13 @@
 
 # model_sol$parameters$m0 <- 3
 
-#model$parameters$m0 <- 2.4
+#model_sol$parameters$m0 <- 2.4
 
-# model$parameters$varphi_11 <- .947
-# model$parameters$varphi_12 <- .053
+# model_sol$parameters$varphi_11 <- .947
+# model_sol$parameters$varphi_12 <- .053
 # 
-# model$parameters$varphi_11 <- .95
-# model$parameters$varphi_12 <- .05
+# model_sol$parameters$varphi_11 <- .95
+# model_sol$parameters$varphi_12 <- .05
 
 # model_sol$parameters$mu_D <- .000001
 # model_sol$parameters$mu_N <- .000001
@@ -61,10 +61,10 @@ for(dt in c(1,5)){
                     MUOeq,MLOeq),ncol=1)
       M.shock <- matrix(c(MATeq+1,
                           MUOeq,MLOeq),ncol=1)
-      TAT <- model$vector.ini$ini_Tat
-      TLO <- model$vector.ini$ini_Tlo
-      TAT.shock <- model$vector.ini$ini_Tat
-      TLO.shock <- model$vector.ini$ini_Tlo
+      TAT <- model_sol$vector.ini$ini_Tat
+      TLO <- model_sol$vector.ini$ini_Tlo
+      TAT.shock <- model_sol$vector.ini$ini_Tat
+      TLO.shock <- model_sol$vector.ini$ini_Tlo
     }else{
       M <- (diag(3) + dt*B) %*% M
       M.shock <- (diag(3) + dt*B) %*% M.shock
@@ -133,10 +133,10 @@ for(largeMat in c(TRUE,FALSE)){
                         MUOeq,MLOeq),ncol=1)
           M.shock <- matrix(c(MATeq+1,
                               MUOeq,MLOeq),ncol=1)
-          TAT <- model$vector.ini$ini_Tat
-          TLO <- model$vector.ini$ini_Tlo
-          TAT.shock <- model$vector.ini$ini_Tat
-          TLO.shock <- model$vector.ini$ini_Tlo
+          TAT <- model_sol$vector.ini$ini_Tat
+          TLO <- model_sol$vector.ini$ini_Tlo
+          TAT.shock <- model_sol$vector.ini$ini_Tat
+          TLO.shock <- model_sol$vector.ini$ini_Tlo
         }else{
           M <- (model_sol$varphi%^%dt) %*% M
           M.shock <- (model_sol$varphi%^%dt) %*% M.shock
@@ -279,8 +279,8 @@ polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.01,rev(upper.bound.99)),
 polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.05,rev(upper.bound.95)),
         col='grey80',border=NaN)
 
-lines(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),lwd=2,pch=3,type="b")
-lines(EV$date+5,c(0,IRF_noN_TAT[1:(h.end-1)]),lwd=2)
+lines(EV$date,c(0,IRF_TAT[1:(h.end-1)]),lwd=2,pch=3,type="b")
+lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),lwd=2)
 lines(fair$year,fair$mean,lwd=2,col="dark grey")
 lines(hector$year,hector$temp.delta,col="#E69F00",lty=3,lwd=3)
 lines(magicc$year,magicc$temp.delta,col="#56B4E9",lty=2,lwd=3)
@@ -313,7 +313,7 @@ grid()
 #       cex.lab=1)
 
 #lines(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),lwd=1,pch=3,type="b")
-lines(EV$date+5,c(0,IRF_noN_TAT[1:(h.end-1)]),col="black",lty=1,lwd=2)
+lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),col="black",lty=1,lwd=2)
 #lines(IRF_CR.linear.dt5_dates,IRF_CR.linear.dt5,col="black",lty=1,lwd=2)
 lines(IRF_CR.linear.dt1_dates,IRF_CR.linear.dt1,col="black",lty=2,lwd=2)
 

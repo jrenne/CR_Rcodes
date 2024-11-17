@@ -127,7 +127,7 @@ TRP_CR_EZ_highDelta <- ET.Q_CR_EZ - ET.P_CR_EZ
 gamma <- 1.01
 gamma <- 1.45
 #gamma <- 1.24
-model.CRRA <- model
+model.CRRA <- model_sol
 model.CRRA$parameters$gamma <- gamma
 model.CRRA <- solveParam4c(model.CRRA,indic_CRRA=TRUE)
 model_CRRA_sol <- model_solve(model.CRRA,
