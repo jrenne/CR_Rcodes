@@ -48,7 +48,7 @@ make_figure_calibration_Damages <- function(model_sol,
   
   plot(T.2100,median.damage,type="l",ylim=c(0,.4),col="white",
        xlab="Temperature in 2100 (in \u00B0C)",
-       ylab="Fractional damage",las=1,
+       ylab="Damages (fractions of output)",las=1,
        main=main.title)
   for(i in length(vector.of.CI):1){
     # P

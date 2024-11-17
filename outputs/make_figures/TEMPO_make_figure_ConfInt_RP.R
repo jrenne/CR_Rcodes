@@ -4,7 +4,7 @@
 #           run a regression where the SCC is regressed on targets & parameters
 # ==============================================================================
 
-max.chge <- .5 # maximum absolute change in target
+max.chge <- .25 # maximum absolute change in target
 
 Nb.draws <- 300
 
@@ -50,9 +50,9 @@ all.res <- foreach(i = 1:Nb.draws, .combine=rbind) %dopar% {
   model_sol_new$parameters$gamma <-
     model_sol_new$parameters$gamma * (1 + max.chge*runif(1,min=-1,max=1))
   
-  # Tau:
-  model_sol_new$parameters$tau <-
-    model_sol_new$parameters$tau * (1 + max.chge*runif(1,min=-1,max=1))
+  # nu:
+  model_sol_new$parameters$nu <-
+    model_sol_new$parameters$nu * (1 + max.chge*runif(1,min=-1,max=1))
   
   # Damage targets:
   model_sol_new$target_vector["ECumD2"] <- 1 - (1-model_sol$target_vector["ECumD2"]) *
@@ -123,7 +123,7 @@ all.res <- foreach(i = 1:Nb.draws, .combine=rbind) %dopar% {
   
   c(SCC,T.RP,H.RP,ZCB$r.t,
     model_sol_new$target_vector,mu_T,
-    model_sol_new$parameters$gamma,rho_new,model_sol_new$parameters$tau)
+    model_sol_new$parameters$gamma,rho_new,model_sol_new$parameters$nu)
 }
 
 
@@ -132,7 +132,7 @@ colnames(all.res) <- c("scc",
                        paste("H.RP.",1:H,sep=""),
                        paste("yld.",1:H,sep=""),
                        names(model_sol$target_vector),
-                       "mu_T","gamma","rho","tau")
+                       "mu_T","gamma","rho","nu")
 
 stopCluster(cl)
 file.remove("outputs/toto.Rdata")
@@ -142,19 +142,19 @@ all.res <- all.res[complete.cases(all.res[,1]),]
 scc <- all.res[,1]
 X   <- all.res[,(1+3*H+1):dim(all.res)[2]]
 
+quantile(scc,c(.1,.5,.9))
+mean(scc)
+
 eq <- lm(scc~X)
 summary(eq)
 
-X_red <- X[,c("ECumD2","ECumD4","stdCumD4","ECumN4",
-              "gamma","rho","tau")]
+X_red <- X[,c("ECumD4","stdCumD4",
+              "ECumN4",
+              "gamma","rho","nu")]
 eq_red <- lm(scc~X_red)
 summary(eq_red)
 
 X_red <- X[,c("ECumD2","ECumD4","stdCumD4",
-              "gamma","rho")]
+              "gamma","rho","nu")]
 eq_red <- lm(scc~X_red)
 summary(eq_red)
-
-
-
-

@@ -4,7 +4,7 @@
 
 # Plot ----
 FILE = "/outputs/Figures/Figure_Damage_comparison.pdf"
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=9, height=6)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=8, height=5)
 
 par(plt=c(.2,1.0,.15,.95))
 
@@ -15,7 +15,7 @@ par(plt=c(.2,1.0,.15,.95))
 # )
 nf <- layout(
   matrix(c(1,2), ncol=2, byrow=TRUE), 
-  widths=c(2,1), 
+  widths=c(3,2), 
   heights=c(1)
 )
 

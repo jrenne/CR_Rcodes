@@ -6,6 +6,8 @@
 all.SCC.RP <- NULL
 all.T.RP   <- NULL
 
+H <- model$horiz.2100
+
 omega_ZCB  <- matrix(0,model_sol$n.X)
 omega_T.at <- matrix(0,model_sol$n.X)
 omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
@@ -40,18 +42,21 @@ for(indic.CRRA in cases){
   
   if(indic.CRRA==1){
     gamma <- 1.45
-    xlim  <- c(-.025,.02)
+    xlim  <- c(-.025,.03)
     ylim  <- c(-.07,.03)
   }else if(indic.CRRA == .5){
     gamma <- 1.001
-    xlim  <- c(-.025,.02)
+    xlim  <- c(-.025,.03 )
     ylim  <- c(-.07,.03)
   }else{
     gamma <- model_sol$parameters$gamma
-    xlim  <- c(-.1,.3)
-    ylim  <- c(-1,.4)
+    xlim  <- c(-.1,.1)
+    ylim  <- c(-.6,.1)
   }
   
+  #xlim  <- c(-1,1)
+  #ylim  <- c(-1,1)
+
   if((indic.CRRA==1)){
     eval(parse(text = gsub(" "," ",
                            paste("main.t <- expression(paste('(c) Power utility, ',gamma,' = ',",
@@ -169,7 +174,7 @@ for(indic.CRRA in cases){
       c(SCC,NPV.CO2,ET.Q[H],ET.P[H])
     }
     
-    SCC.RP <- (all.res[,1] - all.res[,2])/all.res[,1]
+    SCC.RP <- (all.res[,1] - all.res[,2])/all.res[,2]
     ET.RP  <- all.res[,3] - all.res[,4]
     
     
@@ -197,7 +202,7 @@ for(indic.CRRA in cases){
     
     if(indic.CRRA==0){
       if(indic.variable=="conso vol"){
-        legend("bottomright",
+        legend("bottomleft",
                legend=c(expression(paste(sigma[a]," = 0",sep="")),
                         expression(paste("Baseline value of ",sigma[A],sep="")),
                         expression(paste("Largest value of ",sigma[A]," (x 1.5)",sep=""))),
@@ -208,7 +213,7 @@ for(indic.CRRA in cases){
                lwd=c(2,2,2),bty = "n")
       }
       if(indic.variable=="damages"){
-        legend("topright",
+        legend("topleft",
                legend=c("No damages","Baseline damages","Large damages (x 1.5)"),
                lty=c(NaN,NaN),
                col=col,

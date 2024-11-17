@@ -41,7 +41,7 @@ vector.ini<-list(
   ini_delc   = 0,
   ini_tildey = 0,
   ini_E      = Eind+eps_0,
-  ini_Eind   = Eind,
+  #ini_Eind   = Eind,
   ini_F      = Ftot,
   ini_Mat    = Mat,                                                            
   ini_Mup    = Mup,                                                            
@@ -53,7 +53,7 @@ vector.ini<-list(
   ini_Cumdelc= 0,
   ini_H      = H
 )
-remove(Eind,Ftot,Mat,Mup,Mlo,Tat,Tlo,H)
+remove(Ftot,Mat,Mup,Mlo,Tat,Tlo,H)
 
 
 #---- Economic parameters ------------------------------------------------------
@@ -95,6 +95,7 @@ m0 <- exp.mat.2100.rcp45_6/mateq
 
 param.clim<-list(
   m0         = m0, 
+  a_T        = 0,
   a_H        = NaN,
   b_H        = NaN,
   a_N        = NaN,
@@ -118,10 +119,10 @@ param.clim<-list(
   nu         = t2co2,                                                       
   tau        = f2co2,                                                           
   delsigma   =-0.04,                                                            #DICE2023
-  e0         = vector.ini$ini_Eind,                                             
+  e0         = Eind,                                             
   q0         = q0,                                                            
   mu0        = mu0,                                                           
-  sigma0     = vector.ini$ini_Eind/(q0*(1-mu0)),                                    
+  sigma0     = Eind/(q0*(1-mu0)),                                    
   gsigma1    =-0.015,                                                           #DICE2023
   varphi_11  = 1-b12,                                                         
   varphi_12  = b12,                                                           
@@ -142,9 +143,8 @@ param.clim<-list(
   mu_H       = NaN
 )
 
-param.clim$lb_dT_at <- -.1 # lower bound for dT_at
 
-remove(b12,b23,c1,c3,c4,mateq,mueq,mleq,f2co2,
+remove(Eind,b12,b23,c1,c3,c4,mateq,mueq,mleq,f2co2,
        t2co2,q0,mu0,exp.mat.2100.rcp45_6)
 
 param<-c(param.econ,param.clim)
@@ -192,13 +192,13 @@ names(target_vector)<-c(
 
 #---- Names of variables in X --------------------------------------------------
 
-names.var.X <- c("delc","y_tilde","E","E_ind","Forc","M_at",
+names.var.X <- c("delc","y_tilde","E","Forc","M_at",
                  "M_up","M_lo","T_at","T_lo",
                  "Cum_E","Cum_dc","H",
                  "eta_A","eta_X",
                  #"eta_E",
                  #"eta_F",
-                 "D","N","dT_at","dH")
+                 "D","N","WT_at","dH")
 
 
 #---- log-growth rate ----------------------------------------------------------
