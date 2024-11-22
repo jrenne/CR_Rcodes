@@ -1083,17 +1083,18 @@ model_solve <- function(model,
                                  "')-model$n.Z",sep=""))))}
   
   # Prepare "ell" components: --------------------------------------------------
-  ell1.D   <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
+  ell1.D   <- matrix(0,nrow=model_sol$n.Z + model_sol$n.W)
   ell1.D[indic.T_at] <-
     model_sol$parameters$b_D/model_sol$parameters$mu_D
+  #ell1.D[indic.H] <- .015/8/model_sol$parameters$mu_D
   model_sol[["ell1.D"]] <- ell1.D
   
-  ell1.N   <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
+  ell1.N   <-matrix(0,nrow=model_sol$n.Z + model_sol$n.W)
   ell1.N[indic.T_at] <-
     model_sol$parameters$b_N/model_sol$parameters$mu_N
   model_sol[["ell1.N"]] <- ell1.N
   
-  ell1.T <-matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
+  ell1.T <-matrix(0,nrow=model_sol$n.Z + model_sol$n.W)
   ell1.T[indic.Forc]   <- param$xi_1*model_sol$tstep
   ell1.T[indic.T_at] <-
     1 - param$xi_1*model_sol$tstep*(param$tau/param$nu + param$xi_2)
@@ -1101,8 +1102,12 @@ model_solve <- function(model,
   ell1.T                <- ell1.T/param$mu_T
   model_sol[["ell1.T"]] <- ell1.T
   
-  ell1.H                <- matrix(0,nrow=model_sol$n.Z+model_sol$n.W)
+  ell1.H <- matrix(0,nrow=model_sol$n.Z + model_sol$n.W)
   ell1.H[indic.T_at] <- param$b_H/param$mu_H
+  # ell1.H[model_sol$n.Z + indic.D] <- (model_sol$target_vector["stdH4"]/
+  #                                       model_sol$target_vector["stdCumD4"])/param$mu_H
+  # ell1.H[indic.T_at]              <- .01/param$mu_H
+  
   model_sol[["ell1.H"]] <- ell1.H
   
   # Construct matrices determining dynamics after Tmax ("infinite"): -----------
@@ -1119,7 +1124,7 @@ model_solve <- function(model,
     t(mu_altern$muprice_1[(model_sol$n.Z+1):
                             (model_sol$n.Z+model_sol$n.W)])
   omega.star.inf[indic.delc,indic.D]     <- -1 # Infff
-  omega.star.inf[indic.delc,indic.D]     <- 0 # Infff
+  #omega.star.inf[indic.delc,indic.D]     <- 0 # Infff
   if(indic_CRRA){
     omega.star.inf[indic.delc,indic.D] <- 
       omega.star.inf[indic.delc,indic.D]#/param$gamma
@@ -1129,7 +1134,7 @@ model_solve <- function(model,
   omega.star.inf[indic.T_at,indic.WT_at] <-  1
   omega.star.inf[indic.H,indic.dH]       <-  1
   #omega.star.inf[indic.T_lo,indic.WT_at] <- param$xi_3*model_sol$tstep
-
+  
   model_sol[["omega.star.inf"]] <- omega.star.inf
   
   A0.star.inf <- diag(model_sol$n.Z)
@@ -1141,7 +1146,7 @@ model_solve <- function(model,
       A0.star.inf[indic.delc,indic.H]#/param$gamma
   }
   #A0.star.inf[indic.E,indic.E_ind]   <- -1
-  A0.star.inf[indic.Forc,indic.M_at] <- -param$tau/(log(2)*param$m_pi*param$m0)
+  A0.star.inf[indic.Forc,indic.M_at] <- -param$tau/(log(2)*param$m_pi*tail(param$m0,1))
   A0.star.inf[indic.Cum_E,indic.E]   <- -1
   A0.star.inf[indic.Cum_dc,]         <- -t(mu_altern$muprice_1[1:model_sol$n.Z])
   A0.star.inf[indic.Cum_dc,indic.Cum_dc] <- 1
@@ -1188,7 +1193,7 @@ model_solve <- function(model,
   omega0.star.inf[indic.E,1]     <- 0
   #omega0.star.inf[indic.E_ind,1] <- 0
   omega0.star.inf[indic.Forc,1]  <-
-    param$tau/log(2)*(log(param$m0)-1)+param$phi_1
+    param$tau/log(2)*(log(tail(param$m0,1))-1) + param$phi_1
   if(length(mu_altern$muprice_0)==1){
     omega0.star.inf[indic.Cum_dc,1] <- mu_altern$muprice_0
   }else{
@@ -1507,16 +1512,10 @@ mu_dep <- function(model_sol,
                                  "<- which(model_sol$names.var.X=='",model_sol$names.var.X[i],
                                  "')-model_sol$n.Z",sep=""))))}
   
-  A0.star <- model_sol$A0.star.inf
-  #A0.star[indic.T_at,indic.WT_at] <- - 1
-  A0.star[indic.delc,indic.H] <- param$b_sk # Infff
-  #A0.star[indic.delc,indic.H] <- 0 # Infff
-  if(indic_CRRA){
-    A0.star[indic.delc,indic.H] <- A0.star[indic.delc,indic.H]#/param$gamma
-  }
-  
   A1.star<-list()
+  A0.star<-list()
   for (i in 1:Tmax){
+
     A1_i <- matrix(0,model_sol$n.Z,model_sol$n.Z)
     A1_i[indic.y_tilde,indic.y_tilde] <- 1
     #A1_i[indic.E_ind,indic.y_tilde]<- lambda[i]
@@ -1541,6 +1540,15 @@ mu_dep <- function(model_sol,
       A1_i[indic.delc,indic.H] <- A1_i[indic.delc,indic.H]#/param$gamma
     }
     A1.star[[i]] <- A1_i 
+    
+    A0_i <- model_sol$A0.star.inf
+    A0_i[indic.delc,indic.H] <- param$b_sk # Infff
+    if(indic_CRRA){
+      A0_i[indic.delc,indic.H] <- A0_i[indic.delc,indic.H]#/param$gamma
+    }
+    m0t <- ifelse(i <= length(param$m0),param$m0[i],tail(param$m0,1))
+    A0_i[indic.Forc,indic.M_at] <- -param$tau/(log(2)*param$m_pi*m0t)
+    A0.star[[i]] <- A0_i 
   }
   
   omega0.star<-list()
@@ -1557,7 +1565,8 @@ mu_dep <- function(model_sol,
     }
     omega0_i[indic.E,1]     <- E_land[i] + lambda[i]
     #omega0_i[indic.E_ind,1] <- lambda[i]
-    omega0_i[indic.Forc,1]  <- param$tau/log(2)*(log(param$m0)-1)+f_ex[i]
+    m0t <- ifelse(i <= length(param$m0),param$m0[i],tail(param$m0,1))
+    omega0_i[indic.Forc,1]  <- param$tau/log(2)*(log(m0t)-1) + f_ex[i]
     if(length(mu_altern$muprice_0)==1){
       omega0_i[indic.Cum_dc,1]  <- mu_altern$muprice_0
     }else{
@@ -1587,15 +1596,14 @@ mu_dep <- function(model_sol,
     omega_i[indic.T_at,indic.WT_at] <-  1
     omega_i[indic.H,indic.dH]       <-  1
     #omega_i[indic.T_lo,indic.WT_at] <- param$xi_3*model_sol$tstep
-
+    
     omega.star[[i]]      <- omega_i
   }
-  A1      <-lapply(1:Tmax,function(i)solve(A0.star)%*%
-                     A1.star[[i]])
-  omega0  <-lapply(1:Tmax,function(i)solve(A0.star)%*%
-                     omega0.star[[i]])
-  omega   <-lapply(1:Tmax,function(i)solve(A0.star)%*%
-                     omega.star[[i]]) 
+  
+  A0.star[[Tmax]] <- model_sol$A0.star.inf
+  A1      <-lapply(1:Tmax,function(i)solve(A0.star[[i]]) %*% A1.star[[i]])
+  omega0  <-lapply(1:Tmax,function(i)solve(A0.star[[i]]) %*% omega0.star[[i]])
+  omega   <-lapply(1:Tmax,function(i)solve(A0.star[[i]]) %*% omega.star[[i]]) 
   
   return(list("A1"=A1,
               "omega0"=omega0,
@@ -2095,7 +2103,7 @@ simul.function<-function(model_sol,nb.simul.t,nb.traj,setseed=NaN){
   N    <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.N,]),1:nb.traj)),
                  ncol=nb.traj)[-1,]
   WT_at <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.WT_at,]),1:nb.traj)),
-                 ncol=nb.traj)[-1,]
+                  ncol=nb.traj)[-1,]
   dH   <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.dH,]),1:nb.traj)),
                  ncol=nb.traj)[-1,]
   
@@ -2553,7 +2561,7 @@ update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
     mu_A0t <- - log(varphi.tilde.A) + log(varphi.tilde.A_1)
     # Update model accordingly:
     mu_A <- mu_altern
-    mu_A$muprice_0 <- c(mu_A0t,rep(mu_A0t[H],model$Tmax-H_if_Euler))
+    mu_A$muprice_0 <- c(mu_A0t,rep(mu_A0t[H],model_sol$Tmax-H_if_Euler))
     
     new_model_sol <- update.model_sol.4.mu_altern(model_sol,
                                                   mu_altern = mu_A,
@@ -2564,4 +2572,163 @@ update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
 }
 
 
+#* Robustness checks -----------------------------------------------------------
+simul_TAT_condit_MAT <- function(model_sol,Mat.trajectory){
+  
+  maxH  <- length(Mat.trajectory)
+  param <- model_sol$parameters
+  H2100 <- model_sol$horiz.2100
+  
+  f_ex  <- matrix(rep(param$phi_0,maxH),maxH,1)
+  f_ex[1:H2100] <- f_ex[1:H2100] +
+    (1/H2100)*(param$phi_1-param$phi_0)*((1:H2100)-1)
+  f_ex[(H2100+1):maxH] <- f_ex[(H2100+1):maxH] + (param$phi_1-param$phi_0)
+  
+  Tat_1 <- model_sol$vector.ini$ini_Tat
+  Tlo_1 <- model_sol$vector.ini$ini_Tlo
+  F_1   <- model_sol$vector.ini$ini_F
+  
+  xi_1 <- model_sol$parameters$xi_1
+  xi_2 <- model_sol$parameters$xi_2
+  xi_3 <- model_sol$parameters$xi_3
+  
+  tau <- model_sol$parameters$tau
+  nu  <- model_sol$parameters$nu
+  
+  m_pi     <- model_sol$parameters$m_pi
+  m0       <- model_sol$parameters$m0
+
+  phi_0 <- model_sol$parameters$phi_0
+  phi_1 <- model_sol$parameters$phi_1
+
+  for(linearized in c(FALSE,TRUE)){
+    Tat_1 <- model_sol$vector.ini$ini_Tat
+    Tlo_1 <- model_sol$vector.ini$ini_Tlo
+    F_1   <- model_sol$vector.ini$ini_F
+    all.Tat <- Tat_1
+    all.F   <- F_1
+    for(t in 1:length(Mat.trajectory)){
+      m0t <- ifelse(t <= length(m0),m0[t],tail(m0,1))
+      Tat <- Tat_1 + xi_1 * model_sol$tstep * (F_1 - tau/nu * Tat_1 - xi_2 * (Tat_1 - Tlo_1))
+      Tlo <- Tlo_1 + xi_3 * model_sol$tstep * (Tat_1 - Tlo_1)
+      
+      if(linearized){
+        FF <- tau * log(m0t)/log(2) +
+          tau/(log(2)*m0t)*(Mat.trajectory[t]/m_pi - m0t) + f_ex[t]
+      }else{
+        FF <- tau * log(Mat.trajectory[t]/m_pi)/log(2) + f_ex[t]
+      }
+      
+      all.Tat <- c(all.Tat,Tat)
+      all.F   <- c(all.F,FF)
+      
+      Tat_1 <- Tat
+      Tlo_1 <- Tlo
+      F_1   <- FF
+    }
+    if(linearized){
+      all.Tat.linear <- all.Tat
+      all.F.linear   <- all.F
+    }else{
+      all.Tat.nonlinear <- all.Tat
+      all.F.nonlinear   <- all.F
+    }
+  }
+  return(list(Tat.linear = all.Tat.linear,
+              Tat.nonlinear = all.Tat.nonlinear,
+              F = all.F))
+}
+
+
+simul_TAT_condit_MAT_CDICE <- function(tstep,Mat.trajectory,TAT.ini,TLO.ini,F.ini,
+                                       param,
+                                       year.ini=2020){
+  # Use CDICE to produce trajectories of temperatures conditional on M_AT traj.
+  c1 <- .137
+  c3 <- .73
+  c4 <- .00689
+  MATeq <- 607
+  lambda <- 1.06
+  F2XCO2 <- 3.45
+  
+  H2100 <- (2100 - year.ini)/tstep
+  
+  maxH <- length(Mat.trajectory)
+  f_ex  <- matrix(rep(param$phi_0,maxH),maxH,1)
+  f_ex[1:H2100] <- f_ex[1:H2100] +
+    (1/H2100)*(param$phi_1-param$phi_0)*((1:H2100)-1)
+  f_ex[(H2100+1):maxH] <- f_ex[(H2100+1):maxH] + (param$phi_1-param$phi_0)
+  
+  all.F         <- F.ini
+  all.TAT       <- TAT.ini
+  
+  TAT_1 <- TAT.ini
+  TLO_1 <- TLO.ini
+  F_1   <- F.ini
+  
+  for(t in 1:length(Mat.trajectory)){
+
+    TAT <- TAT_1 + c1*tstep * (F_1 - lambda * TAT_1 - c3 * (TAT_1 - TLO_1))
+    TLO <- TLO_1 + c4*tstep * (TAT_1 - TLO_1)
+    F <- F2XCO2 * log(Mat.trajectory[t]/MATeq)/log(2) + f_ex[t]
+    
+    all.F         <- cbind(all.F,F)
+    all.TAT       <- cbind(all.TAT,TAT)
+
+    TAT_1 <- TAT
+    TLO_1 <- TLO
+    F_1   <- F
+  }
+  return(list(Tat=all.TAT,
+              F=all.F))
+}
+
+TempSimulation_ACE <- function(Temp_ini, forcing) {
+  
+  # Inputs:
+  layers    <- dim(Temp_ini)[1]
+  scenarios <- dim(Temp_ini)[2]
+  horizon   <- dim(forcing)[2]
+  
+  # Fixed settings of final calibration 
+  cs       <- 3  # climate sensitivity
+  eta      <- 3.8  # forcing parameter used to calculate CO2 equivalents from RF
+  Oceanlayers <- 2  # Number of ocean layers used in calibration
+  sigma <- c(0.538194273157518,
+             0.0765198358638229,
+             0.00399267991987196,
+             0.461805699284704,
+             0.0274865322002226)  # Corresponding sigma
+  
+  Temp <- array(0, dim = c(Oceanlayers + 1, dim(forcing)[1], dim(forcing)[2]))
+  Temp[,,1] <- Temp_ini
+  
+  xi <- matrix(NaN,Oceanlayers + 1,1)
+  xi[1] <- log(2) / cs
+  xi[2:(Oceanlayers + 1)] <- log(2) / cs
+  
+  # Extract endogenous optimized parameters from sigma
+  xione <- xi[1]
+  sigma_up   <- sigma[1:layers]  # length of layers
+  sigma_down <- sigma[(layers + 1):(2 * layers - 1)]  # length of layers - 1
+  taubar <- 1
+  
+  # Standard version: no heat exchange with lower boundary layer
+  sigma_down[layers] <- 0  # Adding a zero for downward heat exchange last layer
+  
+  # Initializing and Simulating
+  Tau <- array(0, dim = c(layers, scenarios, horizon))
+  Tau[, , 1] <- exp(diag(c(xi)) %*% Temp[, , 1])
+  TempSim <- array(0, dim = c(layers, scenarios, horizon))
+  TempSim[, , 1] <- Temp[, , 1]
+  
+  for (y in 1:(horizon - 1)) {
+    Tau[, , y + 1] <- (diag(1 - sigma_up - sigma_down) %*% Tau[, , y]) +
+      (diag(sigma_up) %*% rbind(forcing[, y], Tau[1:(layers - 1), , y])) +
+      (diag(sigma_down) %*% rbind(Tau[2:layers, , y], 
+                                  taubar * matrix(1, nrow = 1, ncol = scenarios)))
+    TempSim[, , y + 1] <- diag(c(1 / xi)) %*% log(Tau[, , y + 1])
+  }
+  return(TempSim)
+}
 

@@ -21,13 +21,15 @@
 
 
 # CDICE: -----------------------------------------------------------------------
+# Load RCPs (to have an emission scenario, as in Figure 2.2.3 of EPA, 2023):
+RCP_MAGICC <- read.csv("data/RCP_Mat_MAGICC.csv", header=FALSE)
+Emissions_CO2_RCP <- RCP_MAGICC[,11]
+Emissions_CO2_RCP <- RCP_MAGICC[,12]
+
 for(dt in c(1,5)){
   MATeq <- 851
   MUOeq <- 628
   MLOeq <- 1323
-  #MATeq <- model_sol$vector.ini$ini_Mat + 00
-  #MUOeq <- model_sol$vector.ini$ini_Mup
-  #MLOeq <- model_sol$vector.ini$ini_Mlo
   r1 <- MATeq/MUOeq
   r2 <- MUOeq/MLOeq
   b12 <- 0.054
@@ -47,15 +49,25 @@ for(dt in c(1,5)){
   F2XCO2 <- 3.45
   shock <- c(1,0,0)
   dates <- seq(2030,2300,by=dt)
+  # Emissions:
+  Emissions <- Emissions_CO2_RCP[which(RCP_MAGICC$V1 %in% dates)]
+  if(dt > 1){
+    for(iiii in 1:(dt-1)){
+      Emissions <- Emissions +
+        Emissions_CO2_RCP[which(RCP_MAGICC$V1 %in% dates) - iiii]
+    }
+  }
   all.M <- NULL
   all.F <- NULL
   all.TAT <- NULL
   all.TLO <- NULL
   all.M.shock <- NULL
-  all.F.shock <- NULL
+  all.Forc.shock <- NULL
   all.TAT.shock <- NULL
   all.TLO.shock <- NULL
+  t <- 0
   for(y in dates){
+    t <- t + 1
     if(y==dates[1]){
       M <- matrix(c(MATeq,
                     MUOeq,MLOeq),ncol=1)
@@ -66,28 +78,28 @@ for(dt in c(1,5)){
       TAT.shock <- model_sol$vector.ini$ini_Tat
       TLO.shock <- model_sol$vector.ini$ini_Tlo
     }else{
-      M <- (diag(3) + dt*B) %*% M
-      M.shock <- (diag(3) + dt*B) %*% M.shock
+      M <- (diag(3) + dt*B) %*% M + c(Emissions[t],0,0)
+      M.shock <- (diag(3) + dt*B) %*% M.shock+ c(Emissions[t],0,0)
     }
-    F <- F2XCO2 * log(M[1]/MATeq)/log(2)
-    F.shock <- F2XCO2 * log(M.shock[1]/MATeq)/log(2)
+    Forc <- F2XCO2 * log(M[1]/MATeq)/log(2)
+    Forc.shock <- F2XCO2 * log(M.shock[1]/MATeq)/log(2)
     
     all.M         <- cbind(all.M,M)
-    all.F         <- cbind(all.F,F)
+    all.F         <- cbind(all.F,Forc)
     all.TAT       <- cbind(all.TAT,TAT)
     all.TLO       <- cbind(all.TLO,TLO)
     
     all.M.shock   <- cbind(all.M.shock,M.shock)
-    all.F.shock   <- cbind(all.F.shock,F.shock)
+    all.Forc.shock   <- cbind(all.Forc.shock,Forc.shock)
     all.TAT.shock <- cbind(all.TAT.shock,TAT.shock)
     all.TLO.shock <- cbind(all.TLO.shock,TLO.shock)
     
     TAT_1 <- TAT # to be used un TLO
-    TAT <- TAT + c1*dt * (F - lambda * TAT - c3 * (TAT - TLO))
+    TAT <- TAT + c1*dt * (Forc - lambda * TAT - c3 * (TAT - TLO))
     TLO <- TLO + c4*dt * (TAT_1 - TLO)
     
     TAT.shock_1 <- TAT.shock # to be used un TLO
-    TAT.shock   <- TAT.shock + c1*dt * (F.shock - lambda * TAT.shock - 
+    TAT.shock   <- TAT.shock + c1*dt * (Forc.shock - lambda * TAT.shock - 
                                           c3 * (TAT.shock - TLO.shock))
     TLO.shock <- TLO.shock + c4*dt * (TAT.shock_1 - TLO.shock)
   }
@@ -124,10 +136,12 @@ for(largeMat in c(TRUE,FALSE)){
       all.TAT <- NULL
       all.TLO <- NULL
       all.M.shock <- NULL
-      all.F.shock <- NULL
+      all.Forc.shock <- NULL
       all.TAT.shock <- NULL
       all.TLO.shock <- NULL
+      ttt <- 0
       for(y in dates){
+        ttt <- ttt + 1
         if(y==dates[1]){
           M <- matrix(c(MATeq,
                         MUOeq,MLOeq),ncol=1)
@@ -142,10 +156,9 @@ for(largeMat in c(TRUE,FALSE)){
           M.shock <- (model_sol$varphi%^%dt) %*% M.shock
         }
         if(indic_lineariz){
-          
-          Forc <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
+          Forc <- tau/model_sol$parameters$m0[ttt]/log(2)/model_sol$parameters$m_pi * 
             M[1]
-          Forc.shock <- tau/model_sol$parameters$m0/log(2)/model_sol$parameters$m_pi * 
+          Forc.shock <- tau/model_sol$parameters$m0[ttt]/log(2)/model_sol$parameters$m_pi * 
             M.shock[1]
         }else{
           Forc <- tau * log(M[1]/MATeq)/log(2)
@@ -158,7 +171,7 @@ for(largeMat in c(TRUE,FALSE)){
         all.TLO       <- cbind(all.TLO,TLO)
         
         all.M.shock   <- cbind(all.M.shock,M.shock)
-        all.F.shock   <- cbind(all.F.shock,Forc.shock)
+        all.Forc.shock   <- cbind(all.Forc.shock,Forc.shock)
         all.TAT.shock <- cbind(all.TAT.shock,TAT.shock)
         all.TLO.shock <- cbind(all.TLO.shock,TLO.shock)
         
@@ -258,20 +271,26 @@ IRF_noN_TAT  <- EV_noN_shock$EX$T_at - EV_noN$EX$T_at
 
 
 FILE = "/outputs/Figures/Figure_IRF1GtC.pdf"
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=9, width=12, height=5)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=10, width=8, height=4)
 
-par(mfrow=c(1,2))
-par(plt=c(.16,1,.1,.90))
+par(mfrow=c(1,1))
+par(plt=c(.2,1,.1,.95))
 #par(mar=c(5, 6, 4, 2))
+
+nf <- layout(
+  matrix(c(1,2), ncol=2, byrow=TRUE), 
+  widths=c(3,1.5), 
+  heights=c(1)
+)
 
 plot(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),col="white",las=1,
      xlim=c(2025,2300),
      ylim=c(0,1.5*max(upper.bound.99)),
      xlab="",
-     ylab="",main="(a)")
+     ylab="",main="")
 grid()
 
-title(ylab='Temperature Anomaly from 1GtC in 2030, in °C', line=5,
+title(ylab='Temperature Anomaly from 1GtC, in °C', line=5,
       cex.lab=1)
 
 polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.01,rev(upper.bound.99)),
@@ -279,68 +298,79 @@ polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.01,rev(upper.bound.99)),
 polygon(x=c(fair$year,rev(fair$year)),c(lower.bound.05,rev(upper.bound.95)),
         col='grey80',border=NaN)
 
-lines(EV$date,c(0,IRF_TAT[1:(h.end-1)]),lwd=2,pch=3,type="b")
-lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),lwd=2)
+lines(EV$date,c(0,IRF_TAT[1:(h.end-1)]),lwd=1,pch=3,type="b")
+lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),lwd=1)
 lines(fair$year,fair$mean,lwd=2,col="dark grey")
-lines(hector$year,hector$temp.delta,col="#E69F00",lty=3,lwd=3)
-lines(magicc$year,magicc$temp.delta,col="#56B4E9",lty=2,lwd=3)
+lines(hector$year,hector$temp.delta,col="#E69F00",lty=3,lwd=2)
+lines(magicc$year,magicc$temp.delta,col="#56B4E9",lty=2,lwd=2)
 
 #lines(IRF_CDICE.dt1_dates,IRF_CDICE.dt1,col="red",lwd=2,lty=2)
 lines(IRF_CDICE.dt5_dates,IRF_CDICE.dt5,col="red",lwd=2,lty=4)
 
+# Load Traeger (2023) responses:
+IRF_Traeger_5y <- read.csv("data/IRF_Traeger_5y.csv", header=FALSE)
+n <- length(IRF_Traeger_5y$V1)
+dates <- seq(2030,2030+5*(n-1),by=5)
+lines(dates,IRF_Traeger_5y$V1/100,col="#006400",lty=4)
+lines(dates,IRF_Traeger_5y$V2/100,col="#006400",lty=5)
+
+plot.new()
+
+par(plt=c(.1,.95,.25,.85))
+
 legend("topleft",
        legend=c("CR (with N)","CR (w/o N)","HECTOR 2.5","MAGICC 7.5.3",
-                "FaIR 1.6.2 (mean)","CDICE (5yr time step)"),
-       col=c("black","black","#E69F00", "#56B4E9","dark grey","red"),
-       lty=c(NaN,1,3,2,1,4),
-       lwd=c(2,2,3,3,2,2),
-       pch=c(3,NaN,NaN,NaN,NaN,NaN),
+                "FaIR 1.6.2 (mean)","CDICE (5yr time step)",
+                "ACE-DICE (5yr time step)","ACE-Joos (5yr time step)"),
+       col=c("black","black","#E69F00", "#56B4E9","dark grey","red",
+             "#006400","#006400"),
+       lty=c(NaN,1,3,2,1,4,4,5),
+       lwd=c(1,1,2,2,2,2,1,1),
+       pch=c(3,NaN,NaN,NaN,NaN,NaN,NaN,NaN),
        bty = "n",cex=1,
        bg="white",
-       seg.len = 2,
-       ncol=3)
+       seg.len = 3)
 
 
 
-plot(EV$date,c(0,IRF_TAT[1:(h.end-1)]),col="white",las=1,
-     xlim=c(2025,2300),
-     ylim=c(0,1.5*max(upper.bound.99)),
-     xlab="",
-     ylab="",main="(b)")
-grid()
-
-# title(ylab='Temperature Anomaly from 1GtC in 2030, in °C', line=5,
-#       cex.lab=1)
-
-#lines(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),lwd=1,pch=3,type="b")
-lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),col="black",lty=1,lwd=2)
-#lines(IRF_CR.linear.dt5_dates,IRF_CR.linear.dt5,col="black",lty=1,lwd=2)
-lines(IRF_CR.linear.dt1_dates,IRF_CR.linear.dt1,col="black",lty=2,lwd=2)
-
-lines(IRF_CR.nonlinear.dt1_dates,
-      IRF_CR.nonlinear.dt1,col="#0571B0",lwd=2,lty=2)
-lines(IRF_CR.nonlinear.dt5_dates,
-      IRF_CR.nonlinear.dt5,col="#0571B0",lwd=2,lty=1)
-
-lines(IRF_CR.nonlinear.largeMat.dt1_dates,
-      IRF_CR.nonlinear.largeMat.dt1,col="#56B4AA",lwd=2,lty=2)
-lines(IRF_CR.nonlinear.largeMat.dt5_dates,
-      IRF_CR.nonlinear.largeMat.dt5,col="#56B4AA",lwd=2,lty=1)
-
-legend("topright",
-       legend=c("Linear (1yr time step)",
-                "Linear (5yrs time step)",
-                "Nonlinear (1yr time step)",
-                "Nonlinear (5yrs time step)",
-                "Nonlinear, high starting value (1yr time step)",
-                "Nonlinear, high starting value (5yrs time step)"),
-       col=c("black","black","#0571B0", "#0571B0",
-             "#56B4AA", "#56B4AA"),
-       lty=c(1,2,1,2,1,2),
-       lwd=2,
-       pch=NaN,
-       bty = "n",cex=1,
-       bg="white",
-       ncol=1)
-
+# plot(EV$date,c(0,IRF_TAT[1:(h.end-1)]),col="white",las=1,
+#      xlim=c(2025,2300),
+#      ylim=c(0,1.5*max(upper.bound.99)),
+#      xlab="",
+#      ylab="",main="(b)")
+# grid()
+# 
+# # title(ylab='Temperature Anomaly from 1GtC in 2030, in °C', line=5,
+# #       cex.lab=1)
+# 
+# #lines(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),lwd=1,pch=3,type="b")
+# lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),col="black",lty=1,lwd=2)
+# #lines(IRF_CR.linear.dt5_dates,IRF_CR.linear.dt5,col="black",lty=1,lwd=2)
+# lines(IRF_CR.linear.dt1_dates,IRF_CR.linear.dt1,col="black",lty=2,lwd=2)
+# 
+# lines(IRF_CR.nonlinear.dt1_dates,
+#       IRF_CR.nonlinear.dt1,col="#0571B0",lwd=2,lty=2)
+# lines(IRF_CR.nonlinear.dt5_dates,
+#       IRF_CR.nonlinear.dt5,col="#0571B0",lwd=2,lty=1)
+# 
+# lines(IRF_CR.nonlinear.largeMat.dt1_dates,
+#       IRF_CR.nonlinear.largeMat.dt1,col="#56B4AA",lwd=2,lty=2)
+# lines(IRF_CR.nonlinear.largeMat.dt5_dates,
+#       IRF_CR.nonlinear.largeMat.dt5,col="#56B4AA",lwd=2,lty=1)
+# 
+# legend("topright",
+#        legend=c("Linear (1yr time step)",
+#                 "Linear (5yrs time step)",
+#                 "Nonlinear (1yr time step)",
+#                 "Nonlinear (5yrs time step)",
+#                 "Nonlinear, high starting value (1yr time step)",
+#                 "Nonlinear, high starting value (5yrs time step)"),
+#        col=c("black","black","#0571B0", "#0571B0",
+#              "#56B4AA", "#56B4AA"),
+#        lty=c(1,2,1,2,1,2),
+#        lwd=2,
+#        pch=NaN,
+#        bty = "n",cex=1,
+#        bg="white",
+#        ncol=1)
 dev.off()

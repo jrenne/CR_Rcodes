@@ -2,6 +2,8 @@
 # Figure illustrating Merton model (1/2)
 # ==============================================================================
 
+ALPHA <- .0
+
 nb.values.variable <- 2000 # for extrapolation
 
 y.lim <- c(.5,14)
@@ -27,24 +29,23 @@ RF.strategy <- 1/prices.ZCRF.bonds$P.t
 omega_A <- matrix(0,model_sol$n.X,1)
 omega_A[which(model_sol$names.var.X=="Cum_dc")] <- 1
 
-elasticity.wrt.dc <- 2.5
-vector.of.muAD    <- c(0,-elasticity.wrt.dc)
-vector.of.muAD    <- c(0,-.1*model_sol$tstep)
-
-
+vector.of.elasticity.wrt.dc <- c(2.5,2.5)
+#vector.of.muAD              <- c(0,-elasticity.wrt.dc)
+vector.of.muAD              <- c(0,-.2*model_sol$tstep)
 
 # A_t's specification:
 mu_A <- list(muprice_0 = 0,
              muprice_1 = matrix(0,model_sol$n.X,1))
 
-indic_delc <- which(model$names.var.X=="delc")
-mu_A$muprice_1[indic_delc] <- elasticity.wrt.dc
+indic_delc <- which(model_sol$names.var.X=="delc")
+
 # in case one wants to add idiosyncratic shocks:
-indic_X <- which(model$names.var.X=="eta_X")
+indic_X <- which(model_sol$names.var.X=="eta_X")
 mu_A$muprice_1[indic_X] <- .0
 
-indic_D <- which(model$names.var.X=="D")
-indic_H <- which(model$names.var.X=="H")
+indic_D    <- which(model_sol$names.var.X=="D")
+indic_H    <- which(model_sol$names.var.X=="H")
+indic_delc <- which(model_sol$names.var.X=="delc")
 
 panel.titles <- NULL
 for(k in 1:length(vector.of.muAD)){
@@ -55,6 +56,8 @@ for(k in 1:length(vector.of.muAD)){
   )))
 }
 
+
+all.expected.A <- NULL
 
 #Plots
 FILE = paste("/outputs/Figures/Figure_Merton1.pdf",sep="")
@@ -78,8 +81,15 @@ for(muAD in vector.of.muAD){
   
   indic.plot <- indic.plot + 1
   
+  iiii <- which(muAD==vector.of.muAD)
+  mu_A <- list(muprice_0 = 0,
+               muprice_1 = matrix(0,model_sol$n.X,1))
+  mu_A$muprice_1[indic_delc] <- vector.of.elasticity.wrt.dc[iiii]
   #mu_A$muprice_1[indic_D] <- muAD
   mu_A$muprice_1[indic_H] <- muAD
+  if(muAD==0){
+    mu_A$muprice_1[indic_X] <- ALPHA
+  }
   
   # Update model accordingly:
   model_sol <- update.model_sol.4.mu_altern(model_sol,
@@ -89,13 +99,17 @@ for(muAD in vector.of.muAD){
   
   # # Check Euler equations:
   # omega_A <- matrix(0,model_sol$n.X,1)
-  # omega_A[which(model$names.var.X=="Cum_dc")] <- 1 # where A_t is (tilde{A} at that stage).
+  # omega_A[which(model_sol$names.var.X=="Cum_dc")] <- 1 # where A_t is (tilde{A} at that stage).
   # prices.Atilde <- varphi(model_sol,omega.varphi = omega_A,H=H)
   # plot(prices.Atilde$P.t)
   
   expected.A <- apply(matrix(1:H,ncol=1),1,
                       function(h){multi.lt.fct.N(model_sol,U=omega_A,h=h)})
-
+  
+  # save results (for comparison):
+  all.expected.A <- rbind(all.expected.A,
+                          expected.A)
+  
   # Compute P and Q proba:
   Price.ZC <- varphi(model_sol,omega.ZC,H = H)[[3]]
   all.Probas.P <- foreach(h = 1:H, .combine=cbind) %dopar% {
@@ -148,4 +162,5 @@ stopCluster(cl)
 file.remove("outputs/toto.Rdata")
 
 
+print(log(all.expected.A[,10])/50)
 

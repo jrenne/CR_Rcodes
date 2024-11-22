@@ -49,7 +49,7 @@ toc()
 #* 6 Disasters Simulations
 #* 7 pdf sea level
 #* 8 mu (comparison with DICE)
-#* 9 Radiative forcing approximation
+#* 9 Response of temperature conditional on some MAT paths
 #*10 Constant maturity - ZCB
 #*11 Sensitivity of climate Premium
 #*12 Break-even rates of inflation
@@ -64,7 +64,6 @@ toc()
 #*21 IRF 1 Gt Carbon
 #*22 Comparison of SCC with ACE model
 #*23 Comparison of risk-free yield curves with alternative approaches
-
 
 plots <- 0:23
 

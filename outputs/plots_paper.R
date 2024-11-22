@@ -8,7 +8,7 @@
 #* 6 Disasters Simulations
 #* 7 pdf sea level
 #* 8 mu (comparison with DICE)
-#* 9 Radiative forcing approximation
+#* 9 Response of temperature conditional on some MAT paths
 #*10 Constant maturity - ZCB
 #*11 Cut Climate Premium
 #*12 Break-even rates of inflation
@@ -118,8 +118,9 @@ if(is.element(8,plots)){
 #*******************************9*********************************************#
 #Radiative Forcings Approximation
 if(is.element(9,plots)){
-  print("Preparing radiative forcing approx plot")
-  source("outputs/make_figures/make_figure_RFapprox.R")
+  print("Preparing figure showing response of temperature conditional on MAT paths")
+  source("outputs/make_figures/make_figure_RCP_to_TAT.R",
+         encoding = 'ISO8859-1')
 }
 
 #*******************************10*********************************************#

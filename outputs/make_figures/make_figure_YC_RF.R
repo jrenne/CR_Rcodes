@@ -166,9 +166,9 @@ polygon(c(seq(model_sol$tstep,H,by=model_sol$tstep),
 
 # Bauer and Rudebusch yield curves:
 BR_sdrs <- read.csv("data/Bauer_Rudebusch_sdrs.csv")
-lines(BR_sdrs$arlearn_y10_2019[1:H],col=col.BR,lwd=2)
-lines(BR_sdrs$uc_y10_2019[1:H],col=col.BR,lwd=2,lty=2)
-lines(BR_sdrs$arbreak_y10_2019[1:H],col=col.BR,lwd=2,lty=3)
+lines(BR_sdrs$uc_y10_2019[1:H],col=col.BR,lwd=2,lty=3)
+lines(BR_sdrs$arbreak_y10_2019[1:H],col=col.BR,lwd=2,lty=2)
+lines(BR_sdrs$arlearn_y10_2019[1:H],col=col.BR,lwd=2,lty=1)
 
 lines(100*yds_lemoine,type="l",col=col.Lemoine,lwd=2)
 lines(100*yds_BKO,col=col.BKO,lwd=2)
@@ -183,9 +183,9 @@ legend("topright",
                 "BKO (2019)",
                 "BKO (2019), High dmg",
                 "",
-                "BR (2022), UC",
+                "BR (2022), AR-learning",
                 "BR (2022), AR-break",
-                "BR (2022), AR-learning"),
+                "BR (2022), UC"),
        lty=c(1:2,
              1,
              1:2,NaN,

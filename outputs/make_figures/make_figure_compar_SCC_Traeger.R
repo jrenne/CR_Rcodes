@@ -4,6 +4,8 @@
 
 data_ACE <- read.csv("data/ACE_Traeger_2023.csv")
 
+indic_deterministic <- TRUE
+
 Damage_Traeger_4 <- 1 - compute_alternative_damage(T=4, type="L. Traeger")
 Damage_CR_4 <- 1 - model_sol$target_vector["ECumD4"]
 factor_mult_Damage <- Damage_Traeger_4/Damage_CR_4
@@ -29,6 +31,14 @@ for(lowDamage in c(TRUE,FALSE)){
   
   model_base <- model_sol
   
+  if(indic_deterministic){
+    model_base$parameters$mu_D <- .000001
+    model_base$parameters$mu_T <- .000001
+    model_base$parameters$mu_N <- .000001
+    model_base$parameters$mu_H <- .000001
+    model_base$target_vector["sigma_c0"] <- .000001
+  }
+  
   if(lowDamage){
     model_base$parameters$a_D  <- model_base$parameters$a_D * factor_mult_Damage
     model_base$parameters$b_D  <- model_base$parameters$b_D * factor_mult_Damage
@@ -43,6 +53,8 @@ for(lowDamage in c(TRUE,FALSE)){
     model_new$parameters$delta <- (1 - rho)^model_sol$tstep
     #model_new <- solveParam4c(model_new)
     #model_new <- solveParam4T(model_new)
+    model_new <- solveParam4c(model_new)
+    
     model_new_sol <- model_solve(model_new,indic_CRRA = FALSE)
     
     gamma <- 1.45

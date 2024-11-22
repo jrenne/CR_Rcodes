@@ -12,7 +12,7 @@ tstep  <- 5
 vec_date <- seq(2020,by=tstep,len=Tmax-1)
 
 #Initial values of theta_a/_b for mitig optim. ~ DICE2016
-#theta0  <- c(log(0.17),-1/21*log(0.17))
+theta0  <- c(log(0.17),-1/21*log(0.17))
 theta0  <- c(-2,-.1)
 
 #Determine of max of iterations in mitig optim.
@@ -36,6 +36,10 @@ Mlo  <- 1323
 Tlo  <- 0.27
 Tat  <- 1.1
 H    <- 0.13
+
+# Tlo  <- 0.0068
+# Tat  <- 0.85
+
 
 vector.ini<-list(
   ini_delc   = 0,
@@ -86,12 +90,35 @@ c4      <- 0.00689 #*tstep
 f2co2   <- 3.45
 t2co2   <- 3.25
 
+# c1      <- 0.154 #*tstep
+# c3      <- 0.55
+# c4      <- 0.00671 #*tstep
+
+# c1      <- 0.213 #*tstep
+# c3      <- 1.16
+# c4      <- 0.00921 #*tstep
+
+
 q0  <- 135.7 #ini production DICE2023
 mu0 <- 0.05
 
 #RCP 4.5 + 6
-exp.mat.2100.rcp45_6 <-1168
-m0 <- exp.mat.2100.rcp45_6/mateq
+exp.mat.2100.rcp45_6 <- 1168
+
+# Load RCP scenarios:
+RCP_MAGICC <- read.csv("data/RCP_Mat_MAGICC.csv", header=FALSE)
+RCP30 <- RCP_MAGICC[,2]
+RCP45 <- RCP_MAGICC[,3]
+RCP60 <- RCP_MAGICC[,4]
+RCP85 <- RCP_MAGICC[,5]
+RCP   <- .5*(RCP45+RCP60)
+#RCP   <- RCP30
+#RCP   <- RCP45
+#m0 <- exp.mat.2100.rcp45_6/mateq
+RCP_tstep <- RCP[which(RCP_MAGICC$V1 %in% vec_date)]
+m0 <- RCP_tstep/mateq
+# m0 <- 2.5
+#m0 <- rep(exp.mat.2100.rcp45_6/mateq,length(vec_date))
 
 param.clim<-list(
   m0         = m0, 
@@ -136,7 +163,7 @@ param.clim<-list(
   gback      = 0.05,                                                            #DICE2023
   pback      = 695,                                                             #DICE2023
   theta2     = 2.6,                                                             #DICE2023,expcost2
-  b_sk       = .015/.7,# .1 or .015/.7 XXXXXXXXXXXXXXXXXXXXXXXXXXX
+  b_sk       = .02,                                                             #Diaz (2016)
   tol.GN     = 10^(-6),
   eps.GN     = 10^(-5),
   mu_T       = NaN,
@@ -234,6 +261,10 @@ model <- solveParam4c(model)
 model <- solveParam4T(model)
 print("***** calibration: done *****")
 
+# model$parameters$a_N <- 0
+# model$parameters$b_N <- 0
+# model$parameters$mu_N <- 0.0001
+
 
 # gamma <- 1.45
 # gamma <- 1.00001
@@ -261,6 +292,14 @@ print("***** calibration: done *****")
 # #                               omega.varphi = omega.ZC,
 # #                               H = 100)
 # # plot(prices.ZCRF.bonds$r.t)
+
+
+# model$vector.ini$ini_F <- model$parameters$tau/log(2) *
+#   log(model$vector.ini$ini_Mat/model$parameters$m_pi)
+# model$vector.ini$ini_Tat <- 1
+# #model$vector.ini$ini_F   <- 1
+# model$vector.ini$ini_Tlo <- .2
+
 
 
 tic("***** Solve Initial Model *****")
@@ -297,3 +336,6 @@ remove(horiz,MAXIT,target_vector,vec_date,
        tstep,Tmax,n.eta,n.W,n.Z,theta0,ini_matx,
        vector.ini,param.clim,param.econ,Cum_dc,Cum_dc1,
        param,inf_matx,eps_0,H,m0,names.var.X)
+
+
+

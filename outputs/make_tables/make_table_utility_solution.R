@@ -32,7 +32,7 @@ Make.entry <- function(x,Format){
 
 
 chosen_state_variables <- c("y_tilde",
-                            "E",#"E_ind",
+                            "E",
                             "Forc","M_at",
                             "M_up","M_lo","T_lo",
                             #"H","eta_A","eta_X","D","N",

@@ -3,16 +3,20 @@
 # ==============================================================================
 
 
-ylim.returns <- 100*c(.03,.045)
+ylim.returns <- 100*c(.02,.045)
 ylim.PD      <- c(log(.0001),log(.25))
 ylim.ratioPD <- c(0,10)
-ylim.ratioRates <- c(2.5,3.5)
-xlim         <- c(.2,1.3)
+ylim.ratioRates <- c(2,3.5)
+xlim         <- c(.1,1.2)
 
 # Values of debt to repay:
 A_bar <- seq(.01,max(1,max(xlim)),length.out=50)
 
 horizon <- 4 # in number of periods
+
+indic_D    <- which(model_sol$names.var.X=="D")
+indic_H    <- which(model_sol$names.var.X=="H")
+indic_delc <- which(model_sol$names.var.X=="delc")
 
 # For Fourier-transform computation:
 x <- exp(seq(-5,5,length.out = 10000)) # grid for Proposition 8 (Fourier)
@@ -45,8 +49,15 @@ for(muAD in vector.of.muAD){
   
   indic.plot <- indic.plot + 1
   
+  iiii <- which(muAD==vector.of.muAD)
+  mu_A <- list(muprice_0 = 0,
+               muprice_1 = matrix(0,model_sol$n.X,1))
+  mu_A$muprice_1[indic_delc] <- vector.of.elasticity.wrt.dc[iiii]
   #mu_A$muprice_1[indic_D] <- muAD
   mu_A$muprice_1[indic_H] <- muAD
+  if(muAD==0){
+    mu_A$muprice_1[indic_X] <- ALPHA
+  }
   
   # Update model accordingly:
   new_model_sol <- update.model_sol.4.mu_altern(model_sol,
@@ -78,7 +89,7 @@ for(muAD in vector.of.muAD){
   ExpEqH[,indic.plot] <- EA1 - adjusted_A_bar*EA2
   
   # log Expected return on Equity:
-  return.Eq.yearly[,indic.plot] <- log(ExpEqH[,indic.plot]/E[,indic.plot])/(model$tstep*horizon)
+  return.Eq.yearly[,indic.plot] <- log(ExpEqH[,indic.plot]/E[,indic.plot])/(model_sol$tstep*horizon)
   
   # Default probabilities under P and Q:
   PD.P[,indic.plot] <- 1 - EA2
