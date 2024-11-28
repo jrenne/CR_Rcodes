@@ -28,7 +28,7 @@ make_figure_calibration_N(model_sol,
 
 all.Ttilde <- c(2,4,6)
 
-CumN.values <- seq(0,3000,length.out=60)
+CumN.values <- seq(0,2500,length.out=60)
 CumN.values.interpol <- seq(CumN.values[1],
                             CumN.values[length(CumN.values)],
                             length.out=1000)
@@ -58,7 +58,7 @@ xlim <- c(0,max(CumN.values))
 plot(CumN.values.interpol[2:length(CumN.values.interpol)],
      all.pdf[,1],type="l",col="grey",las=1,yaxt="no",
      main="(c.2) Total permafrost-related emissions",
-     xlab="GtC",ylab="",lwd=2,xlim=xlim,lty=2)
+     xlab="GtCO2",ylab="",lwd=2,xlim=xlim,lty=2)
 lines(CumN.values.interpol[2:length(CumN.values.interpol)],
       all.pdf[,2],lwd=2,lty=1)
 lines(CumN.values.interpol[2:length(CumN.values.interpol)],

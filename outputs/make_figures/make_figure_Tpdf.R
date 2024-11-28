@@ -72,11 +72,11 @@ ET.Q    <- varphi.tilde(model_sol,omega_T.at,H)[[1]]/
 
 #Plots
 FILE = paste("/outputs/Figures/Figure_Tat_P_and_Q_vector_CI.pdf",sep="")
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=9, height=6)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=7, height=5)
 
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE),
-       widths=c(1,1,2), heights=c(1,1,2))
-par(plt=c(.15,.95,.15,.85))
+       widths=c(1,1), heights=c(1,1))
+par(plt=c(.16,.96,.15,.85))
 
 y.lim <- c(.5,6)
 x.lim <- c(2035,2100)
@@ -118,6 +118,9 @@ lines(model_sol$vec_date[2:(H+1)],
       ET.Q,lwd=2,col=Q.col.line)
 lines(model_sol$vec_date[2:(H+1)],
       ET.P,lwd=2,col=P.col.line)
+
+
+par(plt=c(.08,.98,.15,.85))
 
 plot(scale.temperatures.values[2:(nb.values.variable+1)],all.pdf.P[,H],type="l",
      col=P.col.line,lwd=3,xlim=c(1,max(scale.temperatures.values)),

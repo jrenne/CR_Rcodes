@@ -5,6 +5,8 @@
 # Vector of temperatures for strike K, Digital Option:
 K <- c(2,3,4)
 
+H <- model_sol$horiz.2100
+
 TAT <- which(model$names.var.X=="T_at")
 
 omega_ZCB <- matrix(0,model_sol$n.X)
@@ -153,3 +155,8 @@ legend("topleft",
        col=c("black","white","black","white"),
        bty = "n",cex=1.0)
 dev.off()
+
+
+ratios.probas <- all.Probas.Q/all.Probas.P
+
+

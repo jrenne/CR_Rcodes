@@ -527,13 +527,15 @@ scc.fct <- function(model_sol,h,
   if(h==0){
     scc <- - C_0*10^3 * mu_u.t.fct(model_sol)[[2]][which(model_sol$names.var.X=="M_at")]
   } else{
+    # Gives expectation of SCC_{t+h}:
     scc <- C_0*10^3 * multi.lt.fct(model_sol,omega_c,h,X,t)$uX_t.h * mu.u1.c[h+1]
   }
   
   if(all){# returns all scc until h
     scc.all <- - C_0*mu_u.t.fct(model_sol)[[2]][mat]*10^3
     for(i in 1:(h-1)){
-      scc.all[i+1] <- multi.lt.fct(model_sol,omega_c,i,X)$uX_t.h * mu.u1.c[i+1]*C_0*10^3
+      scc.all[i+1] <- multi.lt.fct(model_sol,omega_c,i,X)$uX_t.h*
+        mu.u1.c[i+1]*C_0*10^3
     }
     return(scc.all/(1-model_sol$parameters$delta)/3.667)
   }
@@ -770,7 +772,7 @@ varphi.hat<-function(model_sol,omega.v.hat,H,x,a,b,X=model_sol$X,t=0){
 
 #--------------Corollary: payoff on date t+h = t(omega)%*%X
 varphi.tilde<-function(model_sol,omega.v.tilde,H,X=model_sol$X,t=0){
-  eps  <-10^(-6)
+  eps  <- 10^(-6)
   o.ZCB<-matrix(0,model_sol$n.X,1)
   
   varphi.tilde <- (varphi(model_sol,eps*omega.v.tilde,H,X,t)[["P.t"]]-
@@ -1515,7 +1517,7 @@ mu_dep <- function(model_sol,
   A1.star<-list()
   A0.star<-list()
   for (i in 1:Tmax){
-
+    
     A1_i <- matrix(0,model_sol$n.Z,model_sol$n.Z)
     A1_i[indic.y_tilde,indic.y_tilde] <- 1
     #A1_i[indic.E_ind,indic.y_tilde]<- lambda[i]
@@ -1617,11 +1619,11 @@ mu_dep <- function(model_sol,
 #-------------------------------Results of optimization problem of mu
 #*linked to utility function
 #*return the value of optimization and the a/b (theta1/2)
-res.optim <-function(model_sol,
-                     theta,
-                     Tend = model_sol$Tmax,
-                     X    = model_sol$X,
-                     indic_CRRA = FALSE){
+res.optim <- function(model_sol,
+                      theta,
+                      Tend = model_sol$Tmax,
+                      X    = model_sol$X,
+                      indic_CRRA = FALSE){
   # print(utility.optim(theta,
   #                     model_sol = model_sol,
   #                     Tend = Tend,
@@ -1649,7 +1651,8 @@ utility.optim <- function(model_sol,
                           theta,
                           Tend = model_sol$Tmax, # if Tend == Tmax, back to initial period
                           X = model_sol$X,
-                          indic_CRRA = FALSE){
+                          indic_CRRA = FALSE,
+                          indic_returns_mu_u.1 = FALSE){
   
   # Compute emissions control rate:
   mu <- matrix(NaN, nrow = model_sol$Tmax, 1)
@@ -1671,16 +1674,25 @@ utility.optim <- function(model_sol,
   
   if(indic_CRRA==FALSE){
     # In that case, use the Epstein-Zin preferences
-    u0 <- compute.utility.EZ(model_sol,Tend,X)
+    to_return <- compute.utility.EZ(model_sol,Tend,X,indic_returns_mu_u.1)
+    if(!indic_returns_mu_u.1){
+      u0 <- to_return
+      to_return <- - 1000*u0 # this is -u0
+    }else{
+      # returns mu_u.1
+    }
   }else{
     # In that case, use power-utility preferences
     u0 <- compute.utility.CRRA(model_sol)
+    to_return <- - 1000*u0
   }
-  
-  return(-u0)
+  return(to_return)
 }
 
-compute.utility.EZ <- function(model_sol,Tend,X){
+compute.utility.EZ <- function(model_sol,Tend,X,
+                               indic_returns_mu_u.1=FALSE){
+  # ============================================================================
+  # ============================================================================
   # ============================================================================
   if(Tend == model_sol$Tmax){
     mu_u.1 <- mu_u.t.fct(model_sol,Tend)
@@ -1688,6 +1700,8 @@ compute.utility.EZ <- function(model_sol,Tend,X){
     #mu_u.1 <- mu_u.t.fct(model_sol,Tend + 1)
     mu_u.1 <- mu_u.t.fct(model_sol,Tend)
   }
+  # ============================================================================
+  # ============================================================================
   # ============================================================================
   if(is.na(mu_u.1[[1]])){
     return(-10000)
@@ -1697,7 +1711,12 @@ compute.utility.EZ <- function(model_sol,Tend,X){
   }else{
     u0 <- log(model_sol$param$c0) + mu_u.1[[1]] + t(mu_u.1[[2]]) %*% X
   }
-  return(u0)
+  if(!indic_returns_mu_u.1){
+    to_return <- u0
+  }else{
+    to_return <- mu_u.1
+  }
+  return(to_return)
 }
 
 
@@ -2573,20 +2592,21 @@ update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
 
 
 #* Robustness checks -----------------------------------------------------------
-simul_TAT_condit_MAT <- function(model_sol,Mat.trajectory){
+simul_TAT_condit_MAT <- function(model_sol,Mat.trajectory,indic_stochastic=FALSE){
+  # Use CR model to compute expected trajectory of Temperature conditional on 
+  # M_AT pathway.
+  # Mat.trajectory has to be of dimension H x n where n.traj is a nomber of trajectories.
   
   maxH  <- length(Mat.trajectory)
   param <- model_sol$parameters
   H2100 <- model_sol$horiz.2100
   
+  n.traj <- dim(Mat.trajectory)[2]
+  
   f_ex  <- matrix(rep(param$phi_0,maxH),maxH,1)
   f_ex[1:H2100] <- f_ex[1:H2100] +
     (1/H2100)*(param$phi_1-param$phi_0)*((1:H2100)-1)
   f_ex[(H2100+1):maxH] <- f_ex[(H2100+1):maxH] + (param$phi_1-param$phi_0)
-  
-  Tat_1 <- model_sol$vector.ini$ini_Tat
-  Tlo_1 <- model_sol$vector.ini$ini_Tlo
-  F_1   <- model_sol$vector.ini$ini_F
   
   xi_1 <- model_sol$parameters$xi_1
   xi_2 <- model_sol$parameters$xi_2
@@ -2597,30 +2617,40 @@ simul_TAT_condit_MAT <- function(model_sol,Mat.trajectory){
   
   m_pi     <- model_sol$parameters$m_pi
   m0       <- model_sol$parameters$m0
-
+  
   phi_0 <- model_sol$parameters$phi_0
   phi_1 <- model_sol$parameters$phi_1
-
+  
   for(linearized in c(FALSE,TRUE)){
-    Tat_1 <- model_sol$vector.ini$ini_Tat
-    Tlo_1 <- model_sol$vector.ini$ini_Tlo
-    F_1   <- model_sol$vector.ini$ini_F
+    Tat_1 <- matrix(model_sol$vector.ini$ini_Tat,1,n.traj)
+    Tlo_1 <- matrix(model_sol$vector.ini$ini_Tlo,1,n.traj)
+    F_1   <- matrix(model_sol$vector.ini$ini_F,1,n.traj)
+    
     all.Tat <- Tat_1
     all.F   <- F_1
-    for(t in 1:length(Mat.trajectory)){
+    
+    for(t in 1:dim(Mat.trajectory)[1]){
       m0t <- ifelse(t <= length(m0),m0[t],tail(m0,1))
-      Tat <- Tat_1 + xi_1 * model_sol$tstep * (F_1 - tau/nu * Tat_1 - xi_2 * (Tat_1 - Tlo_1))
+      E_Tat <- Tat_1 + xi_1 * model_sol$tstep * (F_1 - tau/nu * Tat_1 - xi_2 * (Tat_1 - Tlo_1))
+      if(indic_stochastic){
+        mu_T <- model_sol$parameters$mu_T
+        Tat <- rgamma(n.traj,
+                      shape = E_Tat/mu_T,
+                      scale = mu_T)
+      }else{
+        Tat <- E_Tat
+      }
       Tlo <- Tlo_1 + xi_3 * model_sol$tstep * (Tat_1 - Tlo_1)
       
       if(linearized){
         FF <- tau * log(m0t)/log(2) +
-          tau/(log(2)*m0t)*(Mat.trajectory[t]/m_pi - m0t) + f_ex[t]
+          tau/(log(2)*m0t)*(Mat.trajectory[t,]/m_pi - m0t) + f_ex[t]
       }else{
-        FF <- tau * log(Mat.trajectory[t]/m_pi)/log(2) + f_ex[t]
+        FF <- tau * log(Mat.trajectory[t,]/m_pi)/log(2) + f_ex[t]
       }
       
-      all.Tat <- c(all.Tat,Tat)
-      all.F   <- c(all.F,FF)
+      all.Tat <- rbind(all.Tat,Tat)
+      all.F   <- rbind(all.F,FF)
       
       Tat_1 <- Tat
       Tlo_1 <- Tlo
@@ -2667,14 +2697,14 @@ simul_TAT_condit_MAT_CDICE <- function(tstep,Mat.trajectory,TAT.ini,TLO.ini,F.in
   F_1   <- F.ini
   
   for(t in 1:length(Mat.trajectory)){
-
+    
     TAT <- TAT_1 + c1*tstep * (F_1 - lambda * TAT_1 - c3 * (TAT_1 - TLO_1))
     TLO <- TLO_1 + c4*tstep * (TAT_1 - TLO_1)
     F <- F2XCO2 * log(Mat.trajectory[t]/MATeq)/log(2) + f_ex[t]
     
     all.F         <- cbind(all.F,F)
     all.TAT       <- cbind(all.TAT,TAT)
-
+    
     TAT_1 <- TAT
     TLO_1 <- TLO
     F_1   <- F

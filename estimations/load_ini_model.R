@@ -195,7 +195,7 @@ target_vector <- c(
   56*3.667,                                                                     #E(CumN) @ T_at=2
   101*3.667,                                                                    #E(CumN) @ T_at=4
   (199*3.667 - 27*3.667)/(2*qnorm(.95)),                                        #std(CumN) @ T_at=4
-  376*3.667,                                                                    #E(CumN) @ infinity
+  204*3.667,                                                                    #E(CumN) @ infinity
   .08,                                                                          #ini E consumption growth
   .03                                                                           #ini std dev conso growth
 )

@@ -3,36 +3,36 @@
 \hline
 Specification&\multicolumn{2}{c}{$\gamma=7$}&\multicolumn{2}{c}{$\gamma=2$}&\multicolumn{2}{c}{$\gamma=10$}\\
 \hline
-Baseline&{\bf 2.24}&&{\bf 2.40}&&{\bf 2.12}&\\
-Large rate of pref. for present ($-\log(\delta)/\Delta t=1.5\%$)&2.27&$+$\textit{3 bps}&2.43&$+$\textit{2 bps}&2.15&$+$\textit{4 bps}\\
-Small rate of pref. for present ($-\log(\delta)/\Delta t=0.5\%$)&2.17&$-$\textit{8 bps}&2.33&$-$\textit{7 bps}&2.02&$-$\textit{9 bps}\\
-Large climate sensitivity ($\nu=4$)&2.19&$-$\textit{5 bps}&2.37&$-$\textit{4 bps}&2.05&$-$\textit{7 bps}\\
-Small climate sensitivity ($\nu=2$)&2.34&$+$\textit{10 bps}&2.47&$+$\textit{7 bps}&2.25&$+$\textit{13 bps}\\
-Deterministic model&2.45&$+$\textit{21 bps}&2.45&$+$\textit{5 bps}&2.45&$+$\textit{33 bps}\\
-No exog. techno. uncertainty ($\sigma_A=0$)&2.36&$+$\textit{11 bps}&2.43&$+$\textit{3 bps}&2.28&$+$\textit{16 bps}\\
-No uncert. on damage specif. ($\mu_D=0$)&2.33&$+$\textit{9 bps}&2.42&$+$\textit{2 bps}&2.28&$+$\textit{16 bps}\\
-No uncert. on permafrost specif. ($\mu_N=0$)&2.25&$+$\textit{1 bps}&2.40&$+$\textit{0 bps}&2.13&$+$\textit{1 bps}\\
-No uncert. on sea-level specif. ($\mu_H=0$)&2.24&$+$\textit{0 bps}&2.40&$+$\textit{0 bps}&2.12&$+$\textit{0 bps}\\
-No uncert. on temperature specif. ($\mu_T=0$)&2.25&$+$\textit{0 bps}&2.40&$+$\textit{0 bps}&2.12&$+$\textit{0 bps}\\
-Small damages (twice lower)&2.40&$+$\textit{16 bps}&2.50&$+$\textit{10 bps}&2.34&$+$\textit{22 bps}\\
-No permaf. releases ($a^{(N)}=b^{(N)}=0$)&2.29&$+$\textit{4 bps}&2.43&$+$\textit{3 bps}&2.18&$+$\textit{6 bps}\\
-No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&2.27&$+$\textit{2 bps}&2.43&$+$\textit{2 bps}&2.14&$+$\textit{3 bps}\\
+Baseline&{\bf 2.26}&&{\bf 2.41}&&{\bf 2.13}&\\
+Large rate of pref. for present ($-\log(\delta)/\Delta t=1.5\%$)&2.28&$+$\textit{2 bps}&2.43&$+$\textit{2 bps}&2.16&$+$\textit{3 bps}\\
+Small rate of pref. for present ($-\log(\delta)/\Delta t=0.5\%$)&2.17&$-$\textit{8 bps}&2.34&$-$\textit{7 bps}&2.03&$-$\textit{10 bps}\\
+Large climate sensitivity ($\nu=4$)&2.21&$-$\textit{5 bps}&2.38&$-$\textit{3 bps}&2.07&$-$\textit{6 bps}\\
+Small climate sensitivity ($\nu=2$)&2.35&$+$\textit{9 bps}&2.48&$+$\textit{7 bps}&2.26&$+$\textit{12 bps}\\
+Deterministic model&2.46&$+$\textit{20 bps}&2.46&$+$\textit{5 bps}&2.46&$+$\textit{33 bps}\\
+No exog. techno. uncertainty ($\sigma_A=0$)&2.37&$+$\textit{11 bps}&2.44&$+$\textit{3 bps}&2.29&$+$\textit{16 bps}\\
+No uncert. on damage specif. ($\mu_D=0$)&2.34&$+$\textit{9 bps}&2.43&$+$\textit{2 bps}&2.29&$+$\textit{16 bps}\\
+No uncert. on permafrost specif. ($\mu_N=0$)&2.26&$+$\textit{0 bps}&2.41&$+$\textit{0 bps}&2.14&$+$\textit{1 bps}\\
+No uncert. on sea-level specif. ($\mu_H=0$)&2.26&$+$\textit{0 bps}&2.41&$+$\textit{0 bps}&2.13&$+$\textit{0 bps}\\
+No uncert. on temperature specif. ($\mu_T=0$)&2.26&$+$\textit{0 bps}&2.41&$+$\textit{0 bps}&2.14&$+$\textit{0 bps}\\
+Small damages (twice lower)&2.41&$+$\textit{15 bps}&2.51&$+$\textit{9 bps}&2.35&$+$\textit{21 bps}\\
+No permaf. releases ($a^{(N)}=b^{(N)}=0$)&2.29&$+$\textit{4 bps}&2.44&$+$\textit{3 bps}&2.19&$+$\textit{5 bps}\\
+No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&2.28&$+$\textit{2 bps}&2.43&$+$\textit{2 bps}&2.15&$+$\textit{2 bps}\\
 \hline
 \multicolumn{7}{l}{{\qquad\bf B. Time-separable CRRA preferences}}\\
 \hline
 Specification&\multicolumn{2}{c}{$\gamma=1.5$}&\multicolumn{2}{c}{$\gamma=1.001$}&\multicolumn{2}{c}{$\gamma=2$}\\
 \hline
-Baseline&{\bf 3.16}&&{\bf 2.45}&&{\bf 3.88}&\\
-Large rate of pref. for present ($-\log(\delta)/\Delta t=1.5\%$)&3.17&$+$\textit{1 bps}&2.46&$+$\textit{1 bps}&3.88&$+$\textit{1 bps}\\
-Small rate of pref. for present ($-\log(\delta)/\Delta t=0.5\%$)&3.15&$-$\textit{1 bps}&2.44&$-$\textit{2 bps}&3.87&$-$\textit{1 bps}\\
-Large climate sensitivity ($\nu=4$)&3.12&$-$\textit{4 bps}&2.42&$-$\textit{3 bps}&3.82&$-$\textit{5 bps}\\
-Small climate sensitivity ($\nu=2$)&3.25&$+$\textit{9 bps}&2.51&$+$\textit{6 bps}&3.99&$+$\textit{11 bps}\\
+Baseline&{\bf 3.17}&&{\bf 2.45}&&{\bf 3.88}&\\
+Large rate of pref. for present ($-\log(\delta)/\Delta t=1.5\%$)&3.18&$+$\textit{1 bps}&2.46&$+$\textit{1 bps}&3.89&$+$\textit{1 bps}\\
+Small rate of pref. for present ($-\log(\delta)/\Delta t=0.5\%$)&3.16&$-$\textit{1 bps}&2.44&$-$\textit{1 bps}&3.87&$-$\textit{1 bps}\\
+Large climate sensitivity ($\nu=4$)&3.13&$-$\textit{4 bps}&2.43&$-$\textit{3 bps}&3.83&$-$\textit{5 bps}\\
+Small climate sensitivity ($\nu=2$)&3.25&$+$\textit{8 bps}&2.51&$+$\textit{6 bps}&3.99&$+$\textit{11 bps}\\
 Deterministic model&3.20&$+$\textit{4 bps}&2.47&$+$\textit{2 bps}&3.94&$+$\textit{6 bps}\\
-No exog. techno. uncertainty ($\sigma_A=0$)&3.18&$+$\textit{2 bps}&2.46&$+$\textit{1 bps}&3.91&$+$\textit{3 bps}\\
+No exog. techno. uncertainty ($\sigma_A=0$)&3.19&$+$\textit{2 bps}&2.46&$+$\textit{1 bps}&3.91&$+$\textit{3 bps}\\
 No uncert. on damage specif. ($\mu_D=0$)&3.18&$+$\textit{2 bps}&2.46&$+$\textit{1 bps}&3.90&$+$\textit{3 bps}\\
 No uncert. on permafrost specif. ($\mu_N=0$)&3.17&$+$\textit{0 bps}&2.45&$+$\textit{0 bps}&3.88&$+$\textit{0 bps}\\
 No uncert. on sea-level specif. ($\mu_H=0$)&3.17&$+$\textit{0 bps}&2.45&$+$\textit{0 bps}&3.88&$+$\textit{0 bps}\\
 No uncert. on temperature specif. ($\mu_T=0$)&3.17&$+$\textit{0 bps}&2.45&$+$\textit{0 bps}&3.88&$+$\textit{0 bps}\\
-Small damages (twice lower)&3.28&$+$\textit{12 bps}&2.53&$+$\textit{8 bps}&4.03&$+$\textit{16 bps}\\
-No permaf. releases ($a^{(N)}=b^{(N)}=0$)&3.19&$+$\textit{3 bps}&2.47&$+$\textit{2 bps}&3.91&$+$\textit{4 bps}\\
-No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&3.19&$+$\textit{3 bps}&2.47&$+$\textit{2 bps}&3.91&$+$\textit{4 bps}\\
+Small damages (twice lower)&3.28&$+$\textit{12 bps}&2.53&$+$\textit{8 bps}&4.04&$+$\textit{16 bps}\\
+No permaf. releases ($a^{(N)}=b^{(N)}=0$)&3.20&$+$\textit{3 bps}&2.47&$+$\textit{2 bps}&3.92&$+$\textit{4 bps}\\
+No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&3.19&$+$\textit{3 bps}&2.47&$+$\textit{2 bps}&3.91&$+$\textit{3 bps}\\

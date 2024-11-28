@@ -3,6 +3,10 @@
 # ==============================================================================
 
 
+indic_print_values <- 0
+
+indic_Mat <- which(model_sol$names.var.X=="M_at")
+
 RCP_MAGICC <- read.csv("data/RCP_Mat_MAGICC.csv", header=FALSE)
 RCP_ACE    <- read.csv("data/RCP_Mat_ACE.csv", header=FALSE)
 
@@ -46,21 +50,55 @@ T_ACE_RCP85 <- RCP_ACE$V5
 # Compute T_AT with ACE under CR -----------------------------------------------
 # Compute E(M_AT) under CR baseline model:
 EV <- EV.fct(model_sol)
-RCP_CR <- c(model_sol$vector.ini$ini_Mat,
+MAT_CR <- c(model_sol$vector.ini$ini_Mat,
             EV$EX$M_at)
 years_CR <- c(2020,EV$date)
 indicators_CR <- which(years_CR %in% years) # to find appropriate years
-RCP_CR <- RCP_CR[indicators_CR]
+MAT_CR <- MAT_CR[indicators_CR]
 # Compute weight in RCP45 (versus RCP60) to approximate MAT in CR with
 # linear combination of RCP45 and RCP60:
-coeff.45  = (mean(RCP_CR) - mean(MAT_RCP60))/(mean(MAT_RCP45)-mean(MAT_RCP60))
-RF_CR_4ACE <- coeff.45 * RF_RCP45 + (1 - coeff.45) * RF_RCP60 # to be used in TempSimulation_ACE
+
+# coeff.45  = (mean(MAT_CR) - mean(MAT_RCP60))/(mean(MAT_RCP45)-mean(MAT_RCP60))
+# RF_CR_4ACE <- coeff.45 * RF_RCP45 + (1 - coeff.45) * RF_RCP60 # to be used in TempSimulation_ACE
 Temp.ini <- matrix(c(model_sol$vector.ini$ini_Tat,
                      model_sol$vector.ini$ini_Tlo,0),3,2)
-eta <- 3.8
-forcing <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_CR_4ACE))
-res <- TempSimulation_ACE(Temp.ini, forcing)
+# eta <- 3.8
+# old_forcing <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_CR_4ACE))
+# 
+# res <- TempSimulation_ACE(Temp.ini, forcing)
+# T_ACE_CR <- res[1,1,]
+
+# Determine Gt process in Traeger (2023), using his eq.(6):
+eta  <- 3.8
+Mpre <- 596.4 # from Matlab codes
+RF <- cbind(RF_RCP45,RF_RCP60,RF_RCP85)
+M1 <- cbind(MAT_RCP45,MAT_RCP60,MAT_RCP85)
+G_ACE <- exp(RF*log(2)/eta)*Mpre - M1
+G_ACE_RCP45 <- G_ACE[,1] 
+G_ACE_RCP60 <- G_ACE[,2]
+G_ACE_RCP85 <- G_ACE[,3]
+
+# Determine RF using Traeger (2023) eq.(6):
+RF_CR_4ACE    <- eta/log(2)*log((MAT_CR    + G_ACE_RCP60)/Mpre)
+RF_RCP45_4ACE <- eta/log(2)*log((MAT_RCP45 + G_ACE_RCP45)/Mpre)
+RF_RCP60_4ACE <- eta/log(2)*log((MAT_RCP60 + G_ACE_RCP60)/Mpre)
+RF_RCP85_4ACE <- eta/log(2)*log((MAT_RCP85 + G_ACE_RCP85)/Mpre)
+
+forcing_CR    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_CR_4ACE))
+forcing_RCP45 <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP45_4ACE))
+forcing_RCP60 <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP60_4ACE))
+forcing_RCP85 <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP85_4ACE))
+
+res <- TempSimulation_ACE(Temp.ini, forcing_CR)
 T_ACE_CR <- res[1,1,]
+res <- TempSimulation_ACE(Temp.ini, forcing_RCP45)
+T_ACE_RCP45 <- res[1,1,]
+res <- TempSimulation_ACE(Temp.ini, forcing_RCP60)
+T_ACE_RCP60 <- res[1,1,]
+res <- TempSimulation_ACE(Temp.ini, forcing_RCP85)
+T_ACE_RCP85 <- res[1,1,]
+
+
 # ------------------------------------------------------------------------------
 
 
@@ -72,11 +110,11 @@ FILE = "/outputs/Figures/Figure_RCP_to_TAT.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=12, width=7, height=7)
 
 #par(mfrow=c(2,2))
-par(plt=c(.06,.97,.16,.86))
+par(plt=c(.06,.99,.16,.86))
 
 nf <- layout(
-  matrix(c(1,1,1,2,3,4), ncol=3, byrow=TRUE), 
-  widths=c(1,1,1), 
+  matrix(c(1,1,1,1,2,3,4,5), ncol=4, byrow=TRUE), 
+  widths=c(1,1,1,1), 
   heights=c(3,2)
 )
 
@@ -89,7 +127,6 @@ nlinF[1:length(nlinF)] <- model_sol$parameters$tau/log(2)*
   log(gridMat[1:length(gridMat)]/model_sol$parameters$m_pi)
 
 vector.of.dates <- c(2070,2100,2150)
-colors <- c("#CCCCCC","#999999","#666666")
 colors <- c("#A2CD5A",
             "#CD3333",
             "#7AC5CD")
@@ -110,7 +147,7 @@ plot(0, 0,col="white",ylim=ylim,xlim=range(gridMat),type="l",
      las=1,xlab=expression(paste("M"[AT]," (GtC)")),
      ylab="",
      main=expression(paste("(a) Relationship between radiative forcings and atmospheric carbon concentration")))
-grid()
+#grid()
 
 title(ylab=expression(paste("FCO"[2]," (in Wm-2)")), line=1.5,
       cex.lab=1)
@@ -152,6 +189,10 @@ for(iii in 1:length(vector.of.dates)){
   indic_quantile <- which.min((MAT_RCP85[indic.considered.in.yearsvector] - gridMat)^2)
   quantile_RCP85_considered <- Mat.distr.considered[indic_quantile]
   #print(quantile_RCP85_considered)
+  
+  indic_quantile <- which.min((MAT_RCP60[indic.considered.in.yearsvector]+500 - gridMat)^2)
+  quantile_RCP60plus500_considered <- Mat.distr.considered[indic_quantile]
+  
 }
 # ------------------------------------------------------------------------------
 
@@ -183,10 +224,17 @@ for(iii in 1:length(vector.of.dates)){
     if(j == 3){labels <- "RCP8.5"}
     rug(matrix_MAT_RCP[j,iii],lwd=2,col=colors[iii],
         ticksize = 0.05*j)
-    if(iii==2){
+    if(j == 3){
+      abline(v=matrix_MAT_RCP[j,iii],lty=3,col=colors[iii])
+      text(x=matrix_MAT_RCP[j,iii],y=ylim[1] + 
+             ifelse(iii==1,.8,.5)*(ylim[2]-ylim[1]),
+           srt=90, pos=2,col=colors[iii],
+           labels = paste("RCP8.5, in ",vector.of.dates[iii],sep=""))
+    }
+    if(j == 2){
       text(x=matrix_MAT_RCP[j,iii],
            y=ylim[1] + 0.05*j*(ylim[2] - ylim[1]),
-           srt=0, pos=4, cex=.8,
+           srt=0, pos=4, cex=1,col=colors[iii],
            offset = 0.0,
            labels = labels)
     }
@@ -194,7 +242,7 @@ for(iii in 1:length(vector.of.dates)){
 }
 
 legend("topleft",
-       legend=c(legend_names,"Non-linearized"),
+       legend=c(legend_names,"Nonlinearized"),
        lty=c(rep(1,length(vector.of.dates)),2),
        col=c(colors,"black"),
        lwd=c(2,2),seg.len = 3,
@@ -263,39 +311,84 @@ legend("topleft",
 
 
 
+# ==============================================================================
+# Define trajectories:
+all_rcp <- c(6,6,6,8.5) # 0 for CR
+# Add emission wrt scenarios:
+all_Pulse_GtC <- c(0,500,1000,0)
+# ==============================================================================
 
 
 # Last plots -------------------------------------------------------------------
 
 
-par(plt=c(.25,.95,.15,.85))
-
-for(rcp in c(45,60,85)){
-  if(rcp==00){
-    Mat.trajectory <- RCP_CR[-1]
-    Tat.ACE        <- T_ACE_CR
-    main.t =expression(paste("(XX) ",E(M[AT])," path from present framework",sep=""))
-  }
-  if(rcp==45){
-    Mat.trajectory <- MAT_RCP45[-1]
-    Tat.MAGICC     <- T_RCP45
-    Tat.ACE        <- T_ACE_RCP45
-    main.t =expression(paste("(b) ",T[AT]," resulting from RCP4.5",sep=""))
-  }
-  if(rcp==60){
-    Mat.trajectory <- MAT_RCP60[-1]
-    Tat.MAGICC     <- T_RCP60
-    Tat.ACE        <- T_ACE_RCP60
-    main.t =expression(paste("(c) ",T[AT]," resulting from RCP6",sep=""))
-  }
-  if(rcp==85){
-    Mat.trajectory <- MAT_RCP85[-1]
-    Tat.MAGICC     <- T_RCP85
-    Tat.ACE        <- T_ACE_RCP85
-    main.t =expression(paste("(d) ",T[AT]," resulting from RCP8.5",sep=""))
+for(jjjj in 1:length(all_rcp)){
+  
+  if(jjjj==1){
+    par(plt=c(.25,1,.15,.85))
+  }else{
+    par(plt=c(.18,.95,.15,.85))
   }
   
-  res_CR    <- simul_TAT_condit_MAT(model_sol,Mat.trajectory)
+  rcp <- all_rcp[jjjj]
+  Pulse_GtC <- all_Pulse_GtC[jjjj]
+  
+  added_Gt <- seq(0,Pulse_GtC,length.out=length(years)-1)
+  
+  if(rcp==0){
+    Mat.trajectory <- MAT_CR[-1] + added_Gt
+    #Tat.ACE        <- T_ACE_CR
+    
+    RF_CR_4ACE    <- eta/log(2)*log((MAT_CR + c(0,added_Gt) + G_ACE_RCP60)/Mpre)
+    forcing_CR    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_CR_4ACE))
+    res <- TempSimulation_ACE(Temp.ini, forcing_CR)
+    Tat.ACE <- res[1,1,]
+    
+    #main.t =expression(paste("(XX) ",E(M[AT])," path from present framework",sep=""))
+  }
+  if(rcp==4.5){
+    Mat.trajectory <- MAT_RCP45[-1] + added_Gt
+    Tat.MAGICC     <- T_RCP45
+    #Tat.ACE        <- T_ACE_RCP45
+    
+    RF_RCP45_4ACE    <- eta/log(2)*log((MAT_RCP45 + c(0,added_Gt) + G_ACE_RCP45)/Mpre)
+    forcing_RCP45    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP45_4ACE))
+    res <- TempSimulation_ACE(Temp.ini, forcing_RCP45)
+    Tat.ACE <- res[1,1,]
+    
+    #main.t =expression(paste("(XX) ",T[AT]," resulting from RCP4.5",sep=""))
+  }
+  if(rcp==6.0){
+    Mat.trajectory <- MAT_RCP60[-1] + added_Gt
+    Tat.MAGICC     <- T_RCP60
+    #Tat.ACE        <- T_ACE_RCP45
+    
+    RF_RCP60_4ACE    <- eta/log(2)*log((MAT_RCP60 + c(0,added_Gt) + G_ACE_RCP60)/Mpre)
+    forcing_RCP60    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP60_4ACE))
+    res <- TempSimulation_ACE(Temp.ini, forcing_RCP60)
+    Tat.ACE <- res[1,1,]
+    
+    #main.t =expression(paste("(XX) ",T[AT]," resulting from RCP6",sep=""))
+  }
+  if(rcp==8.5){
+    Mat.trajectory <- MAT_RCP85[-1] + added_Gt
+    Tat.MAGICC     <- T_RCP85
+    #Tat.ACE        <- T_ACE_RCP45
+    
+    RF_RCP85_4ACE    <- eta/log(2)*log((MAT_RCP85 + c(0,added_Gt) + G_ACE_RCP85)/Mpre)
+    forcing_RCP85    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP85_4ACE))
+    res <- TempSimulation_ACE(Temp.ini, forcing_RCP85)
+    Tat.ACE <- res[1,1,]
+    
+    #main.t =expression(paste("(XX) ",T[AT]," resulting from RCP8.5",sep=""))
+  }
+  
+  main.t <- paste("(",letters[jjjj+1],") RCP",rcp,
+                  ifelse(Pulse_GtC>0,paste(" + ",Pulse_GtC," GtC",sep=""),""),
+                  sep="")
+  
+  res_CR    <- simul_TAT_condit_MAT(model_sol,
+                                    matrix(Mat.trajectory,ncol=1))
   res_CDICE <- simul_TAT_condit_MAT_CDICE(model_sol$tstep,Mat.trajectory,
                                           model_sol$vector.ini$ini_Tat,
                                           model_sol$vector.ini$ini_Tlo,
@@ -305,37 +398,74 @@ for(rcp in c(45,60,85)){
   Tat.linear    <- res_CR$Tat.linear
   
   plot(years,Tat.nonlinear,type="l",lwd=2,col="white",
-       ylim=c(1,1.25*max(Tat.nonlinear,Tat.linear)),
+       ylim=c(1,max(8,1.25*max(Tat.nonlinear,Tat.linear))),
        las=1,xlab="",ylab="",
-       main=main.t)
+       main=main.t,
+       font.main=1)
   grid()
   
-  title(ylab='Atm Temperature Anomaly, in °C', line=3,
-        cex.lab=1)
-  
-  lines(years,Tat.nonlinear,col="dark grey",lwd=5,pch=3)
-  lines(years,Tat.linear,col="black",lwd=4,lty=3)
-  lines(years,res_CDICE$Tat,col="red",lwd=1)
-  
-  if(rcp==00){
-    lines(years,Tat.ACE,col="#006400",lty=4,lwd=2)
-  }else{
-    lines(RCP_ACE$V1,Tat.ACE,col="#006400",lty=4,lwd=2)
+  if(jjjj==1){
+    title(ylab='Atm Temperature Anomaly, in °C', line=2,
+          cex.lab=1)
   }
   
-  if(rcp==45){
+  # Compute standard deviations:
+  # for that, we create a new model where Mat is deterministic
+  model_sol_new <- model_sol
+  for(t in 1:length(Mat.trajectory)){
+    # Impose deterministic trajectory for Mat:
+    model_sol_new$A1[[t]][indic_Mat,]    <- 0
+    model_sol_new$omega[[t]][indic_Mat,] <- 0
+    model_sol_new$omega0[[t]][indic_Mat] <- Mat.trajectory[t]
+  }
+  EV <- EV.fct(model_sol_new)
+  stdv_Tat <- sqrt(EV$VX$T_at)
+  lower.bound <- EV$EX$T_at - 1*stdv_Tat
+  upper.bound <- EV$EX$T_at + 1*stdv_Tat
+  indic2keep <- which(EV$date %in% years)
+  lower.bound <- lower.bound[indic2keep]
+  upper.bound <- upper.bound[indic2keep]
+  polygon(c(EV$date[indic2keep],rev(EV$date[indic2keep])),
+          c(lower.bound,rev(upper.bound)),col="#99999966",
+          border=NA)
+
+  lines(years,Tat.nonlinear,col="#777777",lwd=4,pch=3)
+  lines(years,Tat.linear,col="black",lwd=4,lty=3)
+  #lines(years,res_CDICE$Tat,col="red",lwd=1)
+  
+  if(indic_print_values == 1){
+    print(rbind(c(years),c(Tat.nonlinear),c(Tat.linear)))
+  }
+
+  # plot ACE-based temperatures:
+  lines(years,Tat.ACE,col="#006400",lty=4,lwd=2)
+  
+  if(jjjj==1){
     legend("topleft",
            legend=c("CR Linearized",
-                    "CR Non-linearized",
-                    "CDICE",
+                    "CR Non-linear.",
+                    "(= CDICE)",
                     "ACE"),
            lty=c(3,1,1,4),
-           col=c("black","dark grey","red","#006400"),
+           col=c("black","#777777","white","#006400"),
            pch=c(NaN),
            lwd=c(4,4,1,2),
            seg.len = 4,
            bty = "n",cex=1)
   }
+  if(jjjj==2){
+    legend("topleft",
+           legend=c("+/- 1 std dev",
+                    "around CR linear."),
+           lty=c(NaN),
+           col=c("#99999966","white"),
+           pch=c(15,NaN),
+           pt.cex=2,
+           lwd=c(1),
+           seg.len = 1,
+           bty = "n",cex=1)
+  }
+  
 }
 
 

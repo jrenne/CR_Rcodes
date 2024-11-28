@@ -14,7 +14,7 @@ par(plt=c(.1,.9,.1,.9))
 
 x <- exp(seq(-10,10,length.out = 1000)) #grid for Proposition 8 (Fourier)
 
-MAT<-which(model$names.var.X=="M_at")
+MAT<-which(model_sol$names.var.X=="M_at")
 
 values.of.emissions <- seq(round(model_sol$vector.ini$ini_Mat)-100,
                            round(EV$EX$M_at[H]+5*sqrt(EV$VX[[MAT]][H]))+100,
@@ -73,11 +73,11 @@ E.Q     <- varphi.tilde(model_sol,a,H)[[1]]/varphi(model_sol,omega_ZCB,H)[[3]]
 
 #Plot
 FILE = paste("/outputs/Figures/Figure_Mat_P_and_Q_vector_CI.pdf",sep="")
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=9, height=6)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=7, height=5)
 
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE),
-       widths=c(1,1,2), heights=c(1,1,2))
-par(plt=c(.15,.95,.15,.85))
+       widths=c(1,1), heights=c(1,1))
+par(plt=c(.16,.98,.15,.85))
 
 y.lim <- c(min(values.of.emissions),max(values.of.emissions))
 x.lim <- c(2040,2100)
@@ -122,6 +122,10 @@ lines(model_sol$vec_date[2:(H+1)],
       E.Q,lwd=2,col=Q.col.line)
 lines(model_sol$vec_date[2:(H+1)],
       E.P,lwd=2,col=P.col.line)
+
+
+par(plt=c(.08,.98,.15,.85))
+
 plot(scale.emissions.values[2:(nb.values.variable+1)],all.pdf.P[,H],type="l",
      col=P.col.line,lwd=3,
      xlim=c(EV$EX$M_at[H]-4*sqrt(EV$VX[[MAT]][H]),

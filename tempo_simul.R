@@ -7,7 +7,8 @@
 # model$parameters$a_N <- .0000001
 # model$parameters$b_N <- 0*model$parameters$b_N
 # model$parameters$sigma_a <- .00000000000001
-model_sol <- model_solve(model,indic_CRRA = FALSE)
+
+#model_sol <- model_solve(model,indic_CRRA = FALSE)
 
 nb.t <- 100
 nb.traj <- 1000

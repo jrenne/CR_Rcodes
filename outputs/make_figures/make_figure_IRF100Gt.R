@@ -23,8 +23,8 @@
 # CDICE: -----------------------------------------------------------------------
 # Load RCPs (to have an emission scenario, as in Figure 2.2.3 of EPA, 2023):
 RCP_MAGICC <- read.csv("data/RCP_Mat_MAGICC.csv", header=FALSE)
-Emissions_CO2_RCP <- RCP_MAGICC[,11]
-Emissions_CO2_RCP <- RCP_MAGICC[,12]
+Emissions_CO2_RCP <- RCP_MAGICC[,11] # loads RCP4.5
+#Emissions_CO2_RCP <- RCP_MAGICC[,12] # loads RCP6.0
 
 for(dt in c(1,5)){
   MATeq <- 851

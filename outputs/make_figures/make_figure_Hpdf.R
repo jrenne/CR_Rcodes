@@ -5,7 +5,7 @@
 # Prepare omega vectors (for pricing):
 omega_ZCB <- matrix(0,model_sol$n.X)
 a         <- matrix(0,length(model_sol$X),1)
-HSL       <- which(model$names.var.X=="H")
+HSL       <- which(model_sol$names.var.X=="H")
 a[HSL]    <- 1
 
 H <- model_sol$horiz.2100
@@ -75,11 +75,11 @@ E.Q    <- varphi.tilde(model_sol,a,H)[[1]]/
 
 #Plots
 FILE = paste("/outputs/Figures/Figure_SL_P_and_Q_vector_CI.pdf",sep="")
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=9, height=6)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=7, height=5)
 
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE),
-       widths=c(1,1,2), heights=c(1,1,2))
-par(plt=c(.15,.95,.15,.85))
+       widths=c(1,1), heights=c(1,1))
+par(plt=c(.16,.96,.15,.85))
 
 y.lim <- c(0.1,1.4)
 x.lim <- c(2040,2100)
@@ -114,9 +114,11 @@ lines(model_sol$vec_date[2:(H+1)],
 lines(model_sol$vec_date[2:(H+1)],
       E.P,lwd=2,col=P.col.line)
 
+par(plt=c(.08,.98,.15,.85))
+
 plot(scale.sl.values[2:(nb.values.variable+1)],all.pdf.P[,H],type="l",
      col=P.col.line,lwd=3,
-     xlim=c(round(EV$EX$H[H]-3*sqrt(EV$VX[[HSL]][H]),1),
+     xlim=c(0,
             round(EV$EX$H[H]+3*sqrt(EV$VX[[HSL]][H]),1)),
      main="(c) - P.d.f. of global sea level rise in 2100",
      cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
