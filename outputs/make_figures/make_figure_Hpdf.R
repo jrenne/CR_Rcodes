@@ -75,7 +75,7 @@ E.Q    <- varphi.tilde(model_sol,a,H)[[1]]/
 
 #Plots
 FILE = paste("/outputs/Figures/Figure_SL_P_and_Q_vector_CI.pdf",sep="")
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=7, height=5)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=6, height=6)
 
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE),
        widths=c(1,1), heights=c(1,1))
@@ -87,7 +87,7 @@ x.lim <- c(2040,2100)
 plot(model_sol$vec_date[2:(H+1)],E.P,
      xlim=x.lim,ylim=y.lim,
      cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
-     col="white",xlab="",ylab="in meters",las=1,
+     col="white",xlab="",ylab="meters",las=1,
      main="(a) - Global sea level rise")
 lines(model_sol$vec_date[2:(H+1)],
       E.P,lwd=2,col=P.col.line)
@@ -100,7 +100,7 @@ for(i in length(vector.of.CI):1){
 
 plot(model_sol$vec_date[2:(H+1)],E.Q,
      xlim=x.lim,ylim=y.lim,las=1,
-     col="white",xlab="",ylab="in meters",
+     col="white",xlab="",ylab="meters",
      cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
      main="(b) - Global sea level rise (risk-adjusted)")
 for(i in length(vector.of.CI):1){
@@ -119,7 +119,7 @@ par(plt=c(.08,.98,.15,.85))
 plot(scale.sl.values[2:(nb.values.variable+1)],all.pdf.P[,H],type="l",
      col=P.col.line,lwd=3,
      xlim=c(0,
-            round(EV$EX$H[H]+3*sqrt(EV$VX[[HSL]][H]),1)),
+            round(EV$EX$H[H]+4*sqrt(EV$VX[[HSL]][H]),1)),
      main="(c) - P.d.f. of global sea level rise in 2100",
      cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
      xlab="",ylab="",yaxt="no")

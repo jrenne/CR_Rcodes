@@ -14,7 +14,7 @@ Year <- 80 # 2100 in Year years
 
 percent_chge <- 50
 
-all.damage <- c(
+all.damages <- c(
   "G. Lemoine",
   "G. Dell-Jones-Olken",
   "G. Bansal-Kiku-Ochoa",
@@ -23,9 +23,22 @@ all.damage <- c(
   "L. Howard-Sterner",
   "L. Weitzman",
   "L. Barnett-Brock-Hansen",
-  "L. Traeger",
+  "L. Traeger (ACE-base)",
+  "L. Traeger (ACE-HSP)",
   "L. Dietz-Stern"
 )
+all.colors <- c("#B22222",
+                "cornsilk4",
+                "#008B8B",
+                "#458B00",
+                "#CD5555",
+                "darkorange2",
+                "#838B8B",
+                "darkorchid3",
+                "darkolivegreen",
+                "darkolivegreen",
+                "darkgoldenrod3")
+
 
 all.sigmas <- seq(0,2*model_baseline$sigma,length.out=8)
 
@@ -40,9 +53,9 @@ clusterEvalQ(cl,load("outputs/toto.Rdata"))
 clusterEvalQ(cl,library(MASS))
 clusterEvalQ(cl,library(expm))
 
-all.res <- foreach(i = 1:length(all.damage), .combine=rbind) %dopar% {
+all.res <- foreach(i = 1:length(all.damages), .combine=rbind) %dopar% {
   
-  damage.type <- all.damage[[i]]
+  damage.type <- all.damages[[i]]
   
   s.values     <- list((1-percent_chge/100)*model_baseline$s,
                        model_baseline$s,(1+percent_chge/100)*model_baseline$s)
@@ -81,12 +94,12 @@ all.T.RP   <- all.res[,length(all.sigmas)+(1:length(all.sigmas))]
 
 
 FILE = paste("/outputs/Figures/Figure_SCCvsTRP_Lemoine.pdf",sep="")
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=10,width=7, height=4)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=10,width=7, height=5.5)
 
 load(file="outputs/results/SCC_vs_TRP_CR.Rdat") # Load results from CR model
 
 par(mfrow=c(1,1))
-par(plt=c(.15,.95,.2,.95))
+par(plt=c(.15,.95,.15,.95))
 plot(0,0,
      ylim=c(min(-.6,min(all.SCC.RP,all.SCC.RP.CR)),
             max(+.3,max(all.SCC.RP,all.SCC.RP.CR))),
@@ -100,9 +113,9 @@ plot(0,0,
 abline(h=0,col="grey",lty=3)
 abline(v=0,col="grey",lty=3)
 
-for(i in 1:length(all.damage)){
-  lines(all.T.RP[i,],all.SCC.RP[i,],col=i+1,lwd=2)
-  points(all.T.RP[i,1],all.SCC.RP[i,1],col=i+1,lwd=2,pch=0)
+for(i in 1:length(all.damages)){
+  lines(all.T.RP[i,],all.SCC.RP[i,],col=all.colors[i],lwd=2)
+  points(all.T.RP[i,1],all.SCC.RP[i,1],col=all.colors[i],lwd=2,pch=i-1)
 }
 
 for(i in 1:dim(all.T.RP.CR)[1]){
@@ -111,13 +124,14 @@ for(i in 1:dim(all.T.RP.CR)[1]){
 }
 
 legend("topleft",
-       legend=c(extract(all.damage,1),
+       legend=c(extract(all.damages,1),
                 expression(paste("CR, EZ, ",gamma," = 7",sep="")),
                 expression(paste("CR, EZ, ",gamma," = 1.001",sep="")),
                 expression(paste("CR, CRRA, ",gamma," = 1.45",sep=""))),
-       lty=c(rep(1,length(all.damage)),2:4),
+       lty=c(rep(1,length(all.damages)),2:4),
        cex=1,
-       col=c(1+(1:length(all.damage)),rep("black",3)),
+       col=c(all.colors,rep("black",3)),
+       pch=c(0:(length(all.damages)-1),rep(NaN,dim(all.T.RP.CR)[1])),
        lwd=2,bty = "n")
 
 dev.off()

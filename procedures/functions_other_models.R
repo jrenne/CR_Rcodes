@@ -465,8 +465,17 @@ compute_alternative_damage <- function(T, type,
                           alpha[3] * (T - y.bar)^2 * (T > y.bar))
     D <- exp(- D)
   }
-  if(type=="L. Traeger"){
+  if(type=="L. Traeger (ACE-base)"){
     alpha = c(0.022,1/4)
+    xi0 <- alpha[1]
+    xi1 <- alpha[2]
+    D <- coef.multip * (
+      1 - exp(xi0 * (1 - exp(xi1*T)))
+    )
+    D <- 1 - D
+  }
+  if(type=="L. Traeger (ACE-HSP)"){
+    alpha = c(0.11,1/4)
     xi0 <- alpha[1]
     xi1 <- alpha[2]
     D <- coef.multip * (

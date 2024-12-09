@@ -6,7 +6,9 @@ make_figure_calibration_Damages <- function(model_sol,
                                             T.2100 = seq(1.5,5,length.out=20),
                                             vector.of.CI = c(0.5,0.8,0.9,0.95),
                                             main.title = "2100 Fractional damages",
-                                            trace_lines = TRUE){
+                                            trace_lines = TRUE,
+                                            lwd.CR = 2,
+                                            indic_add_SLR = FALSE){
   
   P.col.line <- brocolors("crayons")["Teal Blue"]
   P.col <- adjustcolor( P.col.line, alpha.f = 0.15)
@@ -26,7 +28,7 @@ make_figure_calibration_Damages <- function(model_sol,
     aux <- Fourier.psi(model_sol,gammaD,xD,T0=model_sol$vector.ini$ini_Tat,
                        Tstar = T.2100[i],
                        tstar=model_sol$horiz.2100,
-                       psi.LT=LT.CumD)
+                       psi.LT=LT.CumD) # NB: by default, LT.CumD uses SLR damages
     
     tmp <- splinefun(x=gammaD, y=aux, method="hyman")
     
@@ -48,7 +50,7 @@ make_figure_calibration_Damages <- function(model_sol,
   
   plot(T.2100,median.damage,type="l",ylim=c(0,.4),col="white",
        xlab="Temperature in 2100 (in \u00B0C)",
-       ylab="Damages (fractions of output)",las=1,
+       ylab="Damages (fractions of 2100 output)",las=1,
        main=main.title)
   for(i in length(vector.of.CI):1){
     # P
@@ -58,42 +60,44 @@ make_figure_calibration_Damages <- function(model_sol,
   }
   
   # Compute average damages:
-  cond.mean.damage <- NULL
+  cond.mean.damage          <- NULL
+  cond.mean.damage.with.SLR <- NULL
   for(i in 1:length(T.2100)){
     cond.mean.damage <- c(cond.mean.damage,
                           1 - LT.CumD(model_sol,u=-1,tstar=model_sol$horiz.2100,
                                       T0 = model_sol$vector.ini$ini_Tat,
-                                      Tstar = T.2100[i]))}
+                                      Tstar = T.2100[i],
+                                      indic_add_SLR=FALSE))}
+  lines(T.2100,cond.mean.damage,lwd=lwd.CR,lty=2,col="black")
   
-  if(trace_lines){
-    lines(T.2100,median.damage,lwd=2,lty=2)
-    lines(T.2100,cond.mean.damage,lwd=2)
+  if(indic_add_SLR){
+    for(i in 1:length(T.2100)){
+      cond.mean.damage.with.SLR <- c(cond.mean.damage.with.SLR,
+                                     1 - LT.CumD(model_sol,u=-1,tstar=model_sol$horiz.2100,
+                                                 T0 = model_sol$vector.ini$ini_Tat,
+                                                 Tstar = T.2100[i],
+                                                 indic_add_SLR=TRUE))}
+    lines(T.2100,cond.mean.damage.with.SLR,lwd=lwd.CR,lty=1,col="black")
   }
   
-  
-  points(c(2,4),
-         c(1-model_sol$target_vector["ECumD2"],1-model_sol$target_vector["ECumD4"]),
-         pch=15,col="red")
+  if(trace_lines){
+    #lines(T.2100,median.damage,lwd=2,lty=2)
+    points(c(2,4),
+           c(1-model_sol$target_vector["ECumD2"],1-model_sol$target_vector["ECumD4"]),
+           pch=15,col="red")
+  }
   
   if(trace_lines){
     legend("topleft",
-           legend=c("mean","median","target (mean)"),
+           legend=c("Mean, with SLR","Mean, w/o SLR","Targeted mean"),
            lty=c(1,2,NaN),
            pch=c(NaN,NaN,15),
            col=c("black","black","red"),
            #cex=1.5,
            lwd=2,bty = "n")
-  }else{
-    legend("topleft",
-           legend=c("target (mean)"),
-           lty=c(NaN),
-           pch=c(15),
-           col=c("red"),
-           #cex=1.5,
-           lwd=2,bty = "n")
   }
   
-  return(1)
+  return(cond.mean.damage.with.SLR)
 }
 
 
@@ -156,23 +160,22 @@ make_figure_calibration_N <- function(model_sol,
             col=P.col,border = NA)
   }
   
-  
-  lines(T.2100,median.CumN,lwd=2,lty=2)
+  #lines(T.2100,median.CumN,lwd=2,lty=2)
   
   res <- Param.Gamma0.CumN(model_sol,T0=model_sol$vector.ini$ini_Tat,
                            Tstar=T.2100,tstar=model_sol$horiz.2100)
   cond.mean.CumN <- res$lambda * res$mu
-  lines(T.2100,cond.mean.CumN,lwd=2)
+  lines(T.2100,cond.mean.CumN,lwd=2,lty=2)
   
   points(c(2,4),
          c(model_sol$target_vector["ECumN2"],model_sol$target_vector["ECumN4"]),
          pch=15,col="red")
   
   legend("topleft",
-         legend=c("mean","median","target (mean)"),
-         lty=c(1,2,NaN),
+         legend=c("Mean","Targeted mean"),
+         lty=c(2,NaN),
          pch=c(NaN,NaN,15),
-         col=c("black","black","red"),
+         col=c("black","red"),
          #cex=1.5,
          lwd=2,bty = "n")
   
@@ -243,7 +246,7 @@ make_figure_calibration_SLR <- function(model_sol,
   # Add median:
   indic.median.H <- apply(all.cdf,2,function(x){which(x>.5)[1]})
   median.H <- H.values.interpol[indic.median.H]
-  lines(T.2100,median.H,lwd=2,lty=2)
+  #lines(T.2100,median.H,lwd=2,lty=2)
   
   # Add expectation:
   res <- Param.Gamma0.H(model_sol,
@@ -251,16 +254,16 @@ make_figure_calibration_SLR <- function(model_sol,
                         Tstar=T.2100,
                         tstar=model_sol$horiz.2100)
   cond.mean.H <- res$lambda * res$mu
-  lines(T.2100,cond.mean.H,lwd=2)
+  lines(T.2100,cond.mean.H,lwd=2,lty=2)
   
   points(c(2,4),c(model_sol$target_vector[["EH2"]],
                   model_sol$target_vector[["EH4"]]),pch=15,col="red")
   
   legend("topleft",
-         legend=c("mean","median","target (mean)"),
-         lty=c(1,2,NaN),
-         pch=c(NaN,NaN,15),
-         col=c("black","black","red"),
+         legend=c("Mean","Targeted mean"),
+         lty=c(2,NaN),
+         pch=c(NaN,15),
+         col=c("black","red"),
          #cex=1.5,
          lwd=2,bty = "n")
   
@@ -406,10 +409,10 @@ compute_CMT <- function(model_sol,EV,Price.ZC,
   
   # Model without climate change risk but agent does not re-optimize
   model_ncc <- model_sol
-  model_ncc$parameters$mu_D <- 0.0001
-  model_ncc$parameters$mu_H <- 0.0001
-  model_ncc$parameters$mu_N <- 0.0001
-  model_ncc$parameters$mu_T <- 0.0001
+  model_ncc$parameters$mu_D <- 0.00001
+  model_ncc$parameters$mu_H <- 0.00001
+  model_ncc$parameters$mu_N <- 0.00001
+  model_ncc$parameters$mu_T <- 0.00001
   # and agents re-optimize:
   model_ncc <- model_solve(model_ncc)
   ncc.1 <-compute_cst_h(model_ncc,h_cst.1,nb)
@@ -435,7 +438,8 @@ compute_CMT <- function(model_sol,EV,Price.ZC,
 
 make_figure_CMT <- function(expected.yds,
                             model_sol,
-                            maturities = c(2,10)){
+                            maturities = c(2,10),
+                            indic_only_first=FALSE){
   
   cc.1       <- expected.yds$cc.1
   cc.2       <- expected.yds$cc.2
@@ -445,24 +449,24 @@ make_figure_CMT <- function(expected.yds,
   ncc.mu_c.2 <- expected.yds$ncc.mu_c.2
   
   # colors for 3 models
-  col<-c(brocolors("crayons")["Orange Red"],
-         brocolors("crayons")["Wild Blue Yonder"],
-         brocolors("crayons")["Violet Blue"])
+  col<-c("black",
+         "honeydew4",
+         "dodgerblue3")
   
-  ylim=c(min(cc.1[,2],ncc.1[,2],ncc.mu_c.1[,2],cc.2[,2],ncc.2[,2],ncc.mu_c.2[,2])-.5,
-         max(cc.1[,2],ncc.1[,2],ncc.mu_c.1[,2],cc.2[,2],ncc.2[,2],ncc.mu_c.2[,2])+.5)
+  ylim=c(min(cc.1[,2],ncc.1[,2],ncc.mu_c.1[,2],cc.2[,2],ncc.2[,2],ncc.mu_c.2[,2])-.25,
+         max(cc.1[,2],ncc.1[,2],ncc.mu_c.1[,2],cc.2[,2],ncc.2[,2],ncc.mu_c.2[,2])+.25)
   
   #Plot
   cexaxs  <- 1
   cexlab  <- 1
-  cexmain <- 1
+  cexmain <- 1.2
   
   plot(cc.1[,1],cc.1[,2],
        type="b", xlab="Date",ylab="Interest rate (in percent)",
        ylim=ylim,
        las=1,
        cex.main=cexmain,cex.axis=cexaxs,cex.lab=cexlab,
-       main=paste("(a) ",model_sol$tstep*maturities[1],"-year real interest rate",sep=""),
+       main=paste(ifelse(indic_only_first,"(b)","(a)")," Expected path of ",model_sol$tstep*maturities[1],"-year real interest rate",sep=""),
        lwd=2,col=col[1],pch=1)
   lines(ncc.1[,1],ncc.1[,2],type="b",
         lwd=2,col=col[2],pch=2)
@@ -481,18 +485,20 @@ make_figure_CMT <- function(expected.yds,
          lwd=rep(2,4),
          bty = "n",cex=1)
   
-  plot(cc.2[,1],cc.2[,2],
-       type="b", xlab="Date",ylab="Interest rate (in percent)",
-       ylim=ylim,
-       las=1,
-       cex.main=cexmain,cex.axis=cexaxs,cex.lab=cexlab,
-       main=paste("(b) ",model_sol$tstep*maturities[2],"-year real interest rate",sep=""),
-       lwd=2,col=col[1],pch=1)
-  lines(ncc.2[,1],ncc.2[,2],type="b",
-        lwd=2,col=col[2],pch=2)
-  lines(ncc.mu_c.2[,1],ncc.mu_c.2[,2],type="b",
-        lwd=2,col=col[3],pch=4)
-  grid()
+  if(!indic_only_first){
+    plot(cc.2[,1],cc.2[,2],
+         type="b", xlab="Date",ylab="Interest rate (in percent)",
+         ylim=ylim,
+         las=1,
+         cex.main=cexmain,cex.axis=cexaxs,cex.lab=cexlab,
+         main=paste("(b) Expected path of ",model_sol$tstep*maturities[2],"-year real interest rate",sep=""),
+         lwd=2,col=col[1],pch=1)
+    lines(ncc.2[,1],ncc.2[,2],type="b",
+          lwd=2,col=col[2],pch=2)
+    lines(ncc.mu_c.2[,1],ncc.mu_c.2[,2],type="b",
+          lwd=2,col=col[3],pch=4)
+    grid()
+  }
   
   return(1) 
 }

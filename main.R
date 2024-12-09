@@ -5,7 +5,6 @@
 # This version: November 2024
 # ==============================================================================
 
-
 #clear environment
 rm(list=ls(all=T)) 
 library(tictoc)
@@ -17,7 +16,6 @@ library(broman)
 library(optimx)
 library(MASS)
 library(expm)
-
 
 #Binary operators: 0 = NO, 1 = YES.
 indic_plots_paper  <- 1 #do you run some plots of the paper? see description below
@@ -53,8 +51,7 @@ toc()
 #*10 Constant maturity - ZCB
 #*11 Sensitivity of climate Premium
 #*12 Break-even rates of inflation
-#*13 Merton 1
-#*14 Merton 2
+#*13 Merton
 #*15 Housing prices
 #*16 Confidence Interval SCC and Risk premiums
 #*17 Relationship between SCC and Temperature risk premium

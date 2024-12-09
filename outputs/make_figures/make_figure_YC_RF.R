@@ -5,11 +5,10 @@
 # Maximum maturity (in years):
 H <- 300
 
-col.Lemoine <- "red"
-col.BKO     <- "blue"
+col.Lemoine <- "#B22222"
+col.BKO     <- "#008B8B"
 col.CR      <- "black"
-col.BR      <- "dark grey"
-
+col.BR      <- "darkgoldenrod3"
 
 # Lemoine (2021) model ---------------------------------------------------------
 
@@ -127,8 +126,14 @@ TRP_CR_EZ_highDelta <- ET.Q_CR_EZ - ET.P_CR_EZ
 gamma <- 1.01
 gamma <- 1.45
 #gamma <- 1.24
+
+# EPA specification (2.5%):
+# delta <- (1 - .0046)^5
+# gamma <- 1.42
+
 model.CRRA <- model_sol
 model.CRRA$parameters$gamma <- gamma
+model.CRRA$parameters$delta <- model_sol$parameters$delta
 model.CRRA <- solveParam4c(model.CRRA,indic_CRRA=TRUE)
 model_CRRA_sol <- model_solve(model.CRRA,
                               indic_mitig = T,
@@ -155,9 +160,9 @@ pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=11, height=5)
 par(mfrow=c(1,2))
 
 plot(1:H,rep(0,H),ylim=c(0,5),col="white",
-     ylab="interest rate, in percent",
-     xlab="maturity, in years",las=1,
-     main="(a) Risk-free interest rates")
+     ylab="Interest rate (in percent)",
+     xlab="Maturity, in years",las=1,
+     main="(a) Term structure of real rates",cex.main=1.2)
 
 polygon(c(seq(model_sol$tstep,H,by=model_sol$tstep),
           seq(H,model_sol$tstep,by=-model_sol$tstep)),
@@ -201,13 +206,63 @@ legend("topright",
 
 grid()
 
+# # Temperature risk premiums:
+# 
+# ylim <- c(0,max(TRP_BKO,TRP_CR_CRRA,TRP_CR_EZ,TRP_lemoine))
+# plot(1:H,rep(0,H),ylim=ylim,col="white",
+#      ylab="Temperature risk premium, in °C",
+#      xlab="maturity, in years",las=1,
+#      main="(b) Temperature risk premium")
+# 
+# polygon(c(seq(model_sol$tstep,H,by=model_sol$tstep),
+#           seq(H,model_sol$tstep,by=-model_sol$tstep)),
+#         c(TRP_CR_EZ_lowDelta,rev(TRP_CR_EZ_highDelta)),
+#         col="light grey",border = NaN)
+# 
+# 
+# lines(TRP_lemoine,type="l",col=col.Lemoine,lwd=2)
+# lines(TRP_BKO,col=col.BKO,lwd=2)
+# lines(TRP_BKO_highDamages,col=col.BKO,lwd=2,lty=2)
+# 
+# lines(Price.ZC$date-model_sol$vec_date[1],TRP_CR_EZ,
+#       col=col.CR,lwd=2)
+# lines(Price.ZC$date-model_sol$vec_date[1],TRP_CR_CRRA,
+#       col=col.CR,lwd=2,lty=2)
+# 
+# grid()
+
+
+# Make plots with expected path of of future 10-year yield:
+EV <- EV.fct(model_sol)
+Price.ZC2 <- varphi(model_sol,
+                   omega.varphi=matrix(0,model_sol$n.X,1),
+                   H = model_sol$horiz.2100)
+maturities = c(2,10)
+expected.yds <- compute_CMT(model_sol,EV,Price.ZC2,maturities)
+make_figure_CMT(expected.yds,model_sol,maturities,
+                indic_only_first = TRUE)
+
+dev.off()
+
+
+
+
+
+
+
+
+FILE = "/outputs/Figures/Figure_TRP_comparison.pdf"
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=7, height=4)
+
+par(mfrow=c(1,1))
+par(plt=c(.15,.95,.2,.95))
+
 # Temperature risk premiums:
 
 ylim <- c(0,max(TRP_BKO,TRP_CR_CRRA,TRP_CR_EZ,TRP_lemoine))
 plot(1:H,rep(0,H),ylim=ylim,col="white",
      ylab="Temperature risk premium, in °C",
-     xlab="maturity, in years",las=1,
-     main="(b) Temperature risk premium")
+     xlab="Maturity, in years",las=1)
 
 polygon(c(seq(model_sol$tstep,H,by=model_sol$tstep),
           seq(H,model_sol$tstep,by=-model_sol$tstep)),
@@ -226,14 +281,31 @@ lines(Price.ZC$date-model_sol$vec_date[1],TRP_CR_CRRA,
 
 grid()
 
+
+legend("topleft",
+       legend=c(expression(paste("CR, Epstein-Zin (",gamma," = 7)",sep="")),
+                expression(paste("CR, CRRA (",gamma," = 1.45)",sep="")),
+                "Lemoine (2021)",
+                "BKO (2019)",
+                "BKO (2019), High damages"),
+       lty=c(1:2,
+             1,
+             1:2),
+       cex=1,
+       col=c(col.CR,col.CR,
+             col.Lemoine,
+             col.BKO,col.BKO),
+       lwd=2,
+       bty = "n", bg="white",
+       ncol=1)
+
 dev.off()
 
-# model_new <- model
-# model_new_sol <- model_solve(model_new,
-#                              indic_mitig = T)
-# EV.EZ   <- EV.fct(model_new_sol,h=50)
-# EV.CRRA <- EV.fct(model_CRRA_sol,h=50)
-# plot(EV.EZ$EX$delc,type="l",ylim=c(.05,.08))
-# lines(EV.CRRA$EX$delc,col="red")
+
+
+
+
+
+
 
 

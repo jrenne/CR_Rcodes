@@ -12,19 +12,22 @@ Format0 <- paste("%.",0,"f",sep="")
 # Format4 <- paste("%.",4,"f",sep="")
 # Format5 <- paste("%.",5,"f",sep="")
 
-nb.dec <- 2
+nb.dec <- 3
 Format <- paste("%3.",nb.dec,"e",sep="")
 
 Make.entry <- function(x,Format){
-  if(grepl("e-",sprintf(Format, x))){
-    res <- paste("$",gsub("e-","\\\\times 10^{-",sprintf(Format, x)),"}$",sep="")
+  if(grepl("+00",sprintf(Format, x))){
+    res <- paste("$",sprintf(paste("%0.",nb.dec,"f",sep=""),x),"$",sep="")
+  }else{
+    if(grepl("e-",sprintf(Format, x))){
+      res <- paste("$",gsub("e-","\\\\times 10^{-",sprintf(Format, x)),"}$",sep="")
+    }
+    if(grepl("e+",sprintf(Format, x))){
+      res <- paste("$",gsub("e+","\\\\times 10^{",sprintf(Format, x)),"}$",sep="")
+    }
   }
-  if(grepl("e+",sprintf(Format, x))){
-    res <- paste("$",gsub("e+","\\\\times 10^{",sprintf(Format, x)),"}$",sep="")
-  }
-  plus_zero_res  <- paste("$",gsub("e+","\\\\times 10^{",sprintf(Format, 0)),"}$",sep="")
-  minus_zero_res <- paste("$-",gsub("e+","\\\\times 10^{",sprintf(Format, 0)),"}$",sep="")
-  if((res == minus_zero_res)|(res == plus_zero_res)){
+  if((res == paste("$",sprintf(paste("%0.",nb.dec,"f",sep=""),0),"$",sep=""))|
+     res == paste("$-",sprintf(paste("%0.",nb.dec,"f",sep=""),0),"$",sep="")){
     res <- "$-$"
   }
   return(res)
@@ -34,18 +37,19 @@ Make.entry <- function(x,Format){
 chosen_state_variables <- c("y_tilde",
                             "E",
                             "Forc","M_at",
-                            "M_up","M_lo","T_lo",
+                            "M_up","M_lo","T_at","T_lo"
                             #"H","eta_A","eta_X","D","N",
-                            "T_at"#,"HW"
+                            #,"HW"
                             )
 
 matrix_names_Latex <- matrix(NaN,length(model_sol$names.var.X),2)
 matrix_names_Latex[,1] <- model_sol$names.var.X
 matrix_names_Latex[,2] <- c("$\\Delta c_t$","$\\tilde{y}_t$",
-                            "$\\mathcal{E}_t$","$\\mathcal{E}_{Ind,t}$",
-                            "$F_t$","$M_{at,t}$",
+                            "$\\mathcal{E}_t$",
+                            "$F_t$","$M_{AT,t}$",
                             "$M_{UP,t}$","$M_{LO,t}$",
-                            "$T_{LO,t}$","$Cum_{\\mathcal{E},t}$",
+                            "$T_{AT,t}$","$T_{LO,t}$",
+                            "$Cum_{\\mathcal{E},t}$",
                             "$Cum_{\\Delta c,t}$","$H_t$",
                             "$\\eta_{A,t}$","$\\eta_{X,t}$",
                             "$D_t$","$N_t$",
@@ -67,10 +71,10 @@ this.line <- paste(this.line,"&",
                    Make.entry(mu_u.1$mu_u0.t,Format),sep="")
 # Short-term rate (after Tmax):
 this.line <- paste(this.line,"&",
-                   Make.entry(model_sol$inf_matx$eta0.inf,Format),sep="")
+                   Make.entry(model_sol$inf_matx$eta0.inf/model_sol$tstep,Format),sep="")
 # Short-term rate (initial period):
 this.line <- paste(this.line,"&",
-                   Make.entry(model_sol$eta0[1],Format),sep="")
+                   Make.entry(model_sol$eta0[1]/model_sol$tstep,Format),sep="")
 
 this.line <- paste(this.line,"\\\\",sep="")
 latex.table <- rbind(latex.table,
@@ -90,10 +94,10 @@ for(i in 1:length(chosen_state_variables)){
                      Make.entry(mu_u.1$mu_u1.t[indic],Format),sep="")
   # Short-term rate (after Tmax):
   this.line <- paste(this.line,"&",
-                     Make.entry(model_sol$inf_matx$eta1.inf[indic],Format),sep="")
+                     Make.entry(model_sol$inf_matx$eta1.inf[indic]/model_sol$tstep,Format),sep="")
   # Short-term rate (initial period):
   this.line <- paste(this.line,"&",
-                     Make.entry(model_sol$eta1[[1]][indic],Format),sep="")
+                     Make.entry(model_sol$eta1[[1]][indic]/model_sol$tstep,Format),sep="")
   
   this.line <- paste(this.line,"\\\\",sep="")
   latex.table <- rbind(latex.table,

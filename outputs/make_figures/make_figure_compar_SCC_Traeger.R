@@ -6,7 +6,7 @@ data_ACE <- read.csv("data/ACE_Traeger_2023.csv")
 
 indic_deterministic <- TRUE
 
-Damage_Traeger_4 <- 1 - compute_alternative_damage(T=4, type="L. Traeger")
+Damage_Traeger_4 <- 1 - compute_alternative_damage(T=4, type="L. Traeger (ACE-base)")
 Damage_CR_4 <- 1 - model_sol$target_vector["ECumD4"]
 factor_mult_Damage <- Damage_Traeger_4/Damage_CR_4
 

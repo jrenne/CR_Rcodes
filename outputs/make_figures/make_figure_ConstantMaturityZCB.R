@@ -16,6 +16,7 @@ maturities = c(2,10)
 
 expected.yds <- compute_CMT(model_sol,EV,Price.ZC,maturities)
 
-make_figure_CMT(expected.yds,model_sol,maturities)
+make_figure_CMT(expected.yds,model_sol,maturities,
+                indic_only_first = FALSE)
 
 dev.off()

@@ -72,7 +72,7 @@ ET.Q    <- varphi.tilde(model_sol,omega_T.at,H)[[1]]/
 
 #Plots
 FILE = paste("/outputs/Figures/Figure_Tat_P_and_Q_vector_CI.pdf",sep="")
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=7, height=5)
+pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=6, height=6)
 
 layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE),
        widths=c(1,1), heights=c(1,1))

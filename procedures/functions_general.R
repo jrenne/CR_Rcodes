@@ -19,9 +19,10 @@ solveParam4c <- function(model,indic_CRRA=FALSE){
   return(model)
 }
 
-solveParam4D <-function(model,alpha=.04){
-  T.2100 <- c(2,4)
-  tstar <- model$horiz.2100
+solveParam4D <-function(model,
+                        T.2100 = c(2,4)){
+  alpha  <- model$alpha # curvature of temperature trajectory
+  tstar  <- model$horiz.2100
   Tat0   <- model$vector.ini$ini_Tat
   
   cst     <-log(model$target_vector["stdCumD4"]^2+model$target_vector["ECumD4"]^2)/
@@ -60,9 +61,9 @@ solveParam4D <-function(model,alpha=.04){
 }
 
 solveParam4H <-function(model,
-                        alpha=.04){
-  T.2100 <- c(2,4)
-  tstar <- model$horiz.2100
+                        T.2100 = c(2,4)){
+  alpha  <- model$alpha # curvature of temperature trajectory
+  tstar  <- model$horiz.2100
   Tat0   <- model$vector.ini$ini_Tat
   
   C<-matrix(c(model$target_vector["EH2"]-model$vector.ini$ini_H,
@@ -99,7 +100,8 @@ solveParam4N <-function(model,
                         T.2500 = 4,
                         alpha = .04){
   
-  tstar <- model$horiz.2100
+  alpha  <- model$alpha # curvature of temperature trajectory
+  tstar  <- model$horiz.2100
   Tat0   <- model$vector.ini$ini_Tat
   
   mu_N   <- model$target_vector["stdCumN4"]^2/(2*model$target_vector["ECumN4"])
@@ -375,25 +377,38 @@ extract<-function(list, n){
   sapply(list, `[`, n)
 }
 
-#----------------Laplace transform approximation for damages calibration
+#----------------Laplace transform for damages calibration
 LT.CumD <- function(model,u,
                     T0=model$vector.ini$ini_Tat,
                     Tstar,
                     tstar,
-                    alpha=.04){
+                    indic_add_SLR=TRUE){
   param <- model$parameters
+  
+  alpha <- model$alpha # curvature of temperature trajectory
   
   a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
     ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
   a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
     ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
   
-  res <- u/(1-u*param$mu_D) * (tstar*param$a_D +
-                                 param$b_D * (a_alpha_star*Tstar + a_alpha_0*T0))
-  return(exp(res))
+  res1 <- u/(1-u*param$mu_D) * (tstar*param$a_D +
+                                  param$b_D * (a_alpha_star*Tstar + a_alpha_0*T0))
+  
+  # SLR damages:
+  res2 <- 0 
+  res2_if_counted <- u*param$b_sk/(1-u*param$mu_H*param$b_sk) * (tstar*param$a_H +
+                                                                   param$b_H * (a_alpha_star*Tstar + a_alpha_0*T0))
+  if(indic_add_SLR){
+    res2 <- res2_if_counted
+  }
+  
+  return(exp(res1 + res2))
 }
 
-#------- Laplace transform approximation for permafrost-related emissions:
+
+
+#------- Laplace transform for permafrost-related emissions:
 LT.CumN <- function(model,u,
                     T0=model$vector.ini$ini_Tat,
                     Tstar,
@@ -403,7 +418,7 @@ LT.CumN <- function(model,u,
   return(psiCumN)
 }
 
-#------- Laplace transform approximation for SLR:
+#------- Laplace transform for SLR:
 LT.SLR <- function(model,u,
                    T0=model$vector.ini$ini_Tat,
                    Tstar,
@@ -1125,8 +1140,9 @@ model_solve <- function(model,
   omega.star.inf[indic.Cum_dc,] <- 
     t(mu_altern$muprice_1[(model_sol$n.Z+1):
                             (model_sol$n.Z+model_sol$n.W)])
-  omega.star.inf[indic.delc,indic.D]     <- -1 # Infff
-  #omega.star.inf[indic.delc,indic.D]     <- 0 # Infff
+  omega.star.inf[indic.delc,indic.D]  <- -1 # Infff
+  omega.star.inf[indic.delc,indic.dH] <- -param$b_sk
+  #omega.star.inf[indic.delc,indic.D] <- 0 # Infff
   if(indic_CRRA){
     omega.star.inf[indic.delc,indic.D] <- 
       omega.star.inf[indic.delc,indic.D]#/param$gamma
@@ -1141,7 +1157,7 @@ model_solve <- function(model,
   
   A0.star.inf <- diag(model_sol$n.Z)
   #A0.star.inf[indic.T_at,indic.WT_at] <- - 1
-  A0.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
+  #A0.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
   #A0.star.inf[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
     A0.star.inf[indic.delc,indic.H] <- 
@@ -1163,7 +1179,7 @@ model_solve <- function(model,
   varphi[3,3] <- param$varphi_33
   
   A1.star.inf <- matrix(0,model_sol$n.Z,model_sol$n.Z)
-  A1.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
+  #A1.star.inf[indic.delc,indic.H] <- param$b_sk # Infff
   #A1.star.inf[indic.delc,indic.H] <- 0 # Infff
   if(indic_CRRA){
     A1.star.inf[indic.delc,indic.H] <- A1.star.inf[indic.delc,indic.H]#/param$gamma
@@ -1537,14 +1553,14 @@ mu_dep <- function(model_sol,
     A1_i[indic.Cum_dc,indic.Cum_dc] <- 1
     A1_i[indic.H,indic.H]           <- 1
     #A1_i[indic.T_at,indic.T_at]     <- 1
-    A1_i[indic.delc,indic.H]        <-  param$b_sk
+    #A1_i[indic.delc,indic.H]        <-  param$b_sk
     if(indic_CRRA){
       A1_i[indic.delc,indic.H] <- A1_i[indic.delc,indic.H]#/param$gamma
     }
     A1.star[[i]] <- A1_i 
     
     A0_i <- model_sol$A0.star.inf
-    A0_i[indic.delc,indic.H] <- param$b_sk # Infff
+    #A0_i[indic.delc,indic.H] <- param$b_sk # Infff
     if(indic_CRRA){
       A0_i[indic.delc,indic.H] <- A0_i[indic.delc,indic.H]#/param$gamma
     }
@@ -1589,7 +1605,8 @@ mu_dep <- function(model_sol,
     omega_i[indic.Cum_dc,] <- t(mu_altern$muprice_1[(model_sol$n.Z+1):
                                                       (model_sol$n.Z+model_sol$n.W)])
     
-    omega_i[indic.delc,indic.D]     <- -1 #shock D
+    omega_i[indic.delc,indic.D]  <- -1 #shock D
+    omega_i[indic.delc,indic.dH] <- -param$b_sk
     if(indic_CRRA){
       omega_i[indic.delc,indic.D] <- omega_i[indic.delc,indic.D]#/param$gamma
     }

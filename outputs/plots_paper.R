@@ -12,8 +12,7 @@
 #*10 Constant maturity - ZCB
 #*11 Cut Climate Premium
 #*12 Break-even rates of inflation
-#*13 Merton 1
-#*14 Merton 2
+#*13 Merton
 #*15 Housing prices
 #*16 Confidence Interval SCC and Risk premiums
 #*17 Relationship between SCC and Temperature risk premium
@@ -148,13 +147,13 @@ if(is.element(12,plots)){
 #*******************************13-14******************************************#
 #Merton model
 if(is.element(13,plots)){
-  print("Preparing Merton-model figure (1/2)")
+  print("Preparing Merton-model figure")
   source("outputs/make_figures/make_figure_Merton.R")
 }
-if(is.element(14,plots)){
-  print("Preparing Merton-model figure (2/2)")
-  source("outputs/make_figures/make_figure_Merton2.R")
-}
+# if(is.element(14,plots)){
+#   print("Preparing Merton-model figure (2/2)")
+#   source("outputs/make_figures/make_figure_Merton2.R")
+# }
 
 #*******************************15*********************************************#
 #Housing prices

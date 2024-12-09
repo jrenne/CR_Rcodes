@@ -11,7 +11,8 @@ par(mfrow=c(2,2))
 
 # Damages ----------------------------------------------------------------------
 make_figure_calibration_Damages(model_sol,
-                                main.title = "(a) 2100 Fractional damages")
+                                main.title = "(a) 2100 Fractional damages",
+                                indic_add_SLR = TRUE)
 
 
 # Sea level rise ---------------------------------------------------------------

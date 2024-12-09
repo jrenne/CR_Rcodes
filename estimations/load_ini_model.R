@@ -90,6 +90,7 @@ c4      <- 0.00689 #*tstep
 f2co2   <- 3.45
 t2co2   <- 3.25
 
+
 # c1      <- 0.154 #*tstep
 # c3      <- 0.55
 # c4      <- 0.00671 #*tstep
@@ -163,7 +164,7 @@ param.clim<-list(
   gback      = 0.05,                                                            #DICE2023
   pback      = 695,                                                             #DICE2023
   theta2     = 2.6,                                                             #DICE2023,expcost2
-  b_sk       = .02,                                                             #Diaz (2016)
+  b_sk       = .015/.8,                                                             #Diaz (2016)
   tol.GN     = 10^(-6),
   eps.GN     = 10^(-5),
   mu_T       = NaN,
@@ -246,6 +247,7 @@ model<-list("parameters"=param,"vec_date"=vec_date,"tstep"=tstep,
             "n.eta"=n.eta,"n.W"=n.W,"n.Z"=n.Z,
             "Tmax"=Tmax,
             "theta0"=theta0,"horiz.2100"=horiz,"target_vector"=target_vector,
+            "alpha" = .032, # curvature of temperature trajectory (for calibration)
             "ini_matx"=ini_matx,"inf_matx"=inf_matx,
             "mu_c"=0, # in case we impose a growth path
             "vector.ini"=vector.ini,"Cum_dc"=Cum_dc,

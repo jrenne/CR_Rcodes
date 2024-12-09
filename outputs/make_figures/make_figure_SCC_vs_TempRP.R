@@ -33,7 +33,7 @@ pdf(file=paste(getwd(),FILE,sep=""),pointsize=10,width=7, height=3)
 par(mfrow=c(1,3))
 par(plt=c(.2,.95,.2,.85))
 
-cases <- seq(0,1,by=.5)
+cases <- seq(0,1,by=.5) # 0 for baseline, .5 for log-utility case, 1 for CRRA
 i.case <- 0
 for(indic.CRRA in cases){
   
@@ -42,16 +42,16 @@ for(indic.CRRA in cases){
   
   if(indic.CRRA==1){
     gamma <- 1.45
-    xlim  <- c(-.025,.03)
-    ylim  <- c(-.07,.03)
+    xlim  <- c(-.01,.03)
+    ylim  <- c(-.1,.03)
   }else if(indic.CRRA == .5){
     gamma <- 1.001
-    xlim  <- c(-.025,.03 )
-    ylim  <- c(-.07,.03)
+    xlim  <- c(-.0025,.03 )
+    ylim  <- c(-.1,.03)
   }else{
     gamma <- model_sol$parameters$gamma
-    xlim  <- c(-.1,.1)
-    ylim  <- c(-.6,.1)
+    xlim  <- c(-.1,.2)
+    ylim  <- c(-.9,.3)
   }
   
   #xlim  <- c(-1,1)
@@ -118,10 +118,11 @@ for(indic.CRRA in cases){
       model_new <- solveParam4N(model_new)
       model_new <- solveParam4c(model_new,
                                 indic_CRRA = (indic.CRRA==1))
-      
+      # Solve this new model:
       model_sol_new <- model_solve(model_new,
                                    indic_CRRA = (indic.CRRA==1))
       
+      # Compute SCC:
       if(!(indic.CRRA==1)){
         SCC <- scc.fct(model_sol_new,h=0)
       }else{
