@@ -22,7 +22,7 @@ Slope coefficient in damage specification &$b^{(D)}$ &\eqref{eq:damagemainText}&
 \multicolumn{3}{l}{\textit{Target: Std dev. of 2100 release conditional on $T_{AT}=4\degree C$}} &$191.7$ &GtCO$_2$ \\
 \multicolumn{3}{l}{\textit{Target: Expected release conditional on $T_{AT,\infty}=4\degree C$}} &$748.1$ &GtCO$_2$ \\
 Uncertainty parameter&$\mu_N$ &\eqref{eq:damage_NmainText}&$49.6$&\\
-Constant term in carbon-release specification &$a^{(N)}$ &\eqref{eq:damage_NmainText}&$-5.6$\\
+Constant term in carbon-release specification &$a^{(N)}$ &\eqref{eq:damage_NmainText}&$-5.7$\\
 Slope coefficient in carbon-release specification &$b^{(N)}$ &\eqref{eq:damage_NmainText}&$15.0$\\
 Decay rate of releases &$\kappa_N$ &\eqref{eq:damage_NmainText}&$0.96$\\
 \\
@@ -32,16 +32,16 @@ Decay rate of releases &$\kappa_N$ &\eqref{eq:damage_NmainText}&$0.96$\\
 \multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.93$ & m \\
 \multicolumn{3}{l}{\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.36$ & m \\
 Uncertainty parameter in SLR specif.&$\mu_{H}$ &\eqref{eq:SeaL}&$0.0715$&\\
-Constant in SLR specif.&$a^{(\Delta H)}$ &\eqref{eq:SeaL}&$-0.0258$&\\
-Coefficient on $T_{AT}$ in SLR specif. &$b^{(\Delta H)}$ &\eqref{eq:SeaL}&$0.0294$&\\
+Constant in SLR specif.&$a^{(\Delta H)}$ &\eqref{eq:SeaL}&$-0.0260$&\\
+Coefficient on $T_{AT}$ in SLR specif. &$b^{(\Delta H)}$ &\eqref{eq:SeaL}&$0.0295$&\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Uncertainty about temperature process}}\\
 \multicolumn{3}{l}{\textit{Target: Std dev. of 2100 atmospheric temperature}} &0.75 & \degree C \\
-Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0649$&\\
+Uncertainty parameter in $T_{AT}$ specification &$\mu_T$ &\eqref{eq:Tat}&$0.0647$&\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Mitigation process}}\\
 \multicolumn{3}{l}{\textit{Based on agents' optimization on initial date}} \\
-Coef. on imposed function form of $\mu_t$ &$\theta_{a,opt} $ &\eqref{eq:mu}&$-1.293$&\\
-Coef. on imposed function form of $\mu_t$ &$\theta_{b,opt} $ &\eqref{eq:mu}&$0.063$&\\
+Coef. on imposed function form of $\mu_t$ &$\theta_{a,opt} $ &\eqref{eq:mu}&$-1.288$&\\
+Coef. on imposed function form of $\mu_t$ &$\theta_{b,opt} $ &\eqref{eq:mu}&$0.064$&\\

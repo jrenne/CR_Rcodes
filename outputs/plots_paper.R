@@ -22,6 +22,7 @@
 #*21 IRF 1 Gt Carbon
 #*22 Comparison of SCC with ACE model
 #*23 Comparison of risk-free yield curves with alternative approaches
+#*24 Effect of linearization on 2300 temperature distribution
 
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
@@ -223,6 +224,14 @@ if(is.element(22,plots)){
 if(is.element(23,plots)){
   print("Preparing figure comparing risk-free yield curves (takes about 20 seconds)")
   source("outputs/make_figures/make_figure_YC_RF.R",
+         encoding = 'ISO8859-1')
+}
+
+#*******************************24*********************************************#
+#Effect of linearization on 2300 temperature distribution
+if(is.element(24,plots)){
+  print("Preparing figure showing effect of linearization on 2300 temperat. distri")
+  source("outputs/make_figures/make_distrTAT_4_simul_Mat.R",
          encoding = 'ISO8859-1')
 }
 

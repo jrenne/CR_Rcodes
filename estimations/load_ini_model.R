@@ -12,7 +12,7 @@ tstep  <- 5
 vec_date <- seq(2020,by=tstep,len=Tmax-1)
 
 #Initial values of theta_a/_b for mitig optim. ~ DICE2016
-theta0  <- c(log(0.17),-1/21*log(0.17))
+#theta0  <- c(log(0.17),-1/21*log(0.17))
 theta0  <- c(-2,-.1)
 
 #Determine of max of iterations in mitig optim.
@@ -58,7 +58,6 @@ vector.ini<-list(
   ini_H      = H
 )
 remove(Ftot,Mat,Mup,Mlo,Tat,Tlo,H)
-
 
 #---- Economic parameters ------------------------------------------------------
 n.eta    <- 2
@@ -113,13 +112,9 @@ RCP45 <- RCP_MAGICC[,3]
 RCP60 <- RCP_MAGICC[,4]
 RCP85 <- RCP_MAGICC[,5]
 RCP   <- .5*(RCP45+RCP60)
-#RCP   <- RCP30
-#RCP   <- RCP45
-#m0 <- exp.mat.2100.rcp45_6/mateq
 RCP_tstep <- RCP[which(RCP_MAGICC$V1 %in% vec_date)]
 m0 <- RCP_tstep/mateq
-# m0 <- 2.5
-#m0 <- rep(exp.mat.2100.rcp45_6/mateq,length(vec_date))
+save(m0,file="data/m0_4_ShinyApps.Rdat")
 
 param.clim<-list(
   m0         = m0, 
@@ -224,8 +219,6 @@ names.var.X <- c("delc","y_tilde","E","Forc","M_at",
                  "M_up","M_lo","T_at","T_lo",
                  "Cum_E","Cum_dc","H",
                  "eta_A","eta_X",
-                 #"eta_E",
-                 #"eta_F",
                  "D","N","WT_at","dH")
 
 
@@ -247,12 +240,15 @@ model<-list("parameters"=param,"vec_date"=vec_date,"tstep"=tstep,
             "n.eta"=n.eta,"n.W"=n.W,"n.Z"=n.Z,
             "Tmax"=Tmax,
             "theta0"=theta0,"horiz.2100"=horiz,"target_vector"=target_vector,
-            "alpha" = .032, # curvature of temperature trajectory (for calibration)
+            "alpha" = NaN, # curvature of temperature trajectory (for calibration)
             "ini_matx"=ini_matx,"inf_matx"=inf_matx,
             "mu_c"=0, # in case we impose a growth path
             "vector.ini"=vector.ini,"Cum_dc"=Cum_dc,
             "names.var.X"=names.var.X)
 
+#---- Determine alpha, the curvature parameter used for calibration ------------
+source("estimations/compute_alpha.R", encoding = 'ISO8859-1', echo=FALSE)
+model$alpha <- alpha
 
 #---- Perform calibration ------------------------------------------------------
 print("***** starting calibration *****")
@@ -337,7 +333,7 @@ plot(model$vec_date[1:H],EV$EX$N,type="l")
 remove(horiz,MAXIT,target_vector,vec_date,
        tstep,Tmax,n.eta,n.W,n.Z,theta0,ini_matx,
        vector.ini,param.clim,param.econ,Cum_dc,Cum_dc1,
-       param,inf_matx,eps_0,H,m0,names.var.X)
+       param,inf_matx,eps_0,H,m0,names.var.X,alpha)
 
 
 

@@ -61,8 +61,9 @@ toc()
 #*21 IRF 1 Gt Carbon
 #*22 Comparison of SCC with ACE model
 #*23 Comparison of risk-free yield curves with alternative approaches
+#*24 Effect of linearization on 2300 temperature distribution
 
-plots <- 0:23
+plots <- 0:24
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")

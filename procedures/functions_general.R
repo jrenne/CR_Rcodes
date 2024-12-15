@@ -35,16 +35,6 @@ solveParam4D <-function(model,
   a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
     ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
   
-  ## Linear conditional trajectory:
-  # ell.D<-solve(matrix(c(tstar,tstar,
-  #                       .5*((tstar-1)*T.2100[1]+(tstar+1)*model$vector.ini$ini_Tat),
-  #                       .5*((tstar-1)*T.2100[2]+(tstar+1)*model$vector.ini$ini_Tat)),
-  #                     2,2))%*%
-  #   matrix((-1-mu_D)/(mu_D)*
-  #            c(log(model$target_vector["ECumD2"]),
-  #              log(model$target_vector["ECumD4"])),
-  #          ncol=1)
-  
   ab.D<-solve(matrix(c(tstar,tstar,
                        a_alpha_star*T.2100[1] + a_alpha_0*Tat0,
                        a_alpha_star*T.2100[2] + a_alpha_0*Tat0),2,2))%*%
@@ -73,16 +63,10 @@ solveParam4H <-function(model,
   a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
     ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
   a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
-    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+    ((1- exp(-alpha*tstar))*(1 - exp(-alpha)))
   S<-matrix(c(tstar,tstar,
               a_alpha_star*T.2100[1] + a_alpha_0*Tat0,
               a_alpha_star*T.2100[2] + a_alpha_0*Tat0),2,2)
-  
-  ## Linear conditional trajectory:
-  # S<-matrix(c(.5*((tstar-1)*T.2100[1]+(tstar+1)*model$vector.ini$ini_Tat),
-  #             .5*((tstar-1)*T.2100[2]+(tstar+1)*model$vector.ini$ini_Tat),
-  #             tstar,tstar),
-  #           2,2)
   
   SAT <- solve(S)%*%C
   
@@ -97,8 +81,7 @@ solveParam4H <-function(model,
 
 solveParam4N <-function(model,
                         T.2100 = c(2,4),
-                        T.2500 = 4,
-                        alpha = .04){
+                        T.2500 = 4){
   
   alpha  <- model$alpha # curvature of temperature trajectory
   tstar  <- model$horiz.2100
@@ -111,20 +94,6 @@ solveParam4N <-function(model,
   C     <- matrix(c(model$target_vector["ECumN2"],
                     model$target_vector["ECumN4"]),
                   ncol=1)
-  
-  # # Linear parametric trajectory:
-  # ellN.condkapN<-apply(kapN,1,function(kN){
-  #   N<-matrix(c(rep((1-kN^tstar)/(1-kN),2),
-  #               (1-kN^tstar)/(1-kN)*model$vector.ini$ini_Tat+
-  #                 (T.2100[1]-model$vector.ini$ini_Tat)/tstar*
-  #                 (kN+((tstar-1)*kN-tstar)*kN^tstar)/(1-kN)^2,
-  #               (1-kN^tstar)/(1-kN)*model$vector.ini$ini_Tat+
-  #                 (T.2100[2]-model$vector.ini$ini_Tat)/tstar*
-  #                 (kN+((tstar-1)*kN-tstar)*kN^tstar)/(1-kN)^2),
-  #             2,2)*mu_N
-  #   ellN  <- matrix(c(0,0),ncol=1)
-  #   ellN  <- solve(N)%*%C
-  #   return(ellN)})
   
   abN.condkapN<-apply(kapN,1,function(kN){
     b_alpha_star <- 1/(1 - exp(-alpha*tstar))*(
@@ -144,18 +113,10 @@ solveParam4N <-function(model,
     abN  <- solve(N)%*%C
     return(abN)})
   
-  # CumN.inf    <- c(1/(1-kapN)) *
-  #   c(matrix(c(1,T.2500),nrow=1) %*% abN.condkapN)
-  
-  # ==========================================
-  # ==========================================
-  #alpha <- 100
   CumN.inf <- c(apply(rbind(c(1/(1-kapN)),
                             c(T.2500/(1-kapN) - (T.2500 - Tat0)/(1-kapN*exp(-alpha)))
                             #c(T.2500/(1-kapN)) # Previous methodology
   ) * abN.condkapN,2,sum))
-  # ==========================================
-  # ==========================================
   
   param.CumN  <-rbind(t(kapN),abN.condkapN,t(CumN.inf),
                       rep(model$target_vector["ECumNinf"],length(kapN)),
@@ -164,7 +125,8 @@ solveParam4N <-function(model,
                           "Target",
                           "Diff")
   
-  abN.kapN  <-param.CumN[,which.min(abs(param.CumN["Diff",]))]
+  abN.kapN <- param.CumN[,which.min(abs(param.CumN["Diff",]))]
+
   
   model$parameters$mu_N    <- mu_N
   model$parameters$kappa_N <- abN.kapN["kappaN"]
