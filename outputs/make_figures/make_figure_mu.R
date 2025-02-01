@@ -1,17 +1,15 @@
 # ==============================================================================
-# Figure showing mitigation path (mu_t)
+# FIGURE V.1. Mitigation rate
+# Figure_Mitigation_comparison.pdf
 # ==============================================================================
+
+
 # Check sensitivity to assumptions regarding mu_t:
 # (i) parametric function + (ii) time consistency
-# ==============================================================================
-
-
-
-# ==============================================================================
-# ==============================================================================
+# =====================================
 model_sol$theta0 <- model_sol$theta.opt
-# ==============================================================================
-# ==============================================================================
+# =====================================
+
 
 x.lim <- c(model_sol$vec_date[2],2200)
 
@@ -32,9 +30,7 @@ indic_y_tilde <- which(model_sol$names.var.X=="y_tilde")
 indics <- c(indic_Mat,
             indic_Mup,
             indic_Mlo,
-            #indic_forc,
             indic_T_at,
-            #indic_N,
             indic_y_tilde) # changes in Xt will be applied to these entries
 indics <- 1:model_sol$n.X
 
@@ -43,8 +39,8 @@ omega_ZCB <- matrix(0,model_sol$n.X,1)
 omega_T.at <- omega_ZCB
 omega_T.at[indic_T_at] <- 1
 
-
-#Plot
+# ------------------------------------------------------------------------------
+# Plot----
 FILE = paste("/outputs/Figures/Figure_Mitigation_comparison.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=9,width=7, height=5)
 
@@ -113,8 +109,7 @@ all_mu <- foreach(t = 1:max.t,
                     
                     Xt <- EV$EXh[[t]]
                     Xt[indics] <- Xt[indics] + 0*sqrt(diag(EV$CovX[[t]]))[indics]
-                    #Xt <- Xt + 0*sqrt(diag(EV$CovX[[t]]))
-                    
+
                     # Re-optimize future trajectory of mu_t's:
                     RES.2param <- res.optim(model_sol,
                                             model_sol$theta0,
@@ -154,8 +149,7 @@ all_mu <- foreach(t = 1:max.t,
                     
                     Xt <- EV$EXh[[t]]
                     Xt[indics] <- Xt[indics] - 2*sqrt(diag(EV$CovX[[t]]))[indics]
-                    #Xt <- Xt + 2*sqrt(diag(EV$CovX[[t]]))
-                    
+
                     # Re-optimize future trajectory of mu_t's:
                     RES.2param <- res.optim(model_sol,
                                             model_sol$theta0,
@@ -197,9 +191,7 @@ all_mu <- foreach(t = 1:max.t,
                     ZCB <- varphi(model_sol_new,omega_ZCB,HHH,X=Xt,t=t)
                     ET.Q_new  <- varphi.tilde(model_sol_new,omega_T.at,HHH,
                                               X=Xt,t=t)[[1]]/ZCB$P.t
-                    
-                    # EV    <- EV.fct(model_sol,h=H)
-                    # ET.P  <- EV$EX$T_at[1:H]
+                  
                     # compute TRP for date t with baseline model:
                     # with baseline model (without updating of mu):
                     model_sol_P <- model_sol
@@ -260,8 +252,7 @@ all_mu <- foreach(t = 1:max.t,
                     
                     Xt <- EV$EXh[[t]]
                     Xt[indics] <- Xt[indics] - 2*sqrt(diag(EV$CovX[[t]]))[indics]
-                    #Xt <- Xt - 2*sqrt(diag(EV$CovX[[t]]))
-                    
+
                     # Re-optimize future trajectory of mu_t's:
                     RES.2param <- res.optim(model_sol,
                                             model_sol$theta0,

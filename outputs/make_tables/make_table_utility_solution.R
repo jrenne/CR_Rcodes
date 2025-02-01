@@ -1,16 +1,12 @@
 # ==============================================================================
-# Prepare tex table with solution to utility
+# TABLE 2. Utility solution
+# table_utility_solution.txt
 # ==============================================================================
 
 # Define format of figures:
 nb.dec <- 3 # number of decimal numbers
 Format  <- paste("%.",nb.dec,"f",sep="")
 Format0 <- paste("%.",0,"f",sep="")
-# Format1 <- paste("%.",1,"f",sep="")
-# Format2 <- paste("%.",2,"f",sep="")
-# Format3 <- paste("%.",3,"f",sep="")
-# Format4 <- paste("%.",4,"f",sep="")
-# Format5 <- paste("%.",5,"f",sep="")
 
 nb.dec <- 3
 Format <- paste("%3.",nb.dec,"e",sep="")
@@ -38,8 +34,6 @@ chosen_state_variables <- c("y_tilde",
                             "E",
                             "Forc","M_at",
                             "M_up","M_lo","T_at","T_lo"
-                            #"H","eta_A","eta_X","D","N",
-                            #,"HW"
                             )
 
 matrix_names_Latex <- matrix(NaN,length(model_sol$names.var.X),2)

@@ -1,45 +1,61 @@
-================================================================================
-An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 
-Pauline Chikhani and Jean-Paul Renne
+---
 
-This version: February 2024
-================================================================================
+# An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 
-The present codes allow to replicate the results of the paper entitled "An Analytical Framework to Price Long-Dated Climate-Exposed Assets" that can be found at https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3881262.
+**Authors:** Pauline Chikhani and Jean-Paul Renne  
+**Corresponding Author:** [Jean-Paul Renne](mailto:jean-paul.renne@unil.ch)  
+**Version:** February 2025  
 
+This repository contains the code necessary to replicate the results of the paper titled "[An Analytical Framework to Price Long-Dated Climate-Exposed Assets](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3881262)."
 
---------------------------------------------------------------------------------
-A - Requirements
+---
 
-The paper's results have been generated under R version 4.3.1 (2023-06-16) -- "Beagle Scouts".
+## A - Requirements
 
-The name of the R project is "CR_Rcodes.Rproj." To use the codes, run "main.R." The code will start with calibrating mu_T using the bisection method; this takes about 30 seconds. In "main.R", you can specify if you want to create tables and figures. For the latter, you can choose which ones. Details are provided directly in "main.R", as commented code.
+The analysis has been conducted using R version 4.3.1 (2023-06-16) -- "Beagle Scouts."
 
-Make sure the libraries called in "main.R" are available before running the codes.
+### Project Setup
 
-Computing time: Using a set up with 2.3 GHz 8-Core Intel Core i9, all figures and tables (including those appearing in the supplemental material) are generated in about 15 minutes.
+1. **R Project**: The project is organized in the R project file named `CR_Rcodes.Rproj`.
+2. **Execution**: To replicate the results, execute the script `main.R`. 
+   - The script begins by calibrating `mu_T` using the bisection method, which takes approximately 30 seconds.
+   - Within `main.R`, you have the option to generate specific tables and figures, with detailed instructions included as commented code.
 
+### Libraries
 
---------------------------------------------------------------------------------
-B - The different folders
+Ensure that all necessary libraries referenced in `main.R` are installed prior to running the code.
 
-The different folders are as follows:
+### Computing Time
 
-1- "data" contains data files used for calibration and plots.
+On a setup with a 2.3 GHz 8-Core Intel Core i9 processor, all figures and tables (including those in the supplemental materials) can be generated in about 15 minutes.
 
-2- "estimations" contains R files used to estimate/calibrate the model.
+---
 
-3- "outputs" contains scripts producing figures and tables; it also contains these figures and tables.
+## B - Directory Structure
 
-4- "procedures" contains sets of procedures used to solve the model, price assets, and generate the various outputs.
+The repository is organized into several folders, detailed as follows:
 
-In addition to the present README file, the main folder also contains two files "main.R" that has to be sourced in order to replicate the paper's results.
+1. **data/**: Contains data files used for calibration and plotting.
+2. **estimations/**: Contains R scripts for estimating and calibrating the model.
+3. **outputs/**: Includes scripts for producing figures and tables, along with the generated outputs.
+4. **procedures/**: Contains various procedures used to solve the model, price assets, and generate outputs.
 
+In addition to this README file, the main directory includes two essential files:
+- **main.R**: The primary script to source for replicating the paper's results.
 
---------------------------------------------------------------------------------
-C - Outputs
+---
 
-Figures are stored in "outputs/Figures/". Tables are stored in "outputs/Tables/".
+## C - Outputs
+
+- **Figures**: Stored in `outputs/Figures/`.
+- **Tables**: Located in `outputs/Tables/`.
+
+---
+
+If you have any questions or require further assistance, please reach out to the corresponding author.
+
+--- 
+
 
 

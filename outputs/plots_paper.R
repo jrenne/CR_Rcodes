@@ -1,28 +1,33 @@
-#* Description
-#* 0 calibration
-#* 1 tibs and swaps
-#* 2 digital option
-#* 3 pdf temperatures
-#* 4 pdf carbon concentration in atmosphere
-#* 5 climate beta
-#* 6 Disasters Simulations
-#* 7 pdf sea level
-#* 8 mu (comparison with DICE)
-#* 9 Response of temperature conditional on some MAT paths
-#*10 Constant maturity - ZCB
-#*11 Cut Climate Premium
-#*12 Break-even rates of inflation
-#*13 Merton
-#*15 Housing prices
-#*16 Confidence Interval SCC and Risk premiums
-#*17 Relationship between SCC and Temperature risk premium
-#*18 Relationship between SCC and Temperature risk premium, Lemoine approach
-#*19 Illustrations of gamma-zero distribution
-#*20 Comparison of damages
-#*21 IRF 1 Gt Carbon
-#*22 Comparison of SCC with ACE model
-#*23 Comparison of risk-free yield curves with alternative approaches
-#*24 Effect of linearization on 2300 temperature distribution
+#* Figures description:
+#* -----------------------------------------------------------------------------
+#*  2-- FIGURE 2. Atmospheric temperature response to a carbon pulse
+#*  3-- FIGURE 3. Damage function
+#*  4-- FIGURE 4. Conditional distribution of future temperatures 
+#*  5-- FIGURE 5. Conditional distribution of future global sea level 
+#*  6-- FIGURE 6. The term structure of real rates
+#*  7-- FIGURE 7. The term structures of interest rates 
+#*  8-- FIGURE 8. Price of digital options, with contributions of risk premiums 
+#*  9-- FIGURE 9. Effect of \mu on the conditional distribution x_t|y_t \sim \gamma0 (y_t/\mu, \mu) 
+#* 10-- FIGURE 10. Distribution of cumulated damages 
+#* 11-- FIGURE 11. From carbon concentrations to atmospheric temperature 
+#* 31-- FIGURE III.1. Model calibration 
+#* 51-- FIGURE V.1. Mitigation rate 
+#* 52-- FIGURE V.2. Social Cost of Carbon and temperature risk premiums
+#* 53-- FIGURE V.3. Comparison of temperature risk premiums 
+#* 54-- FIGURE V.4. Merton model 
+#* -----------------------------------------------------------------------------
+ 
+ 
+#* Miscellaneous
+
+#* Figure 1*: From carbon concentrations to atmospheric temperature
+# print("Preparing figure showing effect of linearization on 2300 temp. distri")
+# source("outputs/make_figures/make_figure_distrTAT_4_simul_Mat.R",
+#        encoding = 'ISO8859-1')
+
+#* Figure 2*: Simulated damages
+# source("outputs/make_figures/make_figure_simul_cumDamages.R",
+#        encoding = 'ISO8859-1')
 
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
@@ -49,190 +54,101 @@ Q.col<-adjustcolor( Q.col.line, alpha.f = 0.15)
 # Nb of values used for refined grid when computing Conf Intervals:
 nb.values.variable <- 400
 
-
-
-#********************************0*********************************************#
-#CALIBRATION
-if(is.element(0,plots)){
-  print("Preparing Calibration plot")
-  source("outputs/make_figures/make_figure_calibration.R")
-}
-
-#********************************1*********************************************#
-#TIBS/SWAPS
-if(is.element(1,plots)){
-  print("Preparing TS plot")
-  source("outputs/make_figures/make_figure_TS.R")
-}
-
-#********************************2*********************************************#
-#Digital Option
+#--  2
+# FIGURE 2. Atmospheric temperature response to a carbon pulse
 if(is.element(2,plots)){
-  print("Preparing Option plot")
-  source("outputs/make_figures/make_figure_options.R")
+  print("Preparing figure showing temperature dynamic effect of 1Gt carbon pulse")
+  source("outputs/make_figures/make_figure_IRF1Gt.R",
+         encoding = 'ISO8859-1')
 }
 
-#********************************3*********************************************#
-#Temperatures pdf + RCP
+#--  3
+# FIGURE 3. Damage function
 if(is.element(3,plots)){
-  print("Preparing Temperature distri plot")
-  source("outputs/make_figures/make_figure_Tpdf.R")
-}
-
-#********************************4*********************************************#
-#Carbon Concentration Atmosphere pdf + RCP
-if(is.element(4,plots)){
-  print("Preparing Atm carbon concentration distri plot")
-  source("outputs/make_figures/make_figure_Mpdf.R")
-}
-
-#********************************5*********************************************#
-#Sensitivity to mu_D
-if(is.element(5,plots)){
-  print("Preparing sensitivity-to-mu_D plot (takes about 30 sec)")
-  source("outputs/make_figures/make_figure_sensitiv_muD.R")
-  source("outputs/make_figures/make_figure_SCC.R")
-}
-
-#********************************6*********************************************#
-#Disasters Simulations
-if(is.element(6,plots)){
-  print("Preparing D simulation plot")
-  source("outputs/make_figures/make_figure_Dsimul.R")
-}
-
-#********************************7*********************************************#
-#Global Sea Level pdf + RCP
-if(is.element(7,plots)){
-  print("Preparing SLR distri plot")
-  source("outputs/make_figures/make_figure_Hpdf.R")
-}
-
-#********************************8*********************************************#
-#Mitigation vs DICE2016
-if(is.element(8,plots)){
-  print("Preparing figure mu plot (takes about 30 sec)")
-  source("outputs/make_figures/make_figure_mu.R")
-}
-
-#*******************************9*********************************************#
-#Radiative Forcings Approximation
-if(is.element(9,plots)){
-  print("Preparing figure showing response of temperature conditional on MAT paths")
-  source("outputs/make_figures/make_figure_RCP_to_TAT.R",
-         encoding = 'ISO8859-1')
-}
-
-#*******************************10*********************************************#
-#Constant maturity for ZCB
-if(is.element(10,plots)){
-  print("Preparing ZCB plot")
-  source("outputs/make_figures/make_figure_ConstantMaturityZCB.R")
-}
-
-
-#*******************************11*********************************************#
-#Cut in Climate Premium
-if(is.element(11,plots)){
-  print("Preparing plot of sensitivitiy of Temp risk premium to mu_D")
-  source("outputs/make_figures/make_figure_cut_CP_muD.R")
-}
-
-#*******************************12*********************************************#
-#Break-even rates of inflation
-if(is.element(12,plots)){
-  print("Preparing figure BEIR term structures")
-  source("outputs/make_figures/make_figure_breakeveninflation.R")
-}
-
-#*******************************13-14******************************************#
-#Merton model
-if(is.element(13,plots)){
-  print("Preparing Merton-model figure")
-  source("outputs/make_figures/make_figure_Merton.R")
-}
-# if(is.element(14,plots)){
-#   print("Preparing Merton-model figure (2/2)")
-#   source("outputs/make_figures/make_figure_Merton2.R")
-# }
-
-#*******************************15*********************************************#
-#Housing prices
-if(is.element(15,plots)){
-  print("Preparing figure Housing")
-  source("outputs/make_figures/make_figure_Housing.R")
-}
-
-#*******************************16*********************************************#
-#Confidence intervals for SCC and risk premiums
-if(is.element(16,plots)){
-  print("Preparing figure Confidence int. for SCC and Risk premiums (takes a few minutes)")
-  source("outputs/make_figures/make_figure_ConfInt_RP.R",
-         encoding = 'ISO8859-1')
-}
-
-#*******************************17*********************************************#
-#Relationship between SCC and Temperature risk premium
-if(is.element(17,plots)){
-  print("Preparing figure Relationship SCC and Temp. risk premium (takes a few minutes)")
-  source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
-         encoding = 'ISO8859-1')
-}
-
-#*******************************18*********************************************#
-#Relationship between SCC and Temperature risk premium, Lemoine's approach
-if(is.element(18,plots)){
-  print("Preparing figure Relationship SCC and Temp. risk premium, Lemoine's approach")
-  source("outputs/make_figures/make_figure_SCC_vs_TempRP_Lemoine.R",
-         encoding = 'ISO8859-1')
-}
-
-#*******************************19*********************************************#
-#illustrations of the Gamma-zero distribution
-if(is.element(19,plots)){
-  print("Preparing figure illustrating Gamma-zero distribution")
-  source("outputs/make_figures/make_figure_gamma0_distri.R",
-         encoding = 'ISO8859-1')
-}
-
-#*******************************20*********************************************#
-#comparison of damage specifications
-if(is.element(20,plots)){
   print("Preparing figure illustrating Gamma-zero distribution")
   source("outputs/make_figures/make_figure_Damage_comparison.R",
          encoding = 'ISO8859-1')
 }
 
-#*******************************21*********************************************#
-#IRF 1 Gt Carbon
-if(is.element(21,plots)){
-  print("Preparing figure showing temperature dynamic effect of 1Gt carbon pulse")
-  source("outputs/make_figures/make_figure_IRF100Gt.R",
-         encoding = 'ISO8859-1')
+#--  4
+# FIGURE 4. Conditional distribution of future temperatures
+if(is.element(4,plots)){
+  print("Preparing Temperature distri plot")
+  source("outputs/make_figures/make_figure_Tpdf.R")
 }
 
-#*******************************22*********************************************#
-#Comparison of SCC with ACE model
-if(is.element(22,plots)){
-  print("Preparing figure comparing SCC with ACE model (takes about 3 minutes)")
-  source("outputs/make_figures/make_figure_compar_SCC_Traeger.R",
-         encoding = 'ISO8859-1')
+#--  5
+# FIGURE 5. Conditional distribution of future global sea level
+if(is.element(5,plots)){
+  print("Preparing SLR distri plot")
+  source("outputs/make_figures/make_figure_Hpdf.R")
 }
 
-#*******************************23*********************************************#
-#Comparison of risk-free yield curves with alternative approaches
-if(is.element(23,plots)){
+#--  6 + 53
+# FIGURE 6. The term structure of real rates 
+# + FIGURE V.3. Comparison of temperature risk premiums
+if(is.element(6|53,plots)){
   print("Preparing figure comparing risk-free yield curves (takes about 20 seconds)")
   source("outputs/make_figures/make_figure_YC_RF.R",
          encoding = 'ISO8859-1')
 }
 
-#*******************************24*********************************************#
-#Effect of linearization on 2300 temperature distribution
-if(is.element(24,plots)){
-  print("Preparing figure showing effect of linearization on 2300 temperat. distri")
-  source("outputs/make_figures/make_distrTAT_4_simul_Mat.R",
+#--  7
+# FIGURE 7. The term structures of interest rates
+if(is.element(7,plots)){
+  print("Preparing figure BEIR term structures")
+  source("outputs/make_figures/make_figure_breakeveninflation.R")
+}
+
+#--  8
+# FIGURE 8. Price of digital options, with contributions of risk premiums
+if(is.element(8,plots)){
+  print("Preparing Option plot")
+  source("outputs/make_figures/make_figure_options.R")
+}
+
+#--  9 + 10
+# FIGURE 9. Effect of \mu on the conditional distribution x_t|y_t \sim \gamma0 (y_t/\mu, \mu)
+# + FIGURE 10. Distribution of cumulated damages
+if(is.element(9|10,plots)){
+  print("Preparing figure illustrating Gamma-zero distribution")
+  source("outputs/make_figures/make_figure_gamma0_distri.R",
          encoding = 'ISO8859-1')
 }
 
+#--  11
+# FIGURE 11. From carbon concentrations to atmospheric temperature
+if(is.element(11,plots)){
+  print("Preparing figure showing response of temperature conditional on MAT paths")
+  source("outputs/make_figures/make_figure_RCP_to_TAT.R",
+         encoding = 'ISO8859-1')
+}
 
+#-- 31
+# FIGURE III.1. Model calibration
+if(is.element(31,plots)){
+  print("Preparing Calibration plot")
+  source("outputs/make_figures/make_figure_calibration.R")
+}
+
+#-- 51
+# FIGURE V.1. Mitigation rate
+if(is.element(51,plots)){
+  print("Preparing figure mu plot (takes about 30 sec)")
+  source("outputs/make_figures/make_figure_mu.R")
+}
+
+#-- 52
+# FIGURE V.2. Social Cost of Carbon and temperature risk premiums
+if(is.element(52,plots)){
+  print("Preparing figure Relationship SCC and Temp. risk premium (takes a few minutes)")
+  source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
+         encoding = 'ISO8859-1')
+}
+
+#-- 54
+# FIGURE V.4. Merton model
+if(is.element(54,plots)){
+  print("Preparing Merton-model figure")
+  source("outputs/make_figures/make_figure_Merton.R")
+}

@@ -1,12 +1,13 @@
 # ==============================================================================
-# Relationship between climate beta and temperature risk premium
+# FIGURE V.2. Social Cost of Carbon and temperature risk premiums
+# Figure_SCCvsTRP.pdf
 # ==============================================================================
 
 
 all.SCC.RP <- NULL
 all.T.RP   <- NULL
 
-H <- model$horiz.2100
+H <- model_sol$horiz.2100
 
 omega_ZCB  <- matrix(0,model_sol$n.X)
 omega_T.at <- matrix(0,model_sol$n.X)
@@ -26,7 +27,8 @@ clusterEvalQ(cl,load("outputs/toto.Rdata"))
 clusterEvalQ(cl,library(MASS))
 clusterEvalQ(cl,library(expm))
 
-
+# ------------------------------------------------------------------------------
+# Plot----
 FILE = paste("/outputs/Figures/Figure_SCCvsTRP.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=10,width=7, height=3)
 
@@ -54,8 +56,6 @@ for(indic.CRRA in cases){
     ylim  <- c(-.9,.3)
   }
   
-  #xlim  <- c(-1,1)
-  #ylim  <- c(-1,1)
 
   if((indic.CRRA==1)){
     eval(parse(text = gsub(" "," ",
@@ -149,15 +149,6 @@ for(indic.CRRA in cases){
       X.shock <- model_sol_new$X
       X.shock[which(model_sol$names.var.X=="M_at")] <- - epsilon + 
         X.shock[which(model_sol$names.var.X=="M_at")]
-      # prices.C   <- varphi(model_sol_new,
-      #                      omega.varphi = omega_C,
-      #                      H = 100)
-      # prices.C.shock   <- varphi(model_sol_new,
-      #                            omega.varphi = omega_C,
-      #                            H = 100,
-      #                            X = X.shock)
-      # D <- sum(prices.C$P.t) - sum(prices.C.shock$P.t)
-      
       EC       <- NULL
       EC.shock <- NULL
       for(h in 1:HH){

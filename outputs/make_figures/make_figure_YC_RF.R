@@ -1,5 +1,8 @@
 # ==============================================================================
-# Figure showing different yields curves and temperature premiums
+# FIGURE 6. The term structure of real rates
+# Figure_YC_RF.pdf
+# FIGURE V.3. Comparison of temperature risk premiums
+# Figure_TRP_comparison.pdf
 # ==============================================================================
 
 # Maximum maturity (in years):
@@ -12,7 +15,7 @@ col.BR      <- "darkgoldenrod3"
 
 # Lemoine (2021) model ---------------------------------------------------------
 
-res <- make.Lemoine.model() # load baseline specifcation
+res <- make.Lemoine.model() # load baseline specification
 model.Lemoine <- res$model
 X0 <- res$X0
 
@@ -35,7 +38,6 @@ TRP_lemoine <- res$E.T.risk.adj - res$E.T
 # BKO (2019) model -------------------------------------------------------------
 
 model.BKO <- make.BKO.model()
-#model.BKO$d <- -.1
 model_sol.BKO <- solve_model.bko(model.BKO)
 Tbar <- model.BKO$Tbar
 # yields:
@@ -125,11 +127,6 @@ TRP_CR_EZ_highDelta <- ET.Q_CR_EZ - ET.P_CR_EZ
 
 gamma <- 1.01
 gamma <- 1.45
-#gamma <- 1.24
-
-# EPA specification (2.5%):
-# delta <- (1 - .0046)^5
-# gamma <- 1.42
 
 model.CRRA <- model_sol
 model.CRRA$parameters$gamma <- gamma
@@ -152,8 +149,9 @@ TRP_CR_CRRA <- ET.Q_CR_CRRA - ET.P_CR_CRRA
 
 
 
-
-
+# ------------------------------------------------------------------------------
+# Plots ----
+# 1----
 FILE = "/outputs/Figures/Figure_YC_RF.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=11, height=5)
 
@@ -206,31 +204,6 @@ legend("topright",
 
 grid()
 
-# # Temperature risk premiums:
-# 
-# ylim <- c(0,max(TRP_BKO,TRP_CR_CRRA,TRP_CR_EZ,TRP_lemoine))
-# plot(1:H,rep(0,H),ylim=ylim,col="white",
-#      ylab="Temperature risk premium, in °C",
-#      xlab="maturity, in years",las=1,
-#      main="(b) Temperature risk premium")
-# 
-# polygon(c(seq(model_sol$tstep,H,by=model_sol$tstep),
-#           seq(H,model_sol$tstep,by=-model_sol$tstep)),
-#         c(TRP_CR_EZ_lowDelta,rev(TRP_CR_EZ_highDelta)),
-#         col="light grey",border = NaN)
-# 
-# 
-# lines(TRP_lemoine,type="l",col=col.Lemoine,lwd=2)
-# lines(TRP_BKO,col=col.BKO,lwd=2)
-# lines(TRP_BKO_highDamages,col=col.BKO,lwd=2,lty=2)
-# 
-# lines(Price.ZC$date-model_sol$vec_date[1],TRP_CR_EZ,
-#       col=col.CR,lwd=2)
-# lines(Price.ZC$date-model_sol$vec_date[1],TRP_CR_CRRA,
-#       col=col.CR,lwd=2,lty=2)
-# 
-# grid()
-
 
 # Make plots with expected path of of future 10-year yield:
 EV <- EV.fct(model_sol)
@@ -245,12 +218,7 @@ make_figure_CMT(expected.yds,model_sol,maturities,
 dev.off()
 
 
-
-
-
-
-
-
+# 2----
 FILE = "/outputs/Figures/Figure_TRP_comparison.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=7, height=4)
 
@@ -300,12 +268,3 @@ legend("topleft",
        ncol=1)
 
 dev.off()
-
-
-
-
-
-
-
-
-

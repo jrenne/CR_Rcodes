@@ -278,7 +278,6 @@ simul.model.Lemoine <- function(model,
       model$psi * M2
     M  <- M1 + M2
     # Linearized version:
-    ##F  <- model$nu * (log(model$M0/model$Mpre) + M/model$M0 - 1)
     F  <- model$nu * log(M/model$Mpre)
     T  <- T + model$phi * (F - model$s * T)
     
@@ -315,11 +314,7 @@ compute.SCC.Lemoine <- function(model,
   if(is.na(s.values[1])){
     s.values <- list(model$s)
   }
-  
-  # if(is.na(coef.multip.values[1])){
-  #   coef.multip.values <- list(model$damage$coef.multip)
-  # }
-  
+
   eta  <- model$eta
   beta <- model$beta
   C0 <- X0[1]

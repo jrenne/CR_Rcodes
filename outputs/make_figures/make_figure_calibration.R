@@ -1,5 +1,6 @@
 # ==============================================================================
-# Figure illustrating the calibration approach
+# FIGURE III.1. Model calibration
+# Figure_Calibration.pdf
 # ==============================================================================
 
 # Plot ----
@@ -41,7 +42,7 @@ all.pdf <- matrix(NaN,length(CumN.values.interpol)-1,length(all.Ttilde))
 
 for(i in 1:length(all.Ttilde)){
   aux <- Fourier.psi(model_sol,CumN.values,xN,
-                     T0=model$vector.ini$ini_Tat,
+                     T0=model_sol$vector.ini$ini_Tat,
                      Tstar = all.Ttilde[i],
                      tstar=NaN,
                      psi.LT=LT.CumN.infinite)
@@ -71,7 +72,6 @@ legend("topright",
        title=expression(paste("Long-term value of ",T[infinity],":",sep="")),
        lty=c(2,1,3),
        col=c("grey","black","grey"),
-       #cex=1.5,
        lwd=2,bty = "n")
 
 dev.off()

@@ -1,5 +1,6 @@
 # ==============================================================================
-# Prepare tex table for parameters
+# TABLE 7. Calibrated parameters
+# table_param.txt
 # ==============================================================================
 
 # Define format of figures:
@@ -111,14 +112,14 @@ latex.table <- rbind(
         "\\eqref{eq:declineLand}&",
         make.entry(model_sol$parameters$eps_0,format.nb),
         "&GtCO$_2$ per year &",
-        "DICE2023",
+        "DICE2016",
         "\\\\",sep=""),
   paste("Decline rate in land emissions &",
         "$\\rho $ &",
         "\\eqref{eq:declineLand}&",
         make.entry(100*model_sol$parameters$rho,format.nb),
         "&percent per period &",
-        "DICE2023",
+        "DICE2016",
         "\\\\",sep=""),
   paste("2020 forcings of non-CO$_2$ GHG &",
         "$\\phi_0 $ &",

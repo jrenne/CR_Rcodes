@@ -1,30 +1,12 @@
 # ==============================================================================
-# Response of temperature to a 1-GtC shock (M_at)
+# FIGURE 2. Atmospheric temperature response to a carbon pulse
+# Figure_IRF1GtC.pdf
 # ==============================================================================
-
-# model_sol$parameters$m0 <- 3
-
-#model_sol$parameters$m0 <- 2.4
-
-# model_sol$parameters$varphi_11 <- .947
-# model_sol$parameters$varphi_12 <- .053
-# 
-# model_sol$parameters$varphi_11 <- .95
-# model_sol$parameters$varphi_12 <- .05
-
-# model_sol$parameters$mu_D <- .000001
-# model_sol$parameters$mu_N <- .000001
-# model_sol$parameters$mu_T <- .000001
-# model_sol$parameters$mu_H <- .000001
-# model_sol$parameters$sigma_a <- .000001
-#model_sol <- model_solve(model,indic_CRRA = FALSE)
-
 
 # CDICE: -----------------------------------------------------------------------
 # Load RCPs (to have an emission scenario, as in Figure 2.2.3 of EPA, 2023):
 RCP_MAGICC <- read.csv("data/RCP_Mat_MAGICC.csv", header=FALSE)
 Emissions_CO2_RCP <- RCP_MAGICC[,11] # loads RCP4.5
-#Emissions_CO2_RCP <- RCP_MAGICC[,12] # loads RCP6.0
 
 for(dt in c(1,5)){
   MATeq <- 851
@@ -123,22 +105,22 @@ for(largeMat in c(TRUE,FALSE)){
       MATeq <- ifelse(largeMat,values_iniMat[2],values_iniMat[1])
       MUOeq <- model_sol$vector.ini$ini_Mup
       MLOeq <- model_sol$vector.ini$ini_Mlo
-      ksi1 <- model_sol$parameters$xi_1
-      ksi2 <- model_sol$parameters$xi_2
-      ksi3 <- model_sol$parameters$xi_3
-      tau  <- model_sol$parameters$tau
-      nu   <- model_sol$parameters$nu
+      ksi1  <- model_sol$parameters$xi_1
+      ksi2  <- model_sol$parameters$xi_2
+      ksi3  <- model_sol$parameters$xi_3
+      tau   <- model_sol$parameters$tau
+      nu    <- model_sol$parameters$nu
       shock <- c(1,0,0)
       dates <- seq(2030,2300,by=dt)
 
-      all.M <- NULL
-      all.F <- NULL
-      all.TAT <- NULL
-      all.TLO <- NULL
-      all.M.shock <- NULL
+      all.M          <- NULL
+      all.F          <- NULL
+      all.TAT        <- NULL
+      all.TLO        <- NULL
+      all.M.shock    <- NULL
       all.Forc.shock <- NULL
-      all.TAT.shock <- NULL
-      all.TLO.shock <- NULL
+      all.TAT.shock  <- NULL
+      all.TLO.shock  <- NULL
       ttt <- 0
       for(y in dates){
         ttt <- ttt + 1
@@ -268,14 +250,13 @@ IRF_noN_TAT  <- EV_noN_shock$EX$T_at - EV_noN$EX$T_at
 
 
 
-
-
+# ------------------------------------------------------------------------------
+# Plot ----
 FILE = "/outputs/Figures/Figure_IRF1GtC.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=10, width=8, height=4)
 
 par(mfrow=c(1,1))
 par(plt=c(.2,1,.1,.95))
-#par(mar=c(5, 6, 4, 2))
 
 nf <- layout(
   matrix(c(1,2), ncol=2, byrow=TRUE), 
@@ -303,8 +284,6 @@ lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),lwd=1)
 lines(fair$year,fair$mean,lwd=2,col="dark grey")
 lines(hector$year,hector$temp.delta,col="#E69F00",lty=3,lwd=2)
 lines(magicc$year,magicc$temp.delta,col="#56B4E9",lty=2,lwd=2)
-
-#lines(IRF_CDICE.dt1_dates,IRF_CDICE.dt1,col="red",lwd=2,lty=2)
 lines(IRF_CDICE.dt5_dates,IRF_CDICE.dt5,col="red",lwd=2,lty=4)
 
 # Load Traeger (2023) responses:
@@ -330,47 +309,4 @@ legend("topleft",
        bty = "n",cex=1,
        bg="white",
        seg.len = 3)
-
-
-
-# plot(EV$date,c(0,IRF_TAT[1:(h.end-1)]),col="white",las=1,
-#      xlim=c(2025,2300),
-#      ylim=c(0,1.5*max(upper.bound.99)),
-#      xlab="",
-#      ylab="",main="(b)")
-# grid()
-# 
-# # title(ylab='Temperature Anomaly from 1GtC in 2030, in °C', line=5,
-# #       cex.lab=1)
-# 
-# #lines(EV$date+5,c(0,IRF_TAT[1:(h.end-1)]),lwd=1,pch=3,type="b")
-# lines(EV$date,c(0,IRF_noN_TAT[1:(h.end-1)]),col="black",lty=1,lwd=2)
-# #lines(IRF_CR.linear.dt5_dates,IRF_CR.linear.dt5,col="black",lty=1,lwd=2)
-# lines(IRF_CR.linear.dt1_dates,IRF_CR.linear.dt1,col="black",lty=2,lwd=2)
-# 
-# lines(IRF_CR.nonlinear.dt1_dates,
-#       IRF_CR.nonlinear.dt1,col="#0571B0",lwd=2,lty=2)
-# lines(IRF_CR.nonlinear.dt5_dates,
-#       IRF_CR.nonlinear.dt5,col="#0571B0",lwd=2,lty=1)
-# 
-# lines(IRF_CR.nonlinear.largeMat.dt1_dates,
-#       IRF_CR.nonlinear.largeMat.dt1,col="#56B4AA",lwd=2,lty=2)
-# lines(IRF_CR.nonlinear.largeMat.dt5_dates,
-#       IRF_CR.nonlinear.largeMat.dt5,col="#56B4AA",lwd=2,lty=1)
-# 
-# legend("topright",
-#        legend=c("Linear (1yr time step)",
-#                 "Linear (5yrs time step)",
-#                 "Nonlinear (1yr time step)",
-#                 "Nonlinear (5yrs time step)",
-#                 "Nonlinear, high starting value (1yr time step)",
-#                 "Nonlinear, high starting value (5yrs time step)"),
-#        col=c("black","black","#0571B0", "#0571B0",
-#              "#56B4AA", "#56B4AA"),
-#        lty=c(1,2,1,2,1,2),
-#        lwd=2,
-#        pch=NaN,
-#        bty = "n",cex=1,
-#        bg="white",
-#        ncol=1)
 dev.off()

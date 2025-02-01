@@ -1,4 +1,11 @@
-
+# ==============================================================================
+# FIGURE 3. Damage function
+# Figure_Damage_comparison.pdf
+# make_figure_Damage_comparison.R
+# + FIGURE III.1. Model calibration
+#   Figure_Calibration.pdf
+#   make_figure_calibration.R
+#     i)
 make_figure_calibration_Damages <- function(model_sol,
                                             damage.values = seq(0.995,.005,length.out=30),
                                             nb.values.interpol=1000,
@@ -20,7 +27,6 @@ make_figure_calibration_Damages <- function(model_sol,
   gammaD.interpol <- - log(damage.values.interpol)
   
   #Matrix of temperatures in X
-  
   all.cdf <- matrix(NaN,length(gammaD.interpol),length(T.2100))
   all.pdf <- matrix(NaN,length(gammaD.interpol)-1,length(T.2100))
   
@@ -81,7 +87,6 @@ make_figure_calibration_Damages <- function(model_sol,
   }
   
   if(trace_lines){
-    #lines(T.2100,median.damage,lwd=2,lty=2)
     points(c(2,4),
            c(1-model_sol$target_vector["ECumD2"],1-model_sol$target_vector["ECumD4"]),
            pch=15,col="red")
@@ -100,9 +105,31 @@ make_figure_calibration_Damages <- function(model_sol,
   return(cond.mean.damage.with.SLR)
 }
 
+# ==============================================================================
+# FIGURE 9. Effect of \mu on the conditional distribution x_t|y_t \sim \gamma0 (y_t/\mu, \mu)
+# Figure_gamma0.pdf
+# make_figure_gamma0_distri.R
 
+#* FOURIER transform for permafrost-related emissions:
+FOURIER<-function(model,x,gamma){
+  # works only for i^th variable
+  dx <- matrix(x-c(0,x[1:length(x)-1]),length(x),1)
+  s1 <- matrix(PSI(model,1i*x),ncol=1)
+  fx <- outer(x,gamma,function(r,c)Im(s1[,1]*exp(-1i*r*c))/r)*
+    dx[,1]
+  f <- 1/2-1/pi*apply(fx,2,sum)
+  return(f)
+}
 
+PSI <- function(model,u){
+  return(exp(model$y * u /(1 - u * model$mu) ))
+}
 
+# ==============================================================================
+# FIGURE III.1. Model calibration
+# Figure_Calibration.pdf
+# make_figure_calibration.R
+#  ii)
 make_figure_calibration_N <- function(model_sol,
                                       CumN.values = seq(0,3000,length.out=60),
                                       nb.values.interpol=1000,
@@ -160,8 +187,6 @@ make_figure_calibration_N <- function(model_sol,
             col=P.col,border = NA)
   }
   
-  #lines(T.2100,median.CumN,lwd=2,lty=2)
-  
   res <- Param.Gamma0.CumN(model_sol,T0=model_sol$vector.ini$ini_Tat,
                            Tstar=T.2100,tstar=model_sol$horiz.2100)
   cond.mean.CumN <- res$lambda * res$mu
@@ -182,12 +207,11 @@ make_figure_calibration_N <- function(model_sol,
   return(1) 
 }
 
-
-
+# iii)
 make_figure_calibration_SLR <- function(model_sol,
                                         H.values = seq(0,3,length.out=50),
                                         nb.H = 1000,
-                                        xH = exp(seq(-5,5,length.out = 2000)),   # to compute Riemann sum
+                                        xH = exp(seq(-5,5,length.out = 2000)),  # to compute Riemann sum
                                         T.2100 = seq(1.5,5,length.out=20),
                                         vector.of.CI = c(0.5,0.8,0.9,0.95),
                                         main.title = "2100 Sea-level rise"){
@@ -246,8 +270,7 @@ make_figure_calibration_SLR <- function(model_sol,
   # Add median:
   indic.median.H <- apply(all.cdf,2,function(x){which(x>.5)[1]})
   median.H <- H.values.interpol[indic.median.H]
-  #lines(T.2100,median.H,lwd=2,lty=2)
-  
+
   # Add expectation:
   res <- Param.Gamma0.H(model_sol,
                         T0=model_sol$vector.ini$ini_Tat,
@@ -270,130 +293,15 @@ make_figure_calibration_SLR <- function(model_sol,
   return(1)
 }
 
+# ==============================================================================
+# FIGURE 6. The term structure of real rates
+# Figure_YC_RF.pdf
+# + FIGURE V.3. Comparison of temperature risk premiums
+#   Figure_TRP_comparison.pdf
+# make_figure_YC_RF.R
+# ==============================================================================
 
-
-
-
-make_figure_trajectory_and_pdf <- function(model_sol,EV,Price.ZC,
-                                           variable,# example: "T_at"
-                                           year.density, #example: 2100
-                                           x = exp(seq(-5,5,length.out = 1000)),
-                                           values, # where Fourier is performed
-                                           name.of.variable, # title for chart
-                                           unit # for chart's label
-){
-  
-  H <- length(EV$EX[[1]])
-  H.specif <- which(EV$date==year.density)
-  indic.variable <- which(variable==model_sol$names.var.X)
-  
-  # Prepare omega vectors (for pricing):
-  omega_ZCB <- matrix(0,model_sol$n.X)
-  omega_Variable <- omega_ZCB
-  omega_Variable[which(model_sol$names.var.X==variable)] <- 1
-  
-  # Compute expected trajectories (under P and Q):
-  ET.P    <- EV$EX[[indic.variable]][1:H]
-  ET.Q    <- varphi.tilde(model_sol,omega_Variable,H)[[1]]/Price.ZC
-  
-  #distribution and expected temperature
-  
-  cdf.Q<-c(varphi.hat.fast(model_sol,omega = omega_ZCB,
-                           H=H.specif,x,a = omega_Variable,
-                           b=values)/Price.ZC[H.specif])
-  cdf.P <- fourier(model_sol,x,values,H.specif,indic.variable)
-  
-  cdf.P <- pmax(pmin(cdf.P,1),0)
-  cdf.Q <- pmax(pmin(cdf.Q,1),0)
-  for(i in 2:length(cdf.P)){
-    if(cdf.P[i]<cdf.P[i-1]){
-      cdf.P[i] <- cdf.P[i-1]
-    }
-    if(cdf.Q[i]<cdf.Q[i-1]){
-      cdf.Q[i] <- cdf.Q[i-1]
-    }
-  }
-  
-  length.extended <- 500
-  values.extended <- seq(values[1],values[length(values)],
-                         length.out=length.extended)
-  tmp.P               <- splinefun(x=values, y=cdf.P, method="hyman")
-  fitted.cdf.P.values <- tmp.P(values.extended)
-  fitted.pdf.P.values <- diff(fitted.cdf.P.values)
-  tmp.Q               <- splinefun(x=values, y=cdf.Q, method="hyman")
-  fitted.cdf.Q.values <- tmp.Q(values.extended)
-  fitted.pdf.Q.values <- diff(fitted.cdf.Q.values)
-  
-  P.col.line <- "#18a7b5"
-  Q.col.line <- "#ff8243"
-  P.col<-adjustcolor( P.col.line, alpha.f = 0.15)
-  Q.col<-adjustcolor( Q.col.line, alpha.f = 0.15)
-  
-  ylim=c(min(ET.P,ET.Q) - .2*(max(ET.P,ET.Q) - min(ET.P,ET.Q)),
-         max(ET.P,ET.Q) + .6*(max(ET.P,ET.Q) - min(ET.P,ET.Q)))
-  ylim <- c(values[1],values[length(values)])
-  
-  par(plt=c(.15,1,.25,.85))
-  plot(EV$date,ET.P,col=P.col.line,lwd=2,type="l",ylim=ylim,
-       xlab="horizon",ylab=unit,main=name.of.variable,
-       cex.main=1.5,cex.axis=1.5,cex.lab=1.5)
-  lines(EV$date,ET.Q,col=Q.col.line,lwd=2)
-  abline(v=year.density,lty=3)
-  abline(h=ET.P[H.specif],lty=3,col=P.col.line)
-  abline(h=ET.Q[H.specif],lty=3,col=Q.col.line)
-  
-  par(plt=c(0,.95,.25,.85))
-  plot(fitted.pdf.P.values,values.extended[2:length.extended],
-       type="l",lwd=2,col=P.col.line,ylim=ylim,xaxt="n",yaxt="n",xlab="",ylab="",
-       cex.main=1.5,cex.axis=1.5,cex.lab=1.5)
-  lines(fitted.pdf.Q.values,values.extended[2:length.extended],
-        lwd=2,col=Q.col.line)
-  abline(h=ET.Q[H.specif],col=Q.col.line,lty=3,lwd=1)                                    #mean of Q
-  abline(h=ET.P[H.specif],col=P.col.line,lty=3,lwd=1)                                    #mean of P
-  abline(v=0,col="grey")
-  
-  polygon(c(fitted.pdf.P.values,rev(fitted.pdf.P.values)),
-          c(values.extended[2:length.extended],0*values.extended[2:length.extended]),
-          col=P.col,border = P.col.line)
-  polygon(c(fitted.pdf.Q.values,rev(fitted.pdf.Q.values)),
-          c(values.extended[2:length.extended],0*values.extended[2:length.extended]),
-          col=Q.col,border = Q.col.line)
-  
-  legend("topright",
-         legend=c("Physical pdf for selected date","Risk-adjusted pdf for selected date"),
-         lty=c(1,1),
-         col=c(P.col.line,Q.col.line),cex=1.5,
-         lwd=c(2,2),bty = "n")
-  
-  return(1)
-}
-
-
-# # Check:
-# H <- 30
-# EV <- EV.fct(model_sol,h=H)
-# # Compute P and Q proba:
-# Price.ZC <- varphi(model_sol,omega_ZCB,H = H)[[3]]
-# 
-# par(mfrow=c(2,2))
-# TAT <- which(model_sol$names.var.X=="T_at")
-# make_figure_trajectory_and_pdf(model_sol,EV,Price.ZC,
-#                                variable = "T_at",
-#                                year.density = 2100,
-#                                values = seq(1,EV$EX$T_at[H]+5*sqrt(EV$VX[[TAT]][H]),by=.1), # where Fourier is performed
-#                                name.of.variable = expression(paste("Atmospheric temperature",T[AT],sep="")), # title for chart
-#                                unit = "in °C")
-# 
-# make_figure_trajectory_and_pdf(model_sol,EV,Price.ZC,
-#                                variable = "H",
-#                                year.density = 2100,
-#                                values = seq(0,2.5,by=.05), # where Fourier is performed
-#                                name.of.variable = expression(paste("Global mean sea level ",H,sep="")), # title for chart
-#                                unit = "in meters")
-
-
-
-
+#   i)
 compute_CMT <- function(model_sol,EV,Price.ZC,
                         maturities = c(2,10), # in number of periods
                         nb = model_sol$horiz.2100+1,
@@ -435,7 +343,7 @@ compute_CMT <- function(model_sol,EV,Price.ZC,
               ncc.mu_c.1=ncc.mu_c.1,ncc.mu_c.2=ncc.mu_c.2))
 } 
 
-
+#  ii)
 make_figure_CMT <- function(expected.yds,
                             model_sol,
                             maturities = c(2,10),
@@ -466,7 +374,8 @@ make_figure_CMT <- function(expected.yds,
        ylim=ylim,
        las=1,
        cex.main=cexmain,cex.axis=cexaxs,cex.lab=cexlab,
-       main=paste(ifelse(indic_only_first,"(b)","(a)")," Expected path of ",model_sol$tstep*maturities[1],"-year real interest rate",sep=""),
+       main=paste(ifelse(indic_only_first,"(b)","(a)")," Expected path of ",
+                  model_sol$tstep*maturities[1],"-year real interest rate",sep=""),
        lwd=2,col=col[1],pch=1)
   lines(ncc.1[,1],ncc.1[,2],type="b",
         lwd=2,col=col[2],pch=2)

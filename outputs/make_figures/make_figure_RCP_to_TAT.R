@@ -1,5 +1,6 @@
 # ==============================================================================
-# Response of temperature conditional on some MAT paths
+# FIGURE 11. From carbon concentrations to atmospheric temperature
+# Figure_RCP_to_TAT.pdf
 # ==============================================================================
 
 
@@ -35,18 +36,6 @@ T_ACE_RCP45 <- RCP_ACE$V3
 T_ACE_RCP60 <- RCP_ACE$V4
 T_ACE_RCP85 <- RCP_ACE$V5
 
-# # Check ability to replicate ACE results on RCPs:
-# RF <- RCP[,14:17]
-# RF <- cbind(RF_RCP45,RF_RCP60,RF_RCP85)
-# Temp.ini <- matrix(c(model_sol$vector.ini$ini_Tat,
-#                      model_sol$vector.ini$ini_Tlo,
-#                      0),3,dim(RF)[2])
-# forcing <- t(exp(log(2) / eta * RF))
-# res <- TempSimulation_ACE(Temp.ini, forcing)
-# temp_ace <- res[1,,]
-# plot(years,temp_ace[2,])
-# lines(RCP_ACE$V1,T_ACE_RCP60)
-
 # Compute T_AT with ACE under CR -----------------------------------------------
 # Compute E(M_AT) under CR baseline model:
 EV <- EV.fct(model_sol)
@@ -58,15 +47,8 @@ MAT_CR <- MAT_CR[indicators_CR]
 # Compute weight in RCP45 (versus RCP60) to approximate MAT in CR with
 # linear combination of RCP45 and RCP60:
 
-# coeff.45  = (mean(MAT_CR) - mean(MAT_RCP60))/(mean(MAT_RCP45)-mean(MAT_RCP60))
-# RF_CR_4ACE <- coeff.45 * RF_RCP45 + (1 - coeff.45) * RF_RCP60 # to be used in TempSimulation_ACE
 Temp.ini <- matrix(c(model_sol$vector.ini$ini_Tat,
                      model_sol$vector.ini$ini_Tlo,0),3,2)
-# eta <- 3.8
-# old_forcing <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_CR_4ACE))
-# 
-# res <- TempSimulation_ACE(Temp.ini, forcing)
-# T_ACE_CR <- res[1,1,]
 
 # Determine Gt process in Traeger (2023), using his eq.(6):
 eta  <- 3.8
@@ -100,16 +82,10 @@ T_ACE_RCP85 <- res[1,1,]
 
 
 # ------------------------------------------------------------------------------
-
-
-
-
-
-
+# Plot ----
 FILE = "/outputs/Figures/Figure_RCP_to_TAT.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=12, width=7, height=7)
 
-#par(mfrow=c(2,2))
 par(plt=c(.06,.99,.16,.86))
 
 nf <- layout(
@@ -147,7 +123,6 @@ plot(0, 0,col="white",ylim=ylim,xlim=range(gridMat),type="l",
      las=1,xlab=expression(paste("M"[AT]," (GtC)")),
      ylab="",
      main=expression(paste("(a) Relationship between radiative forcings and atmospheric carbon concentration")))
-#grid()
 
 title(ylab=expression(paste("FCO"[2]," (in Wm-2)")), line=1.5,
       cex.lab=1)
@@ -155,7 +130,7 @@ title(ylab=expression(paste("FCO"[2]," (in Wm-2)")), line=1.5,
 
 # Distributions of M_AT for CR model -------------------------------------------
 # For Fourier-transform computation:
-x <- exp(seq(-10,10,length.out = 5000)) # grid for Proposition 8 (Fourier)
+x <- exp(seq(-10,10,length.out = 5000)) # grid for Fourier
 indic.Mat <- which(model_sol$names.var.X=="M_at")
 for(iii in 1:length(vector.of.dates)){
   H_considered <- which(model_sol$vec_date==vector.of.dates[iii])-1
@@ -171,7 +146,6 @@ for(iii in 1:length(vector.of.dates)){
   
   Mat.pdf.considered <- ylim[1] + multi.factor * Mat.pdf.considered
   
-  #x=M_at, y=F
   gridF    <- seq(0.00,8,by=.002)
   gridMat_1<- gridMat[-1]
   nF       <- length(gridF)
@@ -188,8 +162,7 @@ for(iii in 1:length(vector.of.dates)){
   indic.considered.in.yearsvector <- which(years==vector.of.dates[iii])
   indic_quantile <- which.min((MAT_RCP85[indic.considered.in.yearsvector] - gridMat)^2)
   quantile_RCP85_considered <- Mat.distr.considered[indic_quantile]
-  #print(quantile_RCP85_considered)
-  
+
   indic_quantile <- which.min((MAT_RCP60[indic.considered.in.yearsvector]+500 - gridMat)^2)
   quantile_RCP60plus500_considered <- Mat.distr.considered[indic_quantile]
   
@@ -247,69 +220,6 @@ legend("topleft",
        col=c(colors,"black"),
        lwd=c(2,2),seg.len = 3,
        bty = "n",cex=1.1)
-
-
-
-
-#determine  quantiles of RCP8.5 values (for analysis):
-
-
-# # RCP 4.5:
-# abline(v=MAT_RCP45[indic.first.in.yearsvector],col="black",
-#        lty=1,lwd=1)
-# text(x=MAT_RCP45[indic.first.in.yearsvector],y=.98*ymax,
-#      srt=90, pos=2,
-#      labels = paste("RCP4.5, in 2100 and ",other.year,sep=""))
-# abline(v=MAT_RCP45[indic.other.in.yearsvector],col="black",
-#        lty=1,lwd=2)
-# 
-# # RCP 6.5:
-# abline(v=MAT_RCP60[indic.first.in.yearsvector],col="black",
-#        lty=1,lwd=1)
-# text(x=MAT_RCP60[indic.first.in.yearsvector],y=.98*ymax,
-#      srt=90, pos=2,
-#      labels = "RCP6, in 2100")
-# abline(v=MAT_RCP60[indic.other.in.yearsvector],col="black",
-#        lty=1,lwd=2)
-# text(x=MAT_RCP60[indic.other.in.yearsvector],y=.98*ymax,
-#      srt=90, pos=2,
-#      labels = paste("RCP6, in ",other.year,sep=""))
-# 
-# # RCP 8.5:
-# abline(v=MAT_RCP85[indic.first.in.yearsvector],col="black",
-#        lty=1,lwd=1)
-# text(x=MAT_RCP85[indic.first.in.yearsvector],y=.98*ymax,
-#      srt=90, pos=2,
-#      labels = "RCP8.5, in 2100")
-# abline(v=MAT_RCP85[indic.other.in.yearsvector],col="black",
-#        lty=1,lwd=2)
-# text(x=MAT_RCP85[indic.other.in.yearsvector],y=.98*ymax,
-#      srt=90, pos=2,
-#      labels = paste("RCP8.5, in ",other.year,sep=""))
-
-# MAT4arrow1 <- 1550
-# MAT4arrow2 <- 1900
-# y4arrow1 <- Mat.pdf.first[which(gridMat[-1]==MAT4arrow1)]
-# y4arrow2 <- Mat.pdf.other[which(gridMat[-1]==MAT4arrow2)]
-# 
-# arrowlength <- 800
-# upshift <- .2*ymax
-# 
-# arrows(x0 = MAT4arrow1 + arrowlength, y0 = y4arrow1 + upshift,
-#        x1 = MAT4arrow1, y1 = y4arrow1,angle = 20,
-#        length = 0.1, col = "dark grey", lwd = 1)
-# text(x = MAT4arrow1 + arrowlength, y = y4arrow1 + upshift,
-#      pos=4,
-#      labels = expression(paste("Model-implied p.d.f. of ",M[AT]," in 2100",sep="")))
-# 
-# arrows(x0 = MAT4arrow2 + arrowlength, y0 = y4arrow2 + upshift,
-#        x1 = MAT4arrow2, y1 = y4arrow2,angle = 20,
-#        length = 0.1, col = "dark grey", lwd = 2)
-# text(x = MAT4arrow2 + arrowlength, y = y4arrow2 + upshift,
-#      pos=4,
-#      labels = expression(paste("Model-implied p.d.f. of ",M[AT]," in 2200",sep="")))
-
-
 
 # ==============================================================================
 # Define trajectories:
@@ -419,12 +329,10 @@ for(jjjj in 1:length(all_rcp)){
     model_sol_new$omega0[[t]][indic_Mat] <- Mat.trajectory[t]
   }
   EV <- EV.fct(model_sol_new)
-  stdv_Tat <- sqrt(EV$VX$T_at)
-  lower.bound <- EV$EX$T_at - 1*stdv_Tat
-  upper.bound <- EV$EX$T_at + 1*stdv_Tat
   indic2keep <- which(EV$date %in% years)
-  lower.bound <- lower.bound[indic2keep]
-  upper.bound <- upper.bound[indic2keep]
+  stdv_Tat <- sqrt(EV$VX$T_at)
+  lower.bound <- Tat.linear[2:length(Tat.linear)] - 1*stdv_Tat[indic2keep]
+  upper.bound <- Tat.linear[2:length(Tat.linear)] + 1*stdv_Tat[indic2keep]
   polygon(c(EV$date[indic2keep],rev(EV$date[indic2keep])),
           c(lower.bound,rev(upper.bound)),col="#99999966",
           border=NA)

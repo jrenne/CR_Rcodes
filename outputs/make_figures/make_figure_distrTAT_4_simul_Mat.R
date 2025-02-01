@@ -1,11 +1,12 @@
 # ==============================================================================
-# Figure that illustrates the influence of the linearization of F versus T_AT
-# on temperatures.
-# The baseline model is used to simulate M_AT trajectories.
+# Figure 1*: From carbon concentrations to atmospheric temperature
+# Figure_StochSimul_RCP_to_TAT.pdf
 # ==============================================================================
 
+#* Figure that illustrates the influence of the linearization of F versus T_AT
+#* on temperatures.
+#* The baseline model is used to simulate M_AT trajectories.
 model_sol_aux <- model_sol
-#model_sol_aux$parameters$m0 <- rep(1.92,length(model_sol_aux$parameters$m0))
 
 nb.t <- (2300-2020)/model_sol_aux$tstep # maximum horizon
 nb.traj <- 40000 # number of simulated trajectories
@@ -21,9 +22,6 @@ res_CR    <- simul_TAT_condit_MAT(model_sol_aux,Mat.trajectory,indic_stochastic 
 deviations <- (res_CR$Tat.linear[nb.t,] - res_CR$Tat.nonlinear[nb.t,])/res_CR$Tat.nonlinear[nb.t,]
 mean(abs(deviations))
 
-col_linear <- "darkorange3"
-col_nonlinear <- "#53868B"
-
 dens_linear    <- density(res_CR$Tat.linear[nb.t,],bw = .1)
 dens_nonlinear <- density(res_CR$Tat.nonlinear[nb.t,],bw = .1)
 
@@ -37,6 +35,10 @@ print(matrix(c(mean_linear,mean_nonlinear,stdv_linear,stdv_nonlinear),2,2))
 
 ylim <- c(0,max(dens_nonlinear$y))
 
+# ------------------------------------------------------------------------------
+# Plot----
+col_linear    <- Q.col.line
+col_nonlinear <- P.col.line
 
 FILE = "/outputs/Figures/Figure_StochSimul_RCP_to_TAT.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=10, width=6, height=4)

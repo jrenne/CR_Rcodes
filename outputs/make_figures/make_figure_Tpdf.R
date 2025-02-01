@@ -1,5 +1,6 @@
 # ==============================================================================
-# Figure with temperature distributions
+# FIGURE 4. Conditional distribution of future temperatures
+# Figure_Tat_P_and_Q_vector_CI.pdf
 # ==============================================================================
 
 H <- model_sol$horiz.2100
@@ -14,7 +15,7 @@ TAT <- which(model_sol$names.var.X=="T_at")
 temp<-read.table("./data/mean_ssp.txt",header=TRUE)
 temp_graph<-temp[3:11,]
 
-x <- exp(seq(-5,5,length.out = 1000)) #grid for Proposition 8 (Fourier)
+x <- exp(seq(-5,5,length.out = 1000)) #grid for Fourier
 
 #distribution and expected temperature
 values.of.temperatures <- seq(round(model_sol$vector.ini$ini_Tat),
@@ -70,7 +71,8 @@ ET.P    <- EV$EX$T_at[1:H]
 ET.Q    <- varphi.tilde(model_sol,omega_T.at,H)[[1]]/
   varphi(model_sol,omega_ZCB,H)[[3]]
 
-#Plots
+# ------------------------------------------------------------------------------
+# Plot ----
 FILE = paste("/outputs/Figures/Figure_Tat_P_and_Q_vector_CI.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=6, height=6)
 

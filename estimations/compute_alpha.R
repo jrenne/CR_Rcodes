@@ -63,7 +63,6 @@ lines(c(2020,2100),
 
 legend("topleft",
        legend=c("Average RCP45+RCP6",
-                #expression(paste("Fitted parametric trajectory (",alpha,"=0.03, ",T[infinity],"=5.65)",sep="")),
                 "Fitted parametric trajectory",
                 "Linear trajectory"),
        lty=c(2,1,3),

@@ -1,7 +1,11 @@
 # ==============================================================================
-# Figure illustrating Merton model (1/2)
+# FIGURE V.4. Merton model 
+# Figure_Merton1.pdf
+# Figure_Merton2.pdf
 # ==============================================================================
 
+
+# Figures illustrating Merton model (1/2)
 ALPHA <- .0
 
 nb.values.variable <- 2000 # for extrapolation
@@ -30,7 +34,6 @@ omega_A <- matrix(0,model_sol$n.X,1)
 omega_A[which(model_sol$names.var.X=="Cum_dc")] <- 1
 
 vector.of.elasticity.wrt.dc <- c(2.5,2.5)
-#vector.of.muAD              <- c(0,-elasticity.wrt.dc)
 vector.of.muAD              <- c(0,-.2*model_sol$tstep)
 
 # A_t's specification:
@@ -59,7 +62,9 @@ for(k in 1:length(vector.of.muAD)){
 
 all.expected.A <- NULL
 
-#Plots
+# ------------------------------------------------------------------------------
+# Plots----
+# 1----
 FILE = paste("/outputs/Figures/Figure_Merton1.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=8, height=4)
 
@@ -85,7 +90,6 @@ for(muAD in vector.of.muAD){
   mu_A <- list(muprice_0 = 0,
                muprice_1 = matrix(0,model_sol$n.X,1))
   mu_A$muprice_1[indic_delc] <- vector.of.elasticity.wrt.dc[iiii]
-  #mu_A$muprice_1[indic_D] <- muAD
   mu_A$muprice_1[indic_H] <- muAD
   if(muAD==0){
     mu_A$muprice_1[indic_X] <- ALPHA
@@ -96,12 +100,6 @@ for(muAD in vector.of.muAD){
                                             mu_altern = mu_A,
                                             indic_Euler = 1,
                                             H_if_Euler = H)
-  
-  # # Check Euler equations:
-  # omega_A <- matrix(0,model_sol$n.X,1)
-  # omega_A[which(model_sol$names.var.X=="Cum_dc")] <- 1 # where A_t is (tilde{A} at that stage).
-  # prices.Atilde <- varphi(model_sol,omega.varphi = omega_A,H=H)
-  # plot(prices.Atilde$P.t)
   
   expected.A <- apply(matrix(1:H,ncol=1),1,
                       function(h){multi.lt.fct.N(model_sol,U=omega_A,h=h)})
@@ -165,10 +163,6 @@ file.remove("outputs/toto.Rdata")
 print(log(all.expected.A[,10])/50)
 
 
-# ==============================================================================
-# Figure illustrating Merton model (2/2)
-# ==============================================================================
-
 
 ylim.returns <- 100*c(.02,.045)
 ylim.PD      <- c(log(.0001),log(.25))
@@ -186,7 +180,7 @@ indic_H    <- which(model_sol$names.var.X=="H")
 indic_delc <- which(model_sol$names.var.X=="delc")
 
 # For Fourier-transform computation:
-x <- exp(seq(-5,5,length.out = 10000)) # grid for Proposition 8 (Fourier)
+x <- exp(seq(-5,5,length.out = 10000)) # grid for Fourier
 
 # Returns of risk-free strategy:
 omega.ZC <- matrix(0,model_sol$n.X,1)
@@ -220,7 +214,6 @@ for(muAD in vector.of.muAD){
   mu_A <- list(muprice_0 = 0,
                muprice_1 = matrix(0,model_sol$n.X,1))
   mu_A$muprice_1[indic_delc] <- vector.of.elasticity.wrt.dc[iiii]
-  #mu_A$muprice_1[indic_D] <- muAD
   mu_A$muprice_1[indic_H] <- muAD
   if(muAD==0){
     mu_A$muprice_1[indic_X] <- ALPHA
@@ -232,7 +225,6 @@ for(muAD in vector.of.muAD){
                                                 indic_Euler = 1,
                                                 H_if_Euler = horizon)
   
-  #adjusted_A_bar <- A_bar * RF.strategy[horizon]
   adjusted_A_bar <- A_bar
   
   # Price risky bond:
@@ -264,9 +256,7 @@ for(muAD in vector.of.muAD){
   
 }
 
-
-
-#Plots
+# 2----
 FILE = paste("/outputs/Figures/Figure_Merton2.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=10,width=8, height=4)
 
@@ -275,27 +265,6 @@ par(mfrow=c(1,2))
 par(plt=c(.15,.95,.2,.85))
 
 xlab <- expression(bar(A))
-
-
-# # Plot of expected equity return
-# for(indic.plot in 1:length(vector.of.muAD)){
-#   if(indic.plot==1){
-#     plot(A_bar,100*return.Eq.yearly[,indic.plot],type="l",
-#          xlim=xlim,ylim=ylim.returns,xlab=xlab,
-#          ylab="",
-#          lwd=2,cex.lab=1.3,
-#          main="(a) Expected equity excess return (%)",
-#          col="black",las=1)
-#     legend("topleft",
-#            legend=legend.muAD,
-#            lty=c(1,3),
-#            col=c("black"),cex=1.1,
-#            lwd=c(2,2),bty = "n")
-#   }else{
-#     lines(A_bar,100*return.Eq.yearly[,indic.plot],
-#           lwd=2,lty=3,col="black")
-#   }
-# }
 
 # Plot of yields
 for(indic.plot in 1:length(vector.of.muAD)){
@@ -352,25 +321,6 @@ for(indic.plot in 1:length(vector.of.muAD)){
     lines(A_bar,log(PD.Q[,indic.plot]),col=Q.col.line,lwd=2,lty=3)
   }
 }
-
-# # Plot of P/Q PD ratio
-# for(indic.plot in 1:length(vector.of.muAD)){
-#   if(indic.plot==1){
-#     plot(A_bar,PD.Q[,indic.plot]/PD.P[,indic.plot],
-#          lwd=2,type="l",
-#          xlim=xlim,ylim=ylim.ratioPD,xlab=xlab,
-#          ylab="",las=1,
-#          main="(d) Ratio of PDs (Q/P)",
-#          cex.lab=1.3)
-#     legend("topleft",
-#            legend=legend.muAD,
-#            lty=c(1,3),
-#            col=c("black"),cex=1.1,
-#            lwd=c(2,2),bty = "n")
-#   }else{
-#     lines(A_bar,PD.Q[,indic.plot]/PD.P[,indic.plot],lwd=2,lty=3)
-#   }
-# }
 
 dev.off()
 

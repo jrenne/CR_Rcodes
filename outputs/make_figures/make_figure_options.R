@@ -1,5 +1,6 @@
 # ==============================================================================
-# Figure illustrating option pricing
+# FIGURE 8. Price of digital options, with contributions of risk premiums
+# Figure_Option_Digital.pdf
 # ==============================================================================
 
 # Vector of temperatures for strike K, Digital Option:
@@ -14,7 +15,7 @@ omega_T.at <- omega_ZCB
 omega_T.at[TAT] <- 1
 
 # Calculations ----
-xoptions<-exp(seq(-5,5,length.out = 1000))                                          #grid integral v.hat
+xoptions<-exp(seq(-5,5,length.out = 1000))                                      #grid integral v.hat
 
 q3 <- sequential_hcl(5, "YlOrRd")
 q3 <-q3[3:1]
@@ -120,13 +121,14 @@ arrow.pos.y1<-c(P.OpDQs[[1]][grep(arrow.pos.x1[1],grid)],
 text.pos.x  <- arrow.pos.x0 + 3
 text.pos.y  <- arrow.pos.y0 - 4
 
+# ------------------------------------------------------------------------------
 # Plot ----
 FILE = "/outputs/Figures/Figure_Option_Digital.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=10, width=7, height=4)
 par(plt=c(.1,.95,.1,.95))
 plot(grid,P.OpDPs[[1]],type="l",
      cex.main=1.0,
-     cex.axis=1.0,#cex.lab=1.5,
+     cex.axis=1.0,
      col="white",
      lwd=2,lty=2,
      ylab="In percent",xlab="Maturity",

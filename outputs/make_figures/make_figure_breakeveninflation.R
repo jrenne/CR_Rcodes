@@ -1,5 +1,6 @@
 # ==============================================================================
-# Term Structure of Yields, BEIR
+# FIGURE 7. The term structures of interest rates
+# Figure_BreakEvenInflation.pdf
 # ==============================================================================
 
 H <- 100
@@ -76,7 +77,7 @@ for(k in 1:length(all.mu.pi.D)){
   all.BEIR      <- cbind(all.BEIR,nom.rates - prices.ZCRF.bonds$r.t)
 }
 
-
+# ------------------------------------------------------------------------------
 # Plot ----
 FILE = "/outputs/Figures/Figure_BreakEvenInflation.pdf"
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=11, width=7, height=6)
@@ -119,8 +120,3 @@ for(k in 1:length(all.mu.pi.D)){
 }
 
 dev.off()
-
-
-
-
-

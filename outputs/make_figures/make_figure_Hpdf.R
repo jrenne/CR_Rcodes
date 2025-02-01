@@ -1,5 +1,6 @@
 # ==============================================================================
-# Figure with distributions of SLR
+# FIGURE 5. Conditional distribution of future global sea level
+# Figure_SL_P_and_Q_vector_CI.pdf
 # ==============================================================================
 
 # Prepare omega vectors (for pricing):
@@ -16,9 +17,9 @@ sea60.smooth <- predict(loess(sea.rcp[,3]~sea.rcp[,1]))
 sea45.smooth <- predict(loess(sea.rcp[,2]~sea.rcp[,1]))
 
 # For Fourier transform:
-x <- exp(seq(-5,5,length.out = 1000)) #grid for Proposition 8 (Fourier)
+x <- exp(seq(-5,5,length.out = 1000)) #grid for Fourier
 
-values.of.sl <- seq(#round(model_sol$vector.ini$ini_H,1),
+values.of.sl <- seq(
   0,
   round(EV$EX$H[H]+5*sqrt(EV$VX[[HSL]][H]),1),
   by=.01)
@@ -73,7 +74,8 @@ E.P    <- EV$EX$H[1:H]
 E.Q    <- varphi.tilde(model_sol,a,H)[[1]]/
   varphi(model_sol,omega_ZCB,H)[[3]]
 
-#Plots
+# ------------------------------------------------------------------------------
+# Plots----
 FILE = paste("/outputs/Figures/Figure_SL_P_and_Q_vector_CI.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=6, height=6)
 
@@ -128,11 +130,11 @@ lines(scale.sl.values[2:(nb.values.variable+1)],all.pdf.Q[,H],
 abline(v=scale.sl.values[which.min(abs(all.cdf.Q[,model_sol$horiz.2100]
                                        -0.5))],
        col=Q.col.line,lty=3,lwd=2)                                              #median of Q
-abline(v=E.Q[H],col=Q.col.line,lty=1,lwd=1)                                    #mean of Q
+abline(v=E.Q[H],col=Q.col.line,lty=1,lwd=1)                                     #mean of Q
 abline(v=scale.sl.values[which.min(abs(all.cdf.P[,model_sol$horiz.2100]
                                        -0.5))],
        col=P.col.line,lty=3,lwd=2)                                              #median of P
-abline(v=E.P[H],col=P.col.line,lty=1,lwd=1)                                    #mean of P
+abline(v=E.P[H],col=P.col.line,lty=1,lwd=1)                                     #mean of P
 
 legend("topright",
        legend=c("Physical p.d.f.","Risk-adjusted p.d.f.","Mean","Median"),

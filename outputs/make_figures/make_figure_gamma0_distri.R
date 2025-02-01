@@ -1,5 +1,8 @@
 # ==============================================================================
-# Two figures illutrating the gamma-zero distributions
+# FIGURE 9. Effect of \mu on the conditional distribution x_t|y_t \sim \gamma0 (y_t/\mu, \mu)
+# Figure_gamma0.pdf
+# FIGURE 10. Distribution of cumulated damages
+# Figure_gamma0_Damages.pdf
 # ==============================================================================
 
 t <- 1:50
@@ -13,7 +16,9 @@ for(i in t){
 
 all.mu <- c(0.0001,.01,.1)
 
-
+# ------------------------------------------------------------------------------
+# Plots ----
+# 1----
 pdf(file="outputs/Figures/Figure_gamma0.pdf",pointsize=11,width=7, height=3)
 
 par(mfrow=c(1,length(all.mu)))
@@ -71,39 +76,24 @@ for(iii in 1:length(all.mu)){
 dev.off()
 
 
-#------- FOURIER transform for permafrost-related emissions:
-FOURIER<-function(model,x,gamma){
-  # works only for i^th variable
-  dx <- matrix(x-c(0,x[1:length(x)-1]),length(x),1)
-  s1 <- matrix(PSI(model,1i*x),ncol=1)
-  fx <- outer(x,gamma,function(r,c)Im(s1[,1]*exp(-1i*r*c))/r)*
-    dx[,1]
-  f <- 1/2-1/pi*apply(fx,2,sum)
-  return(f)
-}
-
-PSI <- function(model,u){
-  return(exp(model$y * u /(1 - u * model$mu) ))
-}
-
-
+# 2----
 all.h <- c(1,16,36)
 
 pdf(file="outputs/Figures/Figure_gamma0_Damages.pdf",pointsize=11,width=7, height=3)
 
 par(mfrow=c(1,length(all.h)))
-par(plt=c(.1,.95,.2,.85))
+par(plt=c(.1,.95,.15,.85))
 
 T <- 2
-w <- -.0024+.0037*T
+w <- model_sol$parameters$a_D + model_sol$parameters$b_D*T
 
-all.proba <- round(100*exp(-all.h*w/model$mu))
+all.proba <- round(100*exp(-all.h*w/model_sol$parameters$mu_D))
 
 gamma <- seq(0.00001,1,length.out=200)
 n     <- length(gamma)
 reduced.gamma <- .5 * gamma[2:n] + .5 * gamma[1:(n-1)]
 
-x <- exp(seq(-2,2,length.out = 10000)) #grid for Proposition 8 (FOURIER)
+x <- exp(seq(-2,2,length.out = 10000)) #grid for Proposition FOURIER
 x <- seq(.00000001,10000,length.out = 100000)
 
 jjj <- 0
@@ -111,7 +101,7 @@ for(h in all.h){
   jjj <- jjj + 1
   
   model <- list(y = h*w,
-                mu = .0351)
+                mu = .0352)
   
   cdf  <- FOURIER(model,x,gamma)
   cdf <- pmax(pmin(cdf,1),0)
@@ -147,8 +137,6 @@ for(h in all.h){
   text(.3,4.3,
        "(Dirac mass at zero)",
        cex=1)
-  
-  #print(exp(-model$y/model$mu))
 }
 
 

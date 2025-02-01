@@ -12,7 +12,6 @@ tstep  <- 5
 vec_date <- seq(2020,by=tstep,len=Tmax-1)
 
 #Initial values of theta_a/_b for mitig optim. ~ DICE2016
-#theta0  <- c(log(0.17),-1/21*log(0.17))
 theta0  <- c(-2,-.1)
 
 #Determine of max of iterations in mitig optim.
@@ -37,22 +36,17 @@ Tlo  <- 0.27
 Tat  <- 1.1
 H    <- 0.13
 
-# Tlo  <- 0.0068
-# Tat  <- 0.85
-
 
 vector.ini<-list(
   ini_delc   = 0,
   ini_tildey = 0,
   ini_E      = Eind+eps_0,
-  #ini_Eind   = Eind,
   ini_F      = Ftot,
   ini_Mat    = Mat,                                                            
   ini_Mup    = Mup,                                                            
   ini_Mlo    = Mlo,                                                           
   ini_Tat    = Tat,                                                            
   ini_Tlo    = Tlo,
-  #ini_CumE   = Eind+eps_0,
   ini_CumE   = 0,
   ini_Cumdelc= 0,
   ini_H      = H
@@ -83,20 +77,12 @@ b23     <- 0.0082
 mateq   <- 607
 mueq    <- 489
 mleq    <- 1281
-c1      <- 0.137 #*tstep
+c1      <- 0.137 
 c3      <- 0.73
-c4      <- 0.00689 #*tstep
+c4      <- 0.00689
 f2co2   <- 3.45
 t2co2   <- 3.25
 
-
-# c1      <- 0.154 #*tstep
-# c3      <- 0.55
-# c4      <- 0.00671 #*tstep
-
-# c1      <- 0.213 #*tstep
-# c3      <- 1.16
-# c4      <- 0.00921 #*tstep
 
 
 q0  <- 135.7 #ini production DICE2023
@@ -159,7 +145,7 @@ param.clim<-list(
   gback      = 0.05,                                                            #DICE2023
   pback      = 695,                                                             #DICE2023
   theta2     = 2.6,                                                             #DICE2023,expcost2
-  b_sk       = .015/.8,                                                             #Diaz (2016)
+  b_sk       = .015/.8,                                                         #Diaz (2016)
   tol.GN     = 10^(-6),
   eps.GN     = 10^(-5),
   mu_T       = NaN,
@@ -184,10 +170,6 @@ target_vector <- c(
   .93,                                                                          #E(SLR) in 2100 & T_at=4
   (1.65-.45)/(2*qnorm(.95)),                                                    #std(SLR) in 2100 & T_at=4
   .75,                                                                          #std(T_at) in 2100
-  # 36*3.667 + 446*21/1000,                                                     #E(CumN) @ T_at=2
-  # 87*3.667 + 1400*21/1000,                                                    #E(CumN) @ T_at=4
-  # ((141*3.667 + 2614*21/1000) - (42*3.667+836*21/1000))/2,                    #std(CumN) @ T_at=4
-  # 228*3.667 + 5877*21/1000,                                                   #E(CumN) @ infinity
   56*3.667,                                                                     #E(CumN) @ T_at=2
   101*3.667,                                                                    #E(CumN) @ T_at=4
   (199*3.667 - 27*3.667)/(2*qnorm(.95)),                                        #std(CumN) @ T_at=4
@@ -259,58 +241,10 @@ model <- solveParam4c(model)
 model <- solveParam4T(model)
 print("***** calibration: done *****")
 
-# model$parameters$a_N <- 0
-# model$parameters$b_N <- 0
-# model$parameters$mu_N <- 0.0001
-
-
-# gamma <- 1.45
-# gamma <- 1.00001
-# #gamma <- 7
-# model.CRRA <- model
-# model.CRRA$parameters$gamma <- gamma
-# # model.CRRA$target_vector["mu_c0"] <- .04
-# # model.CRRA$target_vector["sigma_c0"] <- sqrt(5*.014)
-# model.CRRA <- solveParam4c(model.CRRA,indic_CRRA=TRUE)
-# # model.CRRA$parameters$a_D  <- gamma * model.CRRA$parameters$a_D * 0
-# # model.CRRA$parameters$b_D  <- gamma * .0018 * model.CRRA$tstep
-# # model.CRRA$parameters$mu_D <- gamma * model.CRRA$parameters$mu_D * 4
-# # #model$parameters$mu_T <- model$parameters$mu_T * 3
-# # #model.CRRA$parameters$a_D <- 0.0001
-# # #model.CRRA$parameters$b_D <- 0.0001
-# # model.CRRA$parameters$b_sk <- 0
-# model_CRRA_sol <- model_solve(model.CRRA,
-#                               indic_mitig = T,
-#                               indic_CRRA = T)
-# res.scc <- scc.fct.CRRA(model_CRRA_sol,t = 0,H = 200)
-# print(res.scc$SCC.CO2)
-# # plot(res.scc$scc.decomp)
-# # omega.ZC <- matrix(0,model_CRRA_sol$n.X,1)
-# # prices.ZCRF.bonds   <- varphi(model_CRRA_sol,
-# #                               omega.varphi = omega.ZC,
-# #                               H = 100)
-# # plot(prices.ZCRF.bonds$r.t)
-
-
-# model$vector.ini$ini_F <- model$parameters$tau/log(2) *
-#   log(model$vector.ini$ini_Mat/model$parameters$m_pi)
-# model$vector.ini$ini_Tat <- 1
-# #model$vector.ini$ini_F   <- 1
-# model$vector.ini$ini_Tlo <- .2
-
-
 
 tic("***** Solve Initial Model *****")
 model_sol <- model_solve(model,indic_CRRA = FALSE)
-#plot(model_sol$mu)
 toc()
-
-# delc <- 0
-# for(i in 1:length(model_sol$omega)){
-#   delc <- c(delc,model_sol$omega0[[i]][1])
-# }
-# plot(delc,type="l")
-# compute.utility.CRRA(model_sol)
 
 
 # Check plots:

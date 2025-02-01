@@ -1,5 +1,10 @@
 # ==============================================================================
-# Table illustrating sensitivity of SCC (with Temp. RP, SLR RP, and LT rates)
+# TABLE 5. Social Cost of Carbon, in US $ per ton of CO2
+# table_SCC_sensitiv.txt
+# TABLE V.1. 2100 Temperature risk premium
+# table_TRP_sensitiv.txt
+# TABLE V.2. Long-term interest rate (maturity: 2100)
+# table_LTR_sensitiv.txt
 # ==============================================================================
 
 # Define format of figures:
@@ -37,12 +42,12 @@ targets["nu"]    <- NaN
 # Define new models:
 
 targets_smallD <- targets
-targets_smallD["ECumD2"] <- 1 - (1-targets["ECumD2"])/2
-targets_smallD["ECumD4"] <- 1 - (1-targets["ECumD4"])/2
+targets_smallD["ECumD2"]   <- 1 - (1-targets["ECumD2"])/2
+targets_smallD["ECumD4"]   <- 1 - (1-targets["ECumD4"])/2
 targets_smallD["stdCumD4"] <- targets["stdCumD4"]/2
-targets_smallD["EH2"] <- targets["EH2"]/2
-targets_smallD["EH4"] <- targets["EH4"]/2
-targets_smallD["stdH4"] <- targets["stdH4"]/2
+targets_smallD["EH2"]      <- targets["EH2"]/2
+targets_smallD["EH4"]      <- targets["EH4"]/2
+targets_smallD["stdH4"]    <- targets["stdH4"]/2
 
 targets_noD.uncert <- targets
 targets_noD.uncert["stdCumD4"] <- .00001
@@ -85,14 +90,14 @@ targets_smallD_no.uncert["stdCumN4"]   <- .000001
 targets_smallD_no.uncert["stdH4"]      <- .000001
 targets_smallD_no.uncert["sigma_c0"]   <- .000001
 targets_smallD_no.uncert["stdTat2100"] <- NaN
-targets_smallD_no.uncert["ECumD2"] <- 1 - (1-targets["ECumD2"])/2
-targets_smallD_no.uncert["ECumD4"] <- 1 - (1-targets["ECumD4"])/2
-targets_smallD_no.uncert["EH2"] <- targets["EH2"]/2
-targets_smallD_no.uncert["EH4"] <- targets["EH4"]/2
-targets_smallD_no.uncert["ECumN2"]   <- .00001
-targets_smallD_no.uncert["ECumN4"]   <- .00001
-targets_smallD_no.uncert["ECumNinf"] <- .0001
-targets_smallD_no.uncert["stdCumN4"] <- sqrt(.00001)
+targets_smallD_no.uncert["ECumD2"]     <- 1 - (1-targets["ECumD2"])/2
+targets_smallD_no.uncert["ECumD4"]     <- 1 - (1-targets["ECumD4"])/2
+targets_smallD_no.uncert["EH2"]        <- targets["EH2"]/2
+targets_smallD_no.uncert["EH4"]        <- targets["EH4"]/2
+targets_smallD_no.uncert["ECumN2"]     <- .00001
+targets_smallD_no.uncert["ECumN4"]     <- .00001
+targets_smallD_no.uncert["ECumNinf"]   <- .0001
+targets_smallD_no.uncert["stdCumN4"]   <- sqrt(.00001)
 
 targets_delta_15 <- targets
 targets_delta_15["delta"] <- (1- .015)^5
@@ -139,8 +144,6 @@ rownames(all.targets) <- c("Baseline",
 
 
 for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
-#for(indic.CRRA in c(FALSE)){# if FALSE, use Epstein-Zin, otherwise CRRA
-  
   if(indic.CRRA){
     values.of.gamma <- c(1.5,1.001,2)
   }else{
@@ -218,14 +221,6 @@ for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
                            X.shock <- model_sol_new$X
                            X.shock[which(model_sol$names.var.X=="M_at")] <- - epsilon + 
                              X.shock[which(model_sol$names.var.X=="M_at")]
-                           # prices.C   <- varphi(model_sol_new,
-                           #                      omega.varphi = omega_C,
-                           #                      H = 100)
-                           # prices.C.shock   <- varphi(model_sol_new,
-                           #                            omega.varphi = omega_C,
-                           #                            H = 100,
-                           #                            X = X.shock)
-                           # D <- sum(prices.C$P.t) - sum(prices.C.shock$P.t)
                            
                            EC       <- NULL
                            EC.shock <- NULL
@@ -464,268 +459,3 @@ for(indic.CRRA in c(FALSE,TRUE)){
 # Save results:
 latex.file <- paste("outputs/Tables/table_LTR_sensitiv.txt",sep="")
 write(latex.table, file = latex.file)
-
-
-
-# SCCRP ------------------------------------------------------------------------
-
-latex.table <- NULL
-
-for(indic.CRRA in c(FALSE,TRUE)){
-  
-  # load results: --------------------------------------------------------------
-  load(file=paste("outputs/results/sensitivity_SCC_",
-                  ifelse(indic.CRRA,"CRRA","EZ"),
-                  ".Rdat",sep=""))
-  
-  if(!indic.CRRA){
-    latex.table <- rbind(latex.table,
-                         "\\hline",
-                         "\\multicolumn{7}{l}{{\\qquad\\bf A. Epstein-Zin preferences}}\\\\",
-                         "\\hline")
-  }else{
-    latex.table <- rbind(latex.table,
-                         "\\hline",
-                         "\\multicolumn{7}{l}{{\\qquad\\bf B. Time-separable CRRA preferences}}\\\\",
-                         "\\hline")
-  }
-  
-  this.line <- "Specification"
-  for(j in 1:length(values.of.gamma)){
-    this.line <- paste(this.line,"&\\multicolumn{2}{c}{$\\gamma=",
-                       values.of.gamma[j],"$}",sep="")
-  }
-  latex.table <- rbind(latex.table,
-                       paste(this.line,"\\\\",sep=""),
-                       "\\hline")
-  
-  for(i in 1:dim(all.targets)[1]){
-    this.line <- rownames(all.targets)[i]
-    for(j in 1:length(values.of.gamma)){
-      if(i==1){
-        this.line <- paste(this.line,"&{\\bf ",
-                           make.entry(all_BETA[i,j],format.nb1,dollar = FALSE),"}&",sep="")
-      }else{
-        rel.diff <- all_BETA[i,j] - all_BETA[1,j]
-        this.line <- paste(this.line,"&",
-                           make.entry(all_BETA[i,j],format.nb1),
-                           "&$",ifelse(rel.diff>=0,"+","-"),"$\\textit{",make.entry(abs(rel.diff),format.nb1,dollar = FALSE)," p.p.}",
-                           sep="")
-      }
-    }
-    latex.table <- rbind(
-      latex.table,
-      paste(this.line,"\\\\",sep=""))
-  }
-}
-# Save results:
-latex.file <- paste("outputs/Tables/table_SCCRP_sensitiv.txt",sep="")
-write(latex.table, file = latex.file)
-
-
-
-
-# stop()
-# 
-# 
-# for(indic.CRRA in c(TRUE,FALSE)){
-#   
-#   # load results: --------------------------------------------------------------
-#   load(file=paste("outputs/results/sensitivity_SCC_",
-#                   ifelse(indic.CRRA,"CRRA","EZ"),
-#                   ".Rdat",sep=""))
-#   
-#   
-#   latex.table <- NULL
-#   
-#   # SCC ------------------------------------------------------------------------
-#   
-#   latex.table <- rbind(latex.table,
-#                        "\\hline",
-#                        "\\multicolumn{7}{l}{{\\qquad\\bf A. Social Cost of Carbon (in U.S. \\$ per ton of CO$_2$)}}\\\\",
-#                        "\\hline")
-#   
-#   this.line <- "Specification"
-#   for(j in 1:length(values.of.gamma)){
-#     this.line <- paste(this.line,"&\\multicolumn{2}{c}{$\\gamma=",
-#                        values.of.gamma[j],"$}",sep="")
-#   }
-#   latex.table <- rbind(latex.table,
-#                        paste(this.line,"\\\\",sep=""),
-#                        "\\hline")
-#   
-#   for(i in 1:dim(all.targets)[1]){
-#     this.line <- rownames(all.targets)[i]
-#     for(j in 1:length(values.of.gamma)){
-#       if(i==1){
-#         this.line <- paste(this.line,"&{\\bf ",
-#                            round(all_SCC[i,j]),"}&",sep="")
-#       }else{
-#         rel.diff <- (all_SCC[i,j] - all_SCC[1,j])/all_SCC[1,j]
-#         this.line <- paste(this.line,"&",
-#                            round(all_SCC[i,j]),
-#                            "&$",ifelse(rel.diff*sign(all_SCC[1,j])>=0,"+","-"),"$\\textit{",make.entry(100*abs(rel.diff),format.nb1,dollar = FALSE),"\\%}",
-#                            sep="")
-#       }
-#     }
-#     latex.table <- rbind(
-#       latex.table,
-#       paste(this.line,"\\\\",sep=""))
-#   }
-#   
-#   # Temperature risk premium ---------------------------------------------------
-#   
-#   latex.table <- rbind(latex.table,
-#                        #"\\\\",
-#                        "\\hline",
-#                        "\\multicolumn{7}{l}{{\\qquad\\bf B. Temperature risk premium (in \\degree C)}}\\\\",
-#                        "\\hline")
-#   
-#   this.line <- "Specification"
-#   for(j in 1:length(values.of.gamma)){
-#     this.line <- paste(this.line,"&\\multicolumn{2}{c}{$\\gamma=",
-#                        values.of.gamma[j],"$}",sep="")
-#   }
-#   latex.table <- rbind(latex.table,
-#                        paste(this.line,"\\\\",sep=""),
-#                        "\\hline")
-#   
-#   for(i in 1:dim(all.targets)[1]){
-#     this.line <- rownames(all.targets)[i]
-#     for(j in 1:length(values.of.gamma)){
-#       if(i==1){
-#         this.line <- paste(this.line,"&{\\bf ",
-#                            make.entry(all_TRP[i,j],format.nb3,dollar = FALSE),"}&",sep="")
-#       }else{
-#         rel.diff <- all_TRP[i,j] - all_TRP[1,j]
-#         this.line <- paste(this.line,"&",
-#                            make.entry(all_TRP[i,j],format.nb3),
-#                            "&$",ifelse(rel.diff>=0,"+","-"),"$\\textit{",make.entry(abs(rel.diff),format.nb3,dollar = FALSE),"\\degree C}",
-#                            sep="")
-#       }
-#     }
-#     latex.table <- rbind(
-#       latex.table,
-#       paste(this.line,"\\\\",sep=""))
-#   }
-#   
-#   if(!indic.CRRA){
-#     # SLR risk premium ---------------------------------------------------------
-#     
-#     latex.table <- rbind(latex.table,
-#                          #"\\\\",
-#                          "\\hline",
-#                          "\\multicolumn{7}{l}{{\\qquad\\bf C. SLR risk premium (in meters)}}\\\\",
-#                          "\\hline")
-#     
-#     this.line <- "Specification"
-#     for(j in 1:length(values.of.gamma)){
-#       this.line <- paste(this.line,"&\\multicolumn{2}{c}{$\\gamma=",
-#                          values.of.gamma[j],"$}",sep="")
-#     }
-#     latex.table <- rbind(latex.table,
-#                          paste(this.line,"\\\\",sep=""),
-#                          "\\hline")
-#     
-#     for(i in 1:dim(all.targets)[1]){
-#       this.line <- rownames(all.targets)[i]
-#       for(j in 1:length(values.of.gamma)){
-#         if(i==1){
-#           this.line <- paste(this.line,"&{\\bf ",
-#                              make.entry(all_HRP[i,j],format.nb3,dollar = FALSE),"}&",sep="")
-#         }else{
-#           rel.diff <- all_HRP[i,j] - all_HRP[1,j]
-#           this.line <- paste(this.line,"&",
-#                              make.entry(all_HRP[i,j],format.nb3),
-#                              "&$",ifelse(rel.diff>=0,"+","-"),"$\\textit{",make.entry(abs(rel.diff),format.nb3,dollar=FALSE)," m}",
-#                              sep="")
-#         }
-#       }
-#       latex.table <- rbind(
-#         latex.table,
-#         paste(this.line,"\\\\",sep=""))
-#     }
-#   }else{
-#     # SCC - NPV benefits -------------------------------------------------------
-#     
-#     latex.table <- rbind(latex.table,
-#                          #"\\\\",
-#                          "\\hline",
-#                          "\\multicolumn{7}{l}{{\\qquad\\bf C. SCC minus NPV of benefits (expressed in percent of SCC)}}\\\\",
-#                          "\\hline")
-#     
-#     this.line <- "Specification"
-#     for(j in 1:length(values.of.gamma)){
-#       this.line <- paste(this.line,"&\\multicolumn{2}{c}{$\\gamma=",
-#                          values.of.gamma[j],"$}",sep="")
-#     }
-#     latex.table <- rbind(latex.table,
-#                          paste(this.line,"\\\\",sep=""),
-#                          "\\hline")
-#     
-#     for(i in 1:dim(all.targets)[1]){
-#       this.line <- rownames(all.targets)[i]
-#       for(j in 1:length(values.of.gamma)){
-#         if(i==1){
-#           this.line <- paste(this.line,"&{\\bf ",
-#                              make.entry(all_BETA[i,j],format.nb1,dollar = FALSE),"}&",sep="")
-#         }else{
-#           rel.diff <- all_BETA[i,j] - all_BETA[1,j]
-#           this.line <- paste(this.line,"&",
-#                              make.entry(all_BETA[i,j],format.nb1),
-#                              "&$",ifelse(rel.diff>=0,"+","-"),"$\\textit{",make.entry(abs(rel.diff),format.nb1,dollar = FALSE)," p.p.}",
-#                              sep="")
-#         }
-#       }
-#       latex.table <- rbind(
-#         latex.table,
-#         paste(this.line,"\\\\",sep=""))
-#     }
-#   }
-#   
-#   
-#   # Long-term rate -------------------------------------------------------------
-#   
-#   latex.table <- rbind(latex.table,
-#                        #"\\\\",
-#                        "\\hline",
-#                        "\\multicolumn{7}{l}{{\\qquad\\bf D. Long-term rate (in percent; maturity: 2100)}}\\\\",
-#                        "\\hline")
-#   
-#   this.line <- "Specification"
-#   for(j in 1:length(values.of.gamma)){
-#     this.line <- paste(this.line,"&\\multicolumn{2}{c}{$\\gamma=",
-#                        values.of.gamma[j],"$}",sep="")
-#   }
-#   latex.table <- rbind(latex.table,
-#                        paste(this.line,"\\\\",sep=""),
-#                        "\\hline")
-#   
-#   for(i in 1:dim(all.targets)[1]){
-#     this.line <- rownames(all.targets)[i]
-#     for(j in 1:length(values.of.gamma)){
-#       if(i==1){
-#         this.line <- paste(this.line,"&{\\bf ",
-#                            make.entry(all_LTR[i,j],format.nb2,dollar = FALSE),"}&",sep="")
-#       }else{
-#         rel.diff <- all_LTR[i,j] - all_LTR[1,j]
-#         this.line <- paste(this.line,"&",
-#                            make.entry(all_LTR[i,j],format.nb2,dollar = FALSE),
-#                            "&$",ifelse(rel.diff>=0,"+","-"),"$\\textit{",round(100*abs(rel.diff))," bps}",
-#                            sep="")
-#       }
-#     }
-#     latex.table <- rbind(
-#       latex.table,
-#       paste(this.line,"\\\\",sep=""))
-#   }
-#   
-#   if(indic.CRRA){
-#     latex.file <- paste("outputs/Tables/table_SCC_sensitiv.CRRA.txt",sep="")
-#   }else{
-#     latex.file <- paste("outputs/Tables/table_SCC_sensitiv.txt",sep="")
-#   }
-#   write(latex.table, file = latex.file)
-#   
-# }
-# 
