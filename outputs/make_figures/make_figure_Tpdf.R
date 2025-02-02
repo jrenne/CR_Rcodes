@@ -87,6 +87,7 @@ plot(model_sol$vec_date[2:(H+1)],ET.P,
      xlim=x.lim,ylim=y.lim, cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
      col="white",xlab="",ylab="Degrees Celsius",las=1,
      main="(a) - Atmosph. temperature")
+grid()
 
 for(i in length(vector.of.CI):1){
   # P
@@ -110,6 +111,8 @@ plot(model_sol$vec_date[2:(H+1)],ET.Q,
      col="white",xlab="",ylab="Degrees Celsius", cex.main=1.5,cex.axis=1.5,
      cex.lab=1.5,
      main="(b) - Atmosph. temperature (risk-adjusted)")
+grid()
+
 for(i in length(vector.of.CI):1){
   # Q
   polygon(c(model_sol$vec_date[2:(H+1)],rev(model_sol$vec_date[2:(H+1)])),

@@ -28,9 +28,9 @@ Decay rate of releases &$\kappa_N$ &\eqref{eq:damage_NmainText}&$0.96$\\
 \\
 \hline
 \multicolumn{5}{l}{{\bf Sea-level rise (SLR)}}\\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=2\degree C$}} &$0.45$ & m \\
-\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.93$ & m \\
-\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.36$ & m \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=2\degree C$}} &$0.45$ & meter \\
+\multicolumn{3}{l}{\textit{Target: Expected 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.93$ & meter \\
+\multicolumn{3}{l}{\textit{Target: Std dev. of 2100 SLR conditional on $T_{AT}=4\degree C$}} &$0.36$ & meter \\
 Uncertainty parameter in SLR specif.&$\mu_{H}$ &\eqref{eq:SeaL}&$0.0715$&\\
 Constant in SLR specif.&$a^{(\Delta H)}$ &\eqref{eq:SeaL}&$-0.0260$&\\
 Coefficient on $T_{AT}$ in SLR specif. &$b^{(\Delta H)}$ &\eqref{eq:SeaL}&$0.0295$&\\

@@ -8,7 +8,7 @@ K <- c(2,3,4)
 
 H <- model_sol$horiz.2100
 
-TAT <- which(model$names.var.X=="T_at")
+TAT <- which(model_sol$names.var.X=="T_at")
 
 omega_ZCB <- matrix(0,model_sol$n.X)
 omega_T.at <- omega_ZCB
@@ -60,10 +60,6 @@ all.Probas.P <- foreach(h = 1:H, .combine=rbind) %dopar% {
 stopCluster(cl)
 file.remove("outputs/toto.Rdata")
 
-
-k <- 3
-plot(all.Probas.P[,k])
-lines(all.Probas.Q[,k])
 
 # make sure probas are increasing:
 for(k in 1:length(K)){
@@ -134,6 +130,7 @@ plot(grid,P.OpDPs[[1]],type="l",
      ylab="In percent",xlab="Maturity",
      las=1,
      ylim=c(0,110),xlim=x.lim)
+grid()
 for (k in 1:length(K)){
   lines(grid,P.OpDQs[[k]],
         col=q3[k],

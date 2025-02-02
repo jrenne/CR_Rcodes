@@ -18,8 +18,8 @@ library(MASS)
 library(expm)
 
 #Binary operators: 0 = NO, 1 = YES.
-indic_plots_paper  <- 0 #produce paper's plots? see description below
-indic_tables_paper <- 0 #produce paper's table? see description below
+indic_plots_paper  <- 1 #produce paper's plots? see description below
+indic_tables_paper <- 1 #produce paper's table? see description below
 
 # For scripts using parallel computing:
 number.of.cores <- 8

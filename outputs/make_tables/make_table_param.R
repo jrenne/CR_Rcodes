@@ -76,7 +76,7 @@ latex.table <- rbind(
         "\\eqref{eq:carboIntensity}&",
         "$\\frac{e_0}{q_0 (1-\\mu_0 )}=$",
         make.entry(model_sol$parameters$sigma0,format.nb),
-        "&kgCO$_2$ per one thousand USD of 2020 production&",
+        "&kgCO$_2$ per 1 thousand USD of 2020 prod.&",
         "DICE2023",
         "\\\\",sep=""),
   paste("Initial growth of carbon intensity $\\sigma_1$ &",

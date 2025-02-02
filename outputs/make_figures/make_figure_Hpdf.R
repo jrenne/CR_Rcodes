@@ -91,6 +91,8 @@ plot(model_sol$vec_date[2:(H+1)],E.P,
      cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
      col="white",xlab="",ylab="meters",las=1,
      main="(a) - Global sea level rise")
+grid()
+
 lines(model_sol$vec_date[2:(H+1)],
       E.P,lwd=2,col=P.col.line)
 for(i in length(vector.of.CI):1){
@@ -105,6 +107,8 @@ plot(model_sol$vec_date[2:(H+1)],E.Q,
      col="white",xlab="",ylab="meters",
      cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
      main="(b) - Global sea level rise (risk-adjusted)")
+grid()
+
 for(i in length(vector.of.CI):1){
   # Q
   polygon(c(model_sol$vec_date[2:(H+1)],rev(model_sol$vec_date[2:(H+1)])),

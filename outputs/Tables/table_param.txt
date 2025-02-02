@@ -11,8 +11,8 @@ Initial growth of carbon intensity $\sigma_1$ &$g_{\sigma,1} $ &\eqref{eq:carboI
 Backstop price  &$pback$ &\eqref{eq:adjBackstopAppendix}&$695$&2019 USD &DICE2023\\
 Initial cost decline backstop cost &$gback $ &\eqref{eq:adjBackstopAppendix}&$5.00$&percent per period&DICE2023\\
 Exponent control cost function &$\theta_2 $ &\eqref{eq:BCmaintext}+\eqref{eq:adjBackstopAppendix}&$2.60$&&DICE2023\\
-Carbon emissions from land in 2020 &$\varepsilon_0 $ &\eqref{eq:declineLand}&$5.90$&GtCO$_2$ per year &DICE2023\\
-Decline rate in land emissions &$\rho $ &\eqref{eq:declineLand}&$10.00$&percent per period &DICE2023\\
+Carbon emissions from land in 2020 &$\varepsilon_0 $ &\eqref{eq:declineLand}&$5.90$&GtCO$_2$ per year &DICE2016\\
+Decline rate in land emissions &$\rho $ &\eqref{eq:declineLand}&$10.00$&percent per period &DICE2016\\
 2020 forcings of non-CO$_2$ GHG &$\phi_0 $ &\eqref{eq:exogradforcingAppendix}&$0.52$&W/m$^2$&DICE2023\\
 2100 forcings of non-CO$_2$ GHG &$\phi_1 $ &\eqref{eq:exogradforcingAppendix}&$0.80$&W/m$^2$&DICE2023\\
 Equilibrium concentration in atmosphere &$mateq $ &\eqref{eq:carboncycleAppendix}&$607$&GtC &CDICE\\
