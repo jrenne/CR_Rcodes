@@ -159,8 +159,7 @@ dev.off()
 stopCluster(cl)
 file.remove("outputs/toto.Rdata")
 
-
-print(log(all.expected.A[,10])/50)
+#print(log(all.expected.A[,10])/50)
 
 
 

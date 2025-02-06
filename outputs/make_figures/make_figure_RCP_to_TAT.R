@@ -193,7 +193,7 @@ for(iii in 1:length(vector.of.dates)){
   
   for(j in 1:3){
     if(j == 1){labels <- "RCP4.5"}
-    if(j == 2){labels <- "RCP6"}
+    if(j == 2){labels <- "RCP6.0"}
     if(j == 3){labels <- "RCP8.5"}
     rug(matrix_MAT_RCP[j,iii],lwd=2,col=colors[iii],
         ticksize = 0.05*j)
@@ -223,7 +223,7 @@ legend("topleft",
 
 # ==============================================================================
 # Define trajectories:
-all_rcp <- c(6,6,6,8.5) # 0 for CR
+all_rcp <- c(6.0,6.0,6.0,8.5) # 0 for CR
 # Add emission wrt scenarios:
 all_Pulse_GtC <- c(0,500,1000,0)
 # ==============================================================================
@@ -247,50 +247,42 @@ for(jjjj in 1:length(all_rcp)){
   
   if(rcp==0){
     Mat.trajectory <- MAT_CR[-1] + added_Gt
-    #Tat.ACE        <- T_ACE_CR
-    
+
     RF_CR_4ACE    <- eta/log(2)*log((MAT_CR + c(0,added_Gt) + G_ACE_RCP60)/Mpre)
     forcing_CR    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_CR_4ACE))
     res <- TempSimulation_ACE(Temp.ini, forcing_CR)
     Tat.ACE <- res[1,1,]
     
-    #main.t =expression(paste("(XX) ",E(M[AT])," path from present framework",sep=""))
   }
   if(rcp==4.5){
     Mat.trajectory <- MAT_RCP45[-1] + added_Gt
     Tat.MAGICC     <- T_RCP45
-    #Tat.ACE        <- T_ACE_RCP45
-    
+
     RF_RCP45_4ACE    <- eta/log(2)*log((MAT_RCP45 + c(0,added_Gt) + G_ACE_RCP45)/Mpre)
     forcing_RCP45    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP45_4ACE))
     res <- TempSimulation_ACE(Temp.ini, forcing_RCP45)
     Tat.ACE <- res[1,1,]
     
-    #main.t =expression(paste("(XX) ",T[AT]," resulting from RCP4.5",sep=""))
   }
   if(rcp==6.0){
     Mat.trajectory <- MAT_RCP60[-1] + added_Gt
     Tat.MAGICC     <- T_RCP60
-    #Tat.ACE        <- T_ACE_RCP45
-    
+
     RF_RCP60_4ACE    <- eta/log(2)*log((MAT_RCP60 + c(0,added_Gt) + G_ACE_RCP60)/Mpre)
     forcing_RCP60    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP60_4ACE))
     res <- TempSimulation_ACE(Temp.ini, forcing_RCP60)
     Tat.ACE <- res[1,1,]
     
-    #main.t =expression(paste("(XX) ",T[AT]," resulting from RCP6",sep=""))
   }
   if(rcp==8.5){
     Mat.trajectory <- MAT_RCP85[-1] + added_Gt
     Tat.MAGICC     <- T_RCP85
-    #Tat.ACE        <- T_ACE_RCP45
-    
+
     RF_RCP85_4ACE    <- eta/log(2)*log((MAT_RCP85 + c(0,added_Gt) + G_ACE_RCP85)/Mpre)
     forcing_RCP85    <- matrix(1,2,1) %*% t(exp(log(2) / eta * RF_RCP85_4ACE))
     res <- TempSimulation_ACE(Temp.ini, forcing_RCP85)
     Tat.ACE <- res[1,1,]
     
-    #main.t =expression(paste("(XX) ",T[AT]," resulting from RCP8.5",sep=""))
   }
   
   main.t <- paste("(",letters[jjjj+1],") RCP",rcp,
@@ -339,8 +331,7 @@ for(jjjj in 1:length(all_rcp)){
 
   lines(years,Tat.nonlinear,col="#777777",lwd=4,pch=3)
   lines(years,Tat.linear,col="black",lwd=4,lty=3)
-  #lines(years,res_CDICE$Tat,col="red",lwd=1)
-  
+
   if(indic_print_values == 1){
     print(rbind(c(years),c(Tat.nonlinear),c(Tat.linear)))
   }

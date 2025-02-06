@@ -104,6 +104,7 @@ plot.new()
 par(plt=c(.1,.95,.25,.85))
 
 legend("topleft",
+       title="G. = Growth specif., L. = Level specif.",
        legend=c(all.damages,
                 "CR (with SLR damages)",
                 "CR (w/o SLR damages)",

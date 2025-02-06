@@ -6,7 +6,7 @@ Decline rate of decarbonization &$\delta_{\sigma} $ &\eqref{eq:carboIntensity}&$
 Industrial emissions in 2020 &$e_0$ &$(\sigma_{0})$ &$37.60$&GtCO$_2$ per year&DICE2023\\
 Initial world gross output in 2020 &$q_0 $ &\eqref{eq:qtMain}&$135.70$&trillions of 2019 USD&DICE2023\\
 Emission control rate in 2020 &$\mu_0 $ &\eqref{eq:mu}&$5.00$&percent&DICE2023\\
-Carbon intensity in 2020 &$\sigma_{0} $ &\eqref{eq:carboIntensity}&$\frac{e_0}{q_0 (1-\mu_0 )}=$$0.29$&kgCO$_2$ per one thousand USD of 2020 production&DICE2023\\
+Carbon intensity in 2020 &$\sigma_{0} $ &\eqref{eq:carboIntensity}&$\frac{e_0}{q_0 (1-\mu_0 )}=$$0.29$&kgCO$_2$ per 1 thousand USD of 2020 prod.&DICE2023\\
 Initial growth of carbon intensity $\sigma_1$ &$g_{\sigma,1} $ &\eqref{eq:carboIntensity}&$-1.50$&percent per period &DICE2023\\
 Backstop price  &$pback$ &\eqref{eq:adjBackstopAppendix}&$695$&2019 USD &DICE2023\\
 Initial cost decline backstop cost &$gback $ &\eqref{eq:adjBackstopAppendix}&$5.00$&percent per period&DICE2023\\

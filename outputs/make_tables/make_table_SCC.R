@@ -146,7 +146,9 @@ rownames(all.targets) <- c("Baseline",
 for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
   if(indic.CRRA){
     values.of.gamma <- c(1.5,1.001,2)
+    print("   * Time-separable CRRA preferences (about 2-3 minutes)")
   }else{
+    print("   * Epstein-Zin preferences (about 1 minute)")
     values.of.gamma <- c(model_sol$parameters$gamma,2,10)
   }
   
@@ -246,32 +248,32 @@ for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
   all_SCC <- matrix(all_SCC,dim(all.targets)[1],length(values.of.gamma))
   rownames(all_SCC) <- rownames(all.targets)
   colnames(all_SCC) <- paste("gamma = ",values.of.gamma,sep="")
-  print(all_SCC)
+  #print(all_SCC)
   
   all_NPV <- all_results[,2]
   all_BETA <- 100*(all_SCC - all_NPV)/all_SCC
   all_BETA <- matrix(all_BETA,dim(all.targets)[1],length(values.of.gamma))
   rownames(all_BETA) <- rownames(all.targets)
   colnames(all_BETA) <- paste("gamma = ",values.of.gamma,sep="")
-  print(all_BETA)
+  #print(all_BETA)
   
   all_TRP <- all_results[,1+1+H]
   all_TRP <- matrix(all_TRP,dim(all.targets)[1],length(values.of.gamma))
   rownames(all_TRP) <- rownames(all.targets)
   colnames(all_TRP) <- paste("gamma = ",values.of.gamma,sep="")
-  print(all_TRP)
+  #print(all_TRP)
   
   all_HRP <- all_results[,1+1+2*H]
   all_HRP <- matrix(all_HRP,dim(all.targets)[1],length(values.of.gamma))
   rownames(all_HRP) <- rownames(all.targets)
   colnames(all_HRP) <- paste("gamma = ",values.of.gamma,sep="")
-  print(all_HRP)
+  #print(all_HRP)
   
   all_LTR <- all_results[,1+1+2*H+matur]
   all_LTR <- matrix(all_LTR,dim(all.targets)[1],length(values.of.gamma))
   rownames(all_LTR) <- rownames(all.targets)
   colnames(all_LTR) <- paste("gamma = ",values.of.gamma,sep="")
-  print(all_LTR)
+  #print(all_LTR)
   
   # Save results: --------------------------------------------------------------
   save(all_SCC,all_LTR,all_HRP,all_TRP,all_NPV,all_BETA,

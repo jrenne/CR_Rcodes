@@ -58,6 +58,8 @@ make_figure_calibration_Damages <- function(model_sol,
        xlab="Temperature in 2100 (in \u00B0C)",
        ylab="Damages (fractions of 2100 output)",las=1,
        main=main.title)
+  grid()
+  
   for(i in length(vector.of.CI):1){
     # P
     polygon(c(T.2100,rev(T.2100)),
@@ -179,6 +181,7 @@ make_figure_calibration_N <- function(model_sol,
        xlab="Temperature in 2100 (in \u00B0C)",
        ylab="Permafrost-related emissions (in GtC)",las=1,
        main=main.title)
+  grid()
   
   for(i in length(vector.of.CI):1){
     # P
@@ -259,6 +262,7 @@ make_figure_calibration_SLR <- function(model_sol,
        xlab="Temperature in 2100 (in \u00B0C)",
        ylab="SLR (in meters)",las=1,
        main=main.title)
+  grid()
   
   for(i in length(vector.of.CI):1){
     # P
@@ -377,6 +381,8 @@ make_figure_CMT <- function(expected.yds,
        main=paste(ifelse(indic_only_first,"(b)","(a)")," Expected path of ",
                   model_sol$tstep*maturities[1],"-year real interest rate",sep=""),
        lwd=2,col=col[1],pch=1)
+  grid()
+  
   lines(ncc.1[,1],ncc.1[,2],type="b",
         lwd=2,col=col[2],pch=2)
   lines(ncc.mu_c.1[,1],ncc.mu_c.1[,2],type="b",
@@ -402,11 +408,12 @@ make_figure_CMT <- function(expected.yds,
          cex.main=cexmain,cex.axis=cexaxs,cex.lab=cexlab,
          main=paste("(b) Expected path of ",model_sol$tstep*maturities[2],"-year real interest rate",sep=""),
          lwd=2,col=col[1],pch=1)
+    grid()
+    
     lines(ncc.2[,1],ncc.2[,2],type="b",
           lwd=2,col=col[2],pch=2)
     lines(ncc.mu_c.2[,1],ncc.mu_c.2[,2],type="b",
           lwd=2,col=col[3],pch=4)
-    grid()
   }
   
   return(1) 

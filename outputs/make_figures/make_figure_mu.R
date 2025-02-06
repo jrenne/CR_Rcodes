@@ -6,10 +6,6 @@
 
 # Check sensitivity to assumptions regarding mu_t:
 # (i) parametric function + (ii) time consistency
-# =====================================
-model_sol$theta0 <- model_sol$theta.opt
-# =====================================
-
 
 x.lim <- c(model_sol$vec_date[2],2200)
 
@@ -38,6 +34,8 @@ indics <- 1:model_sol$n.X
 omega_ZCB <- matrix(0,model_sol$n.X,1)
 omega_T.at <- omega_ZCB
 omega_T.at[indic_T_at] <- 1
+
+model_sol$theta0 <- model_sol$theta.opt
 
 # ------------------------------------------------------------------------------
 # Plot----
@@ -243,8 +241,8 @@ chge_SCC <- (all_mu[,model_sol$Tmax+2] - all_mu[,model_sol$Tmax+1])/
   all_mu[,model_sol$Tmax+1]
 chge_TRP <- (all_mu[,model_sol$Tmax+4] - all_mu[,model_sol$Tmax+3])/
   all_mu[,model_sol$Tmax+3]
-print(paste("Average absolute percent change in SCC: ",round(mean(abs(chge_SCC)),5),sep=""))
-print(paste("Average absolute percent change in TRP: ",round(mean(abs(chge_TRP)),5),sep=""))
+# print(paste("Average absolute percent change in SCC: ",round(mean(abs(chge_SCC)),5),sep=""))
+# print(paste("Average absolute percent change in TRP: ",round(mean(abs(chge_TRP)),5),sep=""))
 
 # --- State vector = avg - 2std dev
 all_mu <- foreach(t = 1:max.t, 
@@ -286,7 +284,7 @@ legend("bottomright",
        col=c("grey","black"),
        lwd=c(4,1),cex=1)
 
+dev.off()
+
 stopCluster(cl)
 file.remove("outputs/toto.Rdata")
-
-dev.off()

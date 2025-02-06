@@ -1,5 +1,8 @@
+# Note: t=0 stands for 2020
 
 #* CALIBRATION -----------------------------------------------------------------
+#* Compute the model specific parameters - see Table 1
+#* return model with updated parameters.
 solveParam4c <- function(model,indic_CRRA=FALSE){
   gamma   <- model$parameters$gamma
   delta   <- model$parameters$delta
@@ -214,13 +217,179 @@ mu_T.bisection <- function(x,# x is a value for the parameter sigma_E
   return(sqrt(Var.T_at)-model$target_vector["stdTat2100"])
 }
 
+#* LAPLACE TRANSFORM FOR CALIBRATION -------------------------------------------
+#* returns Laplace transform of variable of interest knowing the temperature 
+#*  anomaly target at horizon t. 
+
+#----------------Laplace transform for damages calibration
+#*  returns: see eq. (III.4)
+LT.CumD <- function(model,u,
+                    T0=model$vector.ini$ini_Tat, # inital value of atm. temp. T_at
+                    Tstar, # targeted temperature anomaly
+                    tstar, # time horizon of targeted temperature Tstar (e.g. 2100)
+                    indic_add_SLR=TRUE # sea level rise component at work
+){
+  param <- model$parameters
+  
+  alpha <- model$alpha # curvature of temperature trajectory
+  
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  
+  res1 <- u/(1-u*param$mu_D) * (tstar*param$a_D +
+                                  param$b_D * (a_alpha_star*Tstar + a_alpha_0*T0))
+  
+  # SLR damages:
+  res2 <- 0 
+  res2_if_counted <- u*param$b_sk/(1-u*param$mu_H*param$b_sk) * (tstar*param$a_H +
+                                                                   param$b_H * (a_alpha_star*Tstar + a_alpha_0*T0))
+  if(indic_add_SLR){
+    res2 <- res2_if_counted
+  }
+  
+  return(exp(res1 + res2))
+}
 
 
+
+#------- Laplace transform for permafrost-related emissions:
+#*  returns a list of 2 elements: 
+#*    lambda := eq. (III.7)/muN and
+#*    mu:= eq. (III.6)
+Param.Gamma0.CumN <- function(model,
+                              T0 = model$vector.ini$ini_Tat, # inital value of atm. temp. T_at
+                              Tstar, # targeted temperature anomaly
+                              tstar, # time horizon of targeted temperature Tstar (e.g. 2100)
+                              alpha = .04 # curvature of temperature trajectory, see compute_alpha.R
+){
+  param  <- model$parameters
+  kN     <- param$kappa_N
+  
+  b_alpha_star <- 1/(1 - exp(-alpha*tstar))*(
+    (1 - kN^tstar)/(1 - kN) -
+      (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
+  )
+  b_alpha_0 <- - 1/(1 - exp(-alpha*tstar))*(
+    (1 - kN^tstar)*exp(-alpha*tstar)/(1 - kN) -
+      (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
+  )
+  
+  lambda <- (1-kN^tstar)/(1-kN)*param$a_N/param$mu_N +
+    (b_alpha_0 * T0 + b_alpha_star * Tstar)*param$b_N/param$mu_N
+  
+  return(list(lambda=lambda,
+              mu=param$mu_N))
+}
+#* returns see eq. (III.8)
+LT.CumN <- function(model,u,
+                    T0=model$vector.ini$ini_Tat, # inital value of atm. temp. T_at
+                    Tstar, # targeted temperature anomaly
+                    tstar # time horizon of targeted temperature Tstar (e.g. 2100)
+){
+  res <- Param.Gamma0.CumN(model,T0,Tstar,tstar)
+  psiCumN <- exp(u*res$mu/(1-u*res$mu) * res$lambda)
+  return(psiCumN)
+}
+
+
+#------- Laplace transform for SLR:
+#*  returns a list of 2 elements: 
+#*    lambda := eq. (III.10)/muH and
+#*    mu:= eq. (III.11)
+Param.Gamma0.H <- function(model,
+                           T0 = model$vector.ini$ini_Tat, # inital value of atm. temp. T_at
+                           Tstar, # targeted temperature anomaly
+                           tstar, # time horizon of targeted temperature Tstar (e.g. 2100)
+                           alpha = .04 # curvature of temperature trajectory, see compute_alpha.R
+){
+  param  <- model$parameters
+  
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  
+  lambda <- model$vector.ini$ini_H/param$mu_H + tstar*param$a_H/param$mu_H +
+    (a_alpha_0 * T0 + a_alpha_star * Tstar)*param$b_H/param$mu_H
+  
+  return(list(lambda=lambda,
+              mu=param$mu_H))
+}
+#* returns LT of eq. (III.10).  
+LT.SLR <- function(model,u,
+                   T0=model$vector.ini$ini_Tat, # inital value of atm. temp. T_at
+                   Tstar, # targeted temperature anomaly
+                   tstar, # time horizon of targeted temperature Tstar (e.g. 2100)
+                   alpha=.04 # curvature of temperature trajectory, see compute_alpha.R
+){
+  param <- model$parameters
+  
+  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
+    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
+  
+  res <- u*model$vector.ini$ini_H +
+    u/(1-u*param$mu_H) * (tstar*param$a_H +
+                            param$b_H * (a_alpha_star*Tstar + a_alpha_0*T0))
+  
+  return(exp(res))
+}
+
+#* FOURIER TRANSFORM FOR CALIBRATION -------------------------------------------
+#------- Inverse Fourier transform:
+Fourier.psi <- function(model,gamma,x,
+                        T0=model$vector.ini$ini_Tat, # inital value of atm. temp. T_at
+                        Tstar, # targeted temperature anomaly
+                        tstar, # time horizon of targeted temperature Tstar (e.g. 2100)
+                        psi.LT
+){
+  u       <- c(1i*x)
+  psiCumD <- matrix(psi.LT(model,u,T0,Tstar,tstar),ncol=1)
+  
+  dx <- matrix(x-c(0,x[1:length(x)-1]),length(x),1)
+  fx <- outer(x,gamma,
+              function(r,c)Im(psiCumD[,1]*exp(-1i*r*c))/r)*dx[,1]
+  f  <- 1/2 - 1/pi * apply(fx,2,sum)
+  
+  f.cdf <- pmax(pmin(f,1),0)
+  for(i in 2:length(f)){
+    if(f.cdf[i]<f.cdf[i-1]){
+      f.cdf[i] <- f.cdf[i-1]}}
+  
+  return(f.cdf)
+}
+
+LT.CumN.infinite <- function(model,u,
+                             T0 = model$vector.ini$ini_Tat, # inital value of atm. temp. T_at
+                             Tinf = 4, # targeted temperature anomaly
+                             tstar = NaN,
+                             alpha = .04 # curvature of temperature trajectory, see compute_alpha.R
+){
+  param <- model$parameters
+  aux <- u/(1-u*param$mu_N) * 
+    (param$a_N / (1-param$kappa_N) +
+       param$b_N * Tinf / (1 - param$kappa_N) -
+       param$b_N * (Tinf - T0) / (1 - param$kappa_N * exp(-alpha)))
+  return(exp(aux))
+}
+
+#* CONFIDENCE AREAS ------------------------------------------------------------
 #----------------Plot with confidence area
-make_confidence_area <- function(x,y,pdf_xy,p,tol=10^(-2)){
-  # Computes the coordinates of a polygon that delineates a confidence
-  #     area associated with probability p.
-  # The components of x (and of y) must be equally spaced.
+#* Computes the coordinates of a polygon that delineates a confidence
+#     area associated with probability p.
+#* Note: The components of x (and of y) must be equally spaced.
+#* returns a list of 2 elements:
+#*   x.polygon: vector of the x-coordinates of the polygon of probability mass p
+#*   y.polygon: vector of the y-coordinates of the polygon of probability mass p
+
+make_confidence_area <- function(x,y, # vector of grid points along the x/y-axis
+                                 pdf_xy, # matrix:= PDF @ points (x, y)
+                                 p, # scalar \in(0,1) for probability mass
+                                 tol=10^(-2) # tolerance for bisection method
+){
   
   h.x <- x[2] - x[1]
   h.y <- y[2] - y[1]
@@ -270,13 +439,24 @@ make_confidence_area <- function(x,y,pdf_xy,p,tol=10^(-2)){
 
 
 #----------------Determine confidence areas (for shaded areas)
-confidence_intervals_across_horizons <- function(all.Probas,
-                                                 values.of.variable,
-                                                 nb.values.variable = 200,
-                                                 vector.of.CI){
-  # all.Probas is of dimension K x H where H is the number of considered
-  # horizons. its columns are cdf evaluated at values.of.variable
-  # nb.values.variable is the number of points used for the finer grid.
+#* Computes the confidence intervals by identifying the indices corresponding to the lower and upper quantiles.
+#* returns a list of 4 elements:
+#*   scale.variable.values: vector of the refined grid of values for the variable.
+#*   all.CI: A 3D array of dimensions 2×H×length(vector.of.CI),  
+#*           w/ CI for each horizon H and confidence level:
+#*     all.CI[1, j, i]: Lower bound for H=j and vector.of.CI[i].
+#*     all.CI[2, j, i]: Upper bound for H=j and vector.of.CI[i].
+#*   all.pdf: matrix of estimated PDF values for the refined grid.
+#*   all.cdf: matrix of estimated CDF values for the refined grid.
+
+confidence_intervals_across_horizons <- function(all.Probas, # matrix (K x H) where 
+                                                 # H := number of considered horizons
+                                                 # K := points at which CDF is evaluated
+                                                 # each column are cdf evaluated at values.of.variable
+                                                 values.of.variable, # values at which the CDF is evaluated.
+                                                 nb.values.variable = 200, # number of points used for the finer grid.
+                                                 vector.of.CI #vector of confidence levels (e.g., 0.9, 0.95) for which confidence intervals will be computed
+){
   
   scale.variable.values <- seq(values.of.variable[1],
                                tail(values.of.variable,1),
@@ -334,162 +514,18 @@ confidence_intervals_across_horizons <- function(all.Probas,
 
 
 
-
-#----------------Function to extract n'th element of the list
-extract<-function(list, n){
-  sapply(list, `[`, n)
-}
-
-#----------------Laplace transform for damages calibration
-LT.CumD <- function(model,u,
-                    T0=model$vector.ini$ini_Tat,
-                    Tstar,
-                    tstar,
-                    indic_add_SLR=TRUE){
-  param <- model$parameters
-  
-  alpha <- model$alpha # curvature of temperature trajectory
-  
-  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
-    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
-  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
-    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
-  
-  res1 <- u/(1-u*param$mu_D) * (tstar*param$a_D +
-                                  param$b_D * (a_alpha_star*Tstar + a_alpha_0*T0))
-  
-  # SLR damages:
-  res2 <- 0 
-  res2_if_counted <- u*param$b_sk/(1-u*param$mu_H*param$b_sk) * (tstar*param$a_H +
-                                                                   param$b_H * (a_alpha_star*Tstar + a_alpha_0*T0))
-  if(indic_add_SLR){
-    res2 <- res2_if_counted
-  }
-  
-  return(exp(res1 + res2))
-}
-
-
-
-#------- Laplace transform for permafrost-related emissions:
-LT.CumN <- function(model,u,
-                    T0=model$vector.ini$ini_Tat,
-                    Tstar,
-                    tstar){
-  res <- Param.Gamma0.CumN(model,T0,Tstar,tstar)
-  psiCumN <- exp(u*res$mu/(1-u*res$mu) * res$lambda)
-  return(psiCumN)
-}
-
-#------- Laplace transform for SLR:
-LT.SLR <- function(model,u,
-                   T0=model$vector.ini$ini_Tat,
-                   Tstar,
-                   tstar,
-                   alpha=.04){
-  param <- model$parameters
-  
-  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
-    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
-  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
-    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
-  
-  res <- u*model$vector.ini$ini_H +
-    u/(1-u*param$mu_H) * (tstar*param$a_H +
-                            param$b_H * (a_alpha_star*Tstar + a_alpha_0*T0))
-  
-  return(exp(res))
-}
-
-Param.Gamma0.CumN <- function(model,
-                              T0 = model$vector.ini$ini_Tat,
-                              Tstar,
-                              tstar,
-                              alpha = .04){
-  param  <- model$parameters
-  kN     <- param$kappa_N
-  
-  b_alpha_star <- 1/(1 - exp(-alpha*tstar))*(
-    (1 - kN^tstar)/(1 - kN) -
-      (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
-  )
-  b_alpha_0 <- - 1/(1 - exp(-alpha*tstar))*(
-    (1 - kN^tstar)*exp(-alpha*tstar)/(1 - kN) -
-      (1 - kN^tstar*exp(-alpha*tstar))/(1 - kN*exp(-alpha))
-  )
-  
-  lambda <- (1-kN^tstar)/(1-kN)*param$a_N/param$mu_N +
-    (b_alpha_0 * T0 + b_alpha_star * Tstar)*param$b_N/param$mu_N
-  
-  return(list(lambda=lambda,
-              mu=param$mu_N))
-}
-
-Param.Gamma0.H <- function(model,
-                           T0 = model$vector.ini$ini_Tat,
-                           Tstar,
-                           tstar,
-                           alpha = .04){
-  param  <- model$parameters
-  
-  a_alpha_star <- (tstar*(1 - exp(-alpha)) - (1- exp(-alpha*tstar)))/
-    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
-  a_alpha_0 <- ((1 - exp(-alpha*tstar)) - tstar*exp(-alpha*tstar)*(1-exp(-alpha)))/
-    ((1- exp(-alpha*tstar))*(1- exp(-alpha)))
-  
-  lambda <- model$vector.ini$ini_H/param$mu_H + tstar*param$a_H/param$mu_H +
-    (a_alpha_0 * T0 + a_alpha_star * Tstar)*param$b_H/param$mu_H
-  
-  return(list(lambda=lambda,
-              mu=param$mu_H))
-}
-
-
-
-#------- Iverse Fourier transform:
-Fourier.psi <- function(model,gamma,x,
-                        T0=model$vector.ini$ini_Tat,
-                        Tstar,
-                        tstar,
-                        psi.LT){
-  u       <- c(1i*x)
-  psiCumD <- matrix(psi.LT(model,u,T0,Tstar,tstar),ncol=1)
-  
-  dx <- matrix(x-c(0,x[1:length(x)-1]),length(x),1)
-  fx <- outer(x,gamma,
-              function(r,c)Im(psiCumD[,1]*exp(-1i*r*c))/r)*dx[,1]
-  f  <- 1/2 - 1/pi * apply(fx,2,sum)
-  
-  f.cdf <- pmax(pmin(f,1),0)
-  for(i in 2:length(f)){
-    if(f.cdf[i]<f.cdf[i-1]){
-      f.cdf[i] <- f.cdf[i-1]}}
-  
-  return(f.cdf)
-}
-
-LT.CumN.infinite <- function(model,u,
-                             T0 = model$vector.ini$ini_Tat,
-                             Tinf = 4,
-                             tstar = NaN,
-                             alpha = .04){
-  param <- model$parameters
-  aux <- u/(1-u*param$mu_N) * 
-    (param$a_N / (1-param$kappa_N) +
-       param$b_N * Tinf / (1 - param$kappa_N) -
-       param$b_N * (Tinf - T0) / (1 - param$kappa_N * exp(-alpha)))
-  return(exp(aux))
-}
-
-
 #* SCC -------------------------------------------------------------------------
+#* returns SCC in USD per t CO2 (= per tC / 3.667)
+#*  scalar if all=F
+#*  vector of SCC for H \in(t,h) if all=T
 
-scc.fct <- function(model_sol,h,
-                    all=F,
+scc.fct <- function(model_sol,
+                    h, # time horizon of SCC
+                    all=F, # if all = TRUE, vector of H \in(0, h).
                     C_0=model_sol$parameters$c0, # in trillions of USD
-                    X=model_sol$X,t=0){
-  # returns SCC in USD per t CO2 (= per tC / 3.667)
-  # if all = TRUE, vector of H \in(0, h).
+                    X=model_sol$X, # vector of state variables
+                    t=0 # initial date
+){
   
   mat <- which(model_sol$names.var.X=="M_at")
   
@@ -524,10 +560,10 @@ scc.fct <- function(model_sol,h,
 
 scc.fct.CRRA <- function(model_sol,
                          C_0=model_sol$parameters$c0, # expressed in trillions of USD
-                         X=model_sol$X,
-                         t=0,
-                         H=200){
-  # returns SCC in USD per t CO2 (= per tC / 3.667)
+                         X=model_sol$X, # vector of state variables
+                         t=0, # initial date
+                         H=200 # time horizon of SCC
+){
   
   mat     <- which(model_sol$names.var.X=="M_at")
   
@@ -552,15 +588,13 @@ scc.fct.CRRA <- function(model_sol,
     scc.decomp = scc.decomp))
 }
 
-
-
 #* PRICING ---------------------------------------------------------------------
 
 #--------------Yield curve for ZCB
 #* Compute yield curve for a ZCB of maturity 'h'
 #* returns a (h*2) matrix, 
-#* where the first column corresponds to the date,
-#* and the second column corresponds to the rate in percent.
+#*   where the first column corresponds to the date,
+#*   and the second column corresponds to the rate in percent.
 compute_yc<-function(model_sol,
                      h, #maturity t+h
                      X=model_sol$X, #initial state vector in t (default is X_0)
@@ -579,8 +613,8 @@ compute_yc<-function(model_sol,
 #--------------Cst maturity for ZCB
 #* Compute constant maturity 'h' for ZCB 'nb' times.
 #* returns a (h*2) matrix, 
-#* where the first column corresponds to the date,
-#* and the second column corresponds to the rate in percent.
+#*   where the first column corresponds to the date,
+#*   and the second column corresponds to the rate in percent.
 compute_cst_h<-function(model_sol,
                         h, #maturity t+h
                         nb, #number of time compute CM rates.
@@ -603,18 +637,18 @@ compute_cst_h<-function(model_sol,
   return(dr)
 }
 
-#--------------Corollary: TIBs-leverage function
+#--------------TIBs-leverage function
 #* returns a list of 3 vectors
-#* P.tib: prices
-#* r.tib: annual real interest rates
-#* date: vector of dates related to the TIB.
+#*   P.tib: prices
+#*   r.tib: annual real interest rates
+#*   date:  vector of dates related to the TIB.
 TIB <- function(model_sol,
-                chi, #leverage factor
-                T0,  #index decided by the issuer at date t
-                H,   #maturity t+H
-                i,   #payoff indexed to variable w/in state vector X
-                X=model_sol$X, #initial state vector in t (default is X_0)
-                t=0 #starting date (default = 0)
+                chi, # leverage factor
+                T0,  # index decided by the issuer at date t
+                H,   # maturity t+H
+                i,   # payoff indexed to variable w/in state vector X
+                X=model_sol$X, # initial state vector in t (default is X_0)
+                t=0 # starting date (default = 0)
 ){
   o.ZCB<-matrix(0,model_sol$n.X,1)
   o.t    <- o.ZCB
@@ -628,18 +662,19 @@ TIB <- function(model_sol,
   return(mylist)
 }
 
-#--------------Proposition 5: payoff on date t+h = exp(t(omega)%*%X)
-#*returns a list of 5 vectors
-#*varphi0, see Proposition 5
-#*varphi1, see Proposition 5
-#*P.t: prices
-#*r.t: annual real interest rates
-#*date: vector of dates related to asset priced.
+#--------------Proposition 5: General formula for pricing
+#* payoff on date t+h = exp(t(omega)%*%X)
+#* returns a list of 5 vectors
+#*   varphi0, see Proposition 5
+#*   varphi1, see Proposition 5
+#*   P.t: prices
+#*   r.t: annual real interest rates
+#*   date: vector of dates related to asset priced.
 varphi<-function(model_sol,
-                 omega.varphi, #payoff matrix of dim(X)*1
-                 H, #maturity t+H
-                 X=model_sol$X, #initial state vector in t (default is X_0)
-                 t=0 #starting date (default = 0)
+                 omega.varphi, # payoff matrix of dim(X)*1
+                 H, # maturity t+H
+                 X=model_sol$X, # initial state vector in t (default is X_0)
+                 t=0 # starting date (default = 0)
 ){
   P.pi    <-model_sol$pi
   P.eta_1 <-model_sol$eta1
@@ -721,16 +756,21 @@ varphi<-function(model_sol,
   return(mylist)
 }
 
-#--------------Proposition: payoff on date t+h = exp(t(omega)%*%X)*1_{t(a)%*%X<b}
-#*a is a vector dim(X)*1 and b is a scalar associated with the options 
+#-------------- eq.(38) 
+#* payoff on date t+h = exp(t(omega)%*%X)*1_{t(a)%*%X<b}
+#* returns a list of 3 vectors:
+#*   P.hat: prices
+#*   r.hat: annual real interest rates
+#*   date:  vector of dates related to the asset
+
 varphi.hat<-function(model_sol,
-                     omega.v.hat,
-                     H, #maturity t+H
-                     x,
-                     a, #payoff indexed to variable w/in state vector X
-                     b, #strike, scalar
-                     X=model_sol$X, #initial state vector in t (default is X_0)
-                     t=0 #starting date (default = 0)
+                     omega.v.hat, # payoff matrix of dim(X)*1
+                     H, # maturity t+H
+                     x, # grid for integral for approx. FOurier transform
+                     a, # payoff indexed to variable w/in state vector X, vector dim(X)*1
+                     b, # strike, scalar
+                     X=model_sol$X, # initial state vector in t (default is X_0)
+                     t=0 # starting date (default = 0)
 ){
   dx<-matrix(x-c(0,x[1:length(x)-1]),length(x),1)
   fx<-matrix(NaN,H,length(x))
@@ -758,8 +798,18 @@ varphi.hat<-function(model_sol,
   return(mylist)
 }
 
-#--------------Corollary: payoff on date t+h = t(omega)%*%X
-varphi.tilde<-function(model_sol,omega.v.tilde,H,X=model_sol$X,t=0){
+#-------------- eq.(37) 
+#* payoff on date t+h = t(omega)%*%X
+#* returns a list of 3 vectors:
+#*   P.tilde: prices
+#*   r.tilde: annual real interest rates
+#*   date:    vector of dates related to the asset
+varphi.tilde<-function(model_sol,
+                       omega.v.tilde, # payoff matrix of dim(X)*1
+                       H, # maturity t+H
+                       X=model_sol$X, # initial state vector in t (default is X_0)
+                       t=0 # starting date (default = 0)
+){
   eps  <- 10^(-6)
   o.ZCB<-matrix(0,model_sol$n.X,1)
   
@@ -777,9 +827,21 @@ varphi.tilde<-function(model_sol,omega.v.tilde,H,X=model_sol$X,t=0){
   return(mylist)
 }
 
-#--------------Corollary: payoff on date t+h = t(omega)%*%X*1_{t(a)%*%X<b}
-#*x is a grid that allow the function to do the approximated Fourier transform
-varphi.bar<-function(model_sol,omega.v.bar,H,x,a,b,X=model_sol$X,t=0){
+#-------------- eq.(39) 
+#* payoff on date t+h = t(omega)%*%X*1_{t(a)%*%X<b}
+#* returns a list of 3 vectors:
+#*   P.bar: prices
+#*   r.bar: annual real interest rates
+#*   date:  vector of dates related to the asset
+varphi.bar<-function(model_sol,
+                     omega.v.bar, # payoff matrix of dim(X)*1
+                     H, # maturity t+H
+                     x, # grid for integral for approx. FOurier transform
+                     a, # payoff indexed to variable w/in state vector X, vector dim(X)*1
+                     b, # strike, scalar
+                     X=model_sol$X, # initial state vector in t (default is X_0)
+                     t=0 # starting date (default = 0)
+){
   eps       <-10^-5
   varphi.bar<-(varphi.hat(model_sol,eps*omega.v.bar,H,x,a,b,X,t)[[1]]-
                  varphi.hat(model_sol,0,H,x,a,b,X,t)[[1]])/eps
@@ -796,22 +858,121 @@ varphi.bar<-function(model_sol,omega.v.bar,H,x,a,b,X=model_sol$X,t=0){
   return(mylist)
 }
 
+#* New pricing functions where varphi is evaluated in parallel at different omega's. 
+#* For only one maturity at a time.
+varphi_multi_omega<-function(model_sol,
+                             omega, # matrix of dimension (dim(X)xK)
+                             H, # maturity t+H
+                             X=model_sol$X, # initial state vector in t (default is X_0)
+                             t=0 # starting date (default = 0)
+                             ){
+  K <- dim(omega)[2]
+  
+  P.pi <- t(matrix(unlist(model_sol$pi),
+                   model_sol$n.X,model_sol$Tmax-2))
+  eta0 <- model_sol$eta0
+  eta1 <- t(matrix(unlist(model_sol$eta1),
+                   model_sol$n.X,model_sol$Tmax-2))
+  
+  P.a.pi <- matrix(NaN,H-1,1)
+  P.b.pi <- matrix(NaN,H-1,model_sol$n.X)
+  
+  U <- array(0,c(model_sol$n.X,K,H))
+  
+  if(H>1){
+    for(k in 1:(H-1)){
+      P.a.pi[k]  <- a1.fct(model_sol,matrix(P.pi[t+k+1,],ncol=1),t+k)
+      P.b.pi[k,] <- b1.fct(model_sol,matrix(P.pi[t+k+1,],ncol=1),t+k)
+      
+      U[,,k] <- - eta1[t+k+1,] - P.b.pi[k,] + P.pi[t+k,]
+    }
+  }
+  U[,,H] <- P.pi[t+H,] + omega
+  
+  res.psi <- multi.lt.fct.Uh_MULTI(model_sol, Uh=U, X=X, t=t)
+  
+  # Specific treatment for k=1:
+  P.a.pi.1 <- a1.fct(model_sol,matrix(P.pi[t+1,],ncol=1),t)
+  P.b.pi.1 <- b1.fct(model_sol,matrix(P.pi[t+1,],ncol=1),t)
+  
+  varphi0 <- - sum(eta0[(t+1):(t+H)]) - c(P.a.pi.1) - sum(P.a.pi) +
+    res.psi$psi.0
+  varphi1 <- matrix(- eta1[t+1,] - P.b.pi.1,model_sol$n.X,K) + 
+    res.psi$psi.1
+  
+  Varphi <- exp(varphi0 + t(varphi1)%*%X)
+  
+  mylist<-list("varphi0"=varphi0,"varphi1"=varphi1,"P.t"=Varphi)
+  
+  return(mylist)
+}
+
+
+varphi.hat.fast<-function(model_sol,
+                          omega, # matrix of dimension (dim(X)xK)
+                          H, # maturity t+H
+                          x, # grid for integral for approx. FOurier transform
+                          a, # payoff indexed to variable w/in state vector X, vector dim(X)*1
+                          b, # strike, scalar
+                          X=model_sol$X, # initial state vector in t (default is X_0)
+                          t=0 # starting date (default = 0)
+                          ){
+  dx<-matrix(x-c(0,x[1:length(x)-1]),length(x),1)
+  U <- matrix(omega,model_sol$n.X,length(x))
+  U <- U + 1i*matrix(a,ncol=1) %*% matrix(x,nrow=1)
+  s1<-varphi_multi_omega(model_sol,U,H,X=X,t=t)$P.t
+  fx<-outer(x,b,function(r,c)Im(s1[,1]*exp(-1i*r*c))/r)*
+    dx[,1]
+  varphi.hat<-varphi(model_sol,omega,H,X,t)[[3]][H]/2-1/pi*apply(fx,2,sum)
+  return(varphi.hat)
+}
+
+varphi.bar.fast<-function(model_sol,
+                          omega, # matrix of dimension (dim(X)xK)
+                          H, # maturity t+H
+                          x, # grid for integral for approx. FOurier transform
+                          a, # payoff indexed to variable w/in state vector X, vector dim(X)*1
+                          b, # strike, scalar
+                          X=model_sol$X, # initial state vector in t (default is X_0)
+                          t=0 # starting date (default = 0)
+                          ){
+  eps       <-10^-5
+  varphi.bar<-(varphi.hat.fast(model_sol,eps*omega,H,x,a,b,X,t)[[1]]-
+                 varphi.hat.fast(model_sol,0,H,x,a,b,X,t)[[1]])/eps
+  return(varphi.bar)
+}
+
+
 
 #* FOURIER TRANSFORM -----------------------------------------------------------
-
 #------------------------Fourier defined for cdf (u=0)
-#*i is the variable in X we are interested in
-#*h is the maturity/horizon
-#*u is set to 0 to compute the cdf
-#*x is a grid for the integral
-#*gamma is the set of possible values for the variable i
-psi<-function(model_sol,u,h,i,X=model_sol$X,indic.cum=0){
+#* i is the variable in state vector X we are interested in
+#* h is the maturity/horizon
+#* u is set to 0 to compute the cdf
+#* x is a grid for the integral
+#* gamma is the set of possible values for the variable i
+psi<-function(model_sol,
+              u,
+              h,
+              i,
+              X=model_sol$X,
+              indic.cum=0
+){
   U    <-matrix(0,model_sol$n.X,length(u))
   U[i,]<-u
   psi  <-multi.lt.fct.N(model_sol,U,h,X,indic.cum=indic.cum)
   return(psi)
 }
-fourier<-function(model_sol,x,gamma,h,i,X=model_sol$X,u=0,indic.cum=0){
+
+fourier<-function(model_sol,
+                  x,
+                  gamma,
+                  h,
+                  i,
+                  X=model_sol$X,
+                  u=0,
+                  indic.cum=0
+){
   # works only for i^th variable
   dx<-matrix(x-c(0,x[1:length(x)-1]),length(x),1)
   s1<-psi(model_sol,u+1i*x,h,i,X,indic.cum=indic.cum)
@@ -821,12 +982,17 @@ fourier<-function(model_sol,x,gamma,h,i,X=model_sol$X,u=0,indic.cum=0){
   return(f)
 }
 
-
-fourier_complete<-function(model_sol,x,
-                           omega,a,b,
+# General Fourier transform
+#  works for any linear combination (omega'X) of X variables
+fourier_complete<-function(model_sol,
+                           x,
+                           omega,
+                           a,
+                           b,
                            h,
-                           X=model_sol$X,indic.cum=0){
-  # works for any linear combination (omega'X) of X variables
+                           X=model_sol$X,
+                           indic.cum=0
+){
   dx<-matrix(x-c(0,x[1:length(x)-1]),length(x),1)
   U <- matrix(omega,model_sol$n.X,length(x))
   U <- U + 1i*matrix(a,ncol=1) %*% matrix(x,nrow=1)
@@ -841,12 +1007,13 @@ fourier_complete<-function(model_sol,x,
 
 
 #* MULTI LT, SIMPLE + COMPLETE -------------------------------------------------
-
 #----------------------------------Proposition: Multi-horizon LapT of X
-#*U is a matrix of dimension "dim(X)*H", with H>1, the maturity
-#*return psi0, psi1 and psi_t.H
-multi.lt.fct.Uh <- function(model_sol,Uh,
-                            X=model_sol$X,t=0){
+#*returns psi0, psi1 and psi_t.H
+multi.lt.fct.Uh <- function(model_sol,
+                            Uh, # matrix of dimension "dim(X)*H", with H>1, the maturity
+                            X=model_sol$X, # initial state vector in t (default is X_0)
+                            t=0
+){
   H <- dim(Uh)[2]
   U <- list(Uh[,H,drop=F])
   if((t+H)>(model_sol$Tmax-1)){
@@ -891,9 +1058,12 @@ multi.lt.fct.Uh <- function(model_sol,Uh,
 # Corollary: Simple Multihorizon LapT ------------------------------------------
 #*h corresponds to the maturity, max 99, then time-independent functions
 #*U is a column vector of dimension "dim(X)*1"
-#*return psi0, psi1 and psi_t.h
-multi.lt.fct <- function(model_sol,U,
-                         h,X=model_sol$X,t=0){
+#* returns a list of 3 elements:
+multi.lt.fct <- function(model_sol,
+                         U,
+                         h,
+                         X=model_sol$X,
+                         t=0){
   
   param <- model_sol$parameters
   
@@ -934,8 +1104,13 @@ multi.lt.fct <- function(model_sol,U,
 #----------------------------------Corollary .N: Simple Multihorizon LapT
 #*U is a matrix of dimension "dim(X)*N"
 #*return psi_t.h
-multi.lt.fct.N <- function(model_sol,U,h,
-                           X=model_sol$X,t=0,indic.cum=0){
+multi.lt.fct.N <- function(model_sol,
+                           U,
+                           h,
+                           X=model_sol$X,
+                           t=0,
+                           indic.cum=0
+                           ){
   
   param <- model_sol$parameters
   
@@ -969,13 +1144,16 @@ multi.lt.fct.N <- function(model_sol,U,h,
 
 
 #* SOLVING SDF -----------------------------------------------------------------
+#* See Proposition 4
 
 #  Function that returns mu_u1 and mu_u0 @0 ------------------------------------
-#*Tend: General case with Tmax=100, ends up with t=2020
-#*If want a specific date --> mu_u.t.fct.all
-#*return mu_u0.t, mu_u1.t
+#* If want a specific date --> mu_u.t.fct.all
+#* returns a list of 2 elements:
+#*   mu_u0.t
+#*   mu_u1.t
 mu_u.t.fct <- function(model_sol,
-                       Tend = model_sol$Tmax){
+                       Tend = model_sol$Tmax # Final date, general case with Tmax=100, ends up with t=2020
+                       ){
   # comes back to initial date if Tend = Tmax
   
   param   <- model_sol$parameters
@@ -1000,7 +1178,11 @@ mu_u.t.fct <- function(model_sol,
 }
 
 # List with all mu_u1.t and mu_u0.t: -------------------------------------------
-#*from t=1 to t=Tmax-2, inf(i.e., from t=Tmax-1 onwards) not in list
+#* returns a list of 3 elements:
+#*   mu_u0.t
+#*   mu_u1.t
+#*   date: corresponding dates of mu_u
+#* Note: from t=1 to t=Tmax-2, so inf (i.e., from t=Tmax-1 onwards) not in list
 mu_u.t.fct.all <- function(model_sol){
   
   param     <- model_sol$parameters
@@ -1041,17 +1223,18 @@ mu_u.t.fct.all <- function(model_sol){
 }
 
 
-#* SOLVE MODEL, MEAN AND SIMUL -------------------------------------------------
+#* SOLVE MODEL and EXPECTATIONS ------------------------------------------------
 
 # Solve model for infinite mitig mu = 1 ----------------------------------------
 #*theta is a set of ini. conditions for the optimization of mitig rate mu
 model_solve <- function(model,
                         theta       = model$theta0,
-                        indic_mitig = TRUE,
+                        indic_mitig = TRUE, # optimize mitigation
                         mu.chosen   = rep(model$parameters$mu0,
-                                          model$Tmax),
-                        mu_altern   = model$Cum_dc,
-                        indic_CRRA  = FALSE){
+                                          model$Tmax), # vector of mitigation rates of length Tmax
+                        mu_altern   = model$Cum_dc, #
+                        indic_CRRA  = FALSE # use CRRA utility function instead of EZ
+                        ){
   # Data preparation
   model_sol <- model
   param     <- model$parameters
@@ -1644,17 +1827,13 @@ utility.optim <- function(model_sol,
 
 compute.utility.EZ <- function(model_sol,Tend,X,
                                indic_returns_mu_u.1=FALSE){
-  # ============================================================================
-  # ============================================================================
-  # ============================================================================
+  #
   if(Tend == model_sol$Tmax){
     mu_u.1 <- mu_u.t.fct(model_sol,Tend)
   }else{
     mu_u.1 <- mu_u.t.fct(model_sol,Tend)
   }
-  # ============================================================================
-  # ============================================================================
-  # ============================================================================
+  #
   if(is.na(mu_u.1[[1]])){
     return(-10000)
   }
@@ -1694,7 +1873,11 @@ compute.utility.CRRA <- function(model_sol,
 
 
 #* Function for theoretical mean and variance ----------------------------------
-#*list starts in start_date+tstep
+#* Note: list starts in start_date+tstep
+#* returns large list of conditional mean, variance-covariance matrices,
+#*   lower/upper bounds, corresponding dates, etc. for all h
+#*   
+#*   See Propositions 7 & 8 for W, and 9 & 10 for X.
 
 EV.fct<-function(model_sol,
                  h=NaN # h:=end date of estimations, \in(1,99)
@@ -1730,7 +1913,7 @@ EV.fct<-function(model_sol,
   n.W   <-model_sol$n.W
   n.eta <-model_sol$n.eta
   
-  #Proposition 4 + 5: Conditional mean and variance of W -----------------------
+  #Conditional mean and variance of W ------------------------------------------
   #alpha1.w, beta1.w, alpha2.w, beta2.w                                         
   alpha1.w    <-lapply(1:t,function(i){
     rbind(matrix(0,n.Z+n.eta,1),
@@ -1811,7 +1994,7 @@ EV.fct<-function(model_sol,
   
   EV<-list()
   
-  #Proposition 6+7: Conditional mean and variance of X
+  #Conditional mean and variance of X ------------------------------------------
   #alpha1.k1
   alpha1.k1<-lapply(1:t,function(i){
     rbind(omega0[[i]],matrix(0,model_sol$n.W,1))+
@@ -1946,161 +2129,14 @@ EV.fct<-function(model_sol,
 }
 
 
-#* Simulations -----------------------------------------------------------------
-#------------------Function to simulate state variables of our model
-#*New approximation of the radiative forcings (linear)
-#*nb.simul is number of periods for 1 simulation \in(1,99)
-#*nb.traj is the number of simulations done for nb.simul periods
-#*for t>99, time-independent matrices
-simul.function<-function(model_sol,nb.simul.t,nb.traj,setseed=NaN){
-  
-  if(!is.na(setseed)){
-    set.seed(setseed)
-  }
-  
-  #useful parameters
-  nb.simul<-nb.simul.t+1 #take into account t=0
-  
-  tstep<-model_sol$tstep
-  t    <-1:nb.simul
-  param<-model_sol$parameters
-  
-  n.Z   <- model_sol$n.Z
-  n.W   <- model_sol$n.W
-  n.X   <- model_sol$n.X
-  n.eta <- model_sol$n.eta
-  
-  if(nb.simul>model_sol$Tmax){
-    omega0<-model_sol$omega0
-    inf   <-rep(list(model_sol$omega0.inf),nb.simul-model_sol$Tmax)
-    omega0<-c(omega0,inf)
-    
-    omega <-model_sol$omega
-    inf   <-rep(list(model_sol$omega.inf),nb.simul-model_sol$Tmax)
-    omega <-c(omega,inf)
-    
-    A1    <-model_sol$A1
-    inf   <-rep(list(model_sol$A1.inf),nb.simul-model_sol$Tmax)
-    A1    <-c(A1,inf)
-  }else{
-    omega0<-model_sol$omega0
-    omega <-model_sol$omega
-    A1    <-model_sol$A1
-  }
-  
-  eta <- matrix(0,n.eta,nb.traj)
-  
-  # Create indicators of position of variables (Variables in Z):
-  for(i in 1:n.Z){
-    eval(parse(text = gsub(" "," ",
-                           paste("indic.",model_sol$names.var.X[i],
-                                 "<- which(model_sol$names.var.X=='",model_sol$names.var.X[i],
-                                 "')",sep=""))))}
-  
-  # Create indicators of position of variables (Variables in W):
-  for(i in (n.Z+1):(n.Z+n.W)){
-    eval(parse(text = gsub(" "," ",
-                           paste("indic.",model_sol$names.var.X[i],
-                                 "<- which(model_sol$names.var.X=='",model_sol$names.var.X[i],
-                                 "')-n.Z",sep=""))))}
-  
-  Z <- list(matrix(model_sol$X[1:n.Z],n.Z,nb.traj))
-  W <- list(matrix(model_sol$X[(n.Z+1):n.X],n.W,nb.traj))
-  X <- list(rbind(Z[[1]],W[[1]]))
-  
-  for (i in 2:nb.simul) {
-    W[[i]] <- matrix(0,n.W,nb.traj)
-    
-    eta <- param$Phi %*% eta + matrix(rnorm(n.eta * nb.traj),n.eta,nb.traj)
-    W[[i]][1:n.eta,] <- eta
-    
-    W[[i]][indic.D,] <-
-      rgamma(nb.traj,rpois(nb.traj,
-                           pmax(0,(param$a_D/param$mu_D+
-                                     t(model_sol$ell1.D)%*%
-                                     rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_D)
-    
-    W[[i]][indic.N,] <-
-      rgamma(nb.traj,rpois(nb.traj,pmax(0,(param$kappa_N^(i-1)*param$a_N/param$mu_N+
-                                             param$kappa_N^(i-1)*t(model_sol$ell1.N)%*%
-                                             rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_N)
-    
-    W[[i]][indic.WT_at,] <-
-      rgamma(nb.traj,rpois(nb.traj,pmax(0,(param$a_T/param$mu_T+
-                                             t(model_sol$ell1.T)%*%
-                                             rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_T)
-    
-    W[[i]][indic.dH,] <-
-      rgamma(nb.traj,rpois(nb.traj,pmax(0,(param$a_H/param$mu_H+
-                                             t(model_sol$ell1.H)%*%
-                                             rbind(Z[[i-1]],W[[i-1]])))),scale=param$mu_H)
-    
-    # Z variables:
-    Z_1.0  <- apply(Z[[i-1]],2,
-                    function(x){A1[[i-1]]%*%x+omega0[[i-1]]})
-    Wz     <- apply(W[[i]],2,function(x){omega[[i-1]]%*%x})
-    Z[[i]] <- Z_1.0+Wz
-    X[[i]] <- rbind(Z[[i]],W[[i]])
-  }
-  
-  #extract path over time and remove time 0 (i.e., X_0)
-  delc   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.delc,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  y_tilde<-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.y_tilde,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  E      <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.E,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  Forc   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Forc,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  M_at   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.M_at,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  M_up   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.M_up,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  M_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.M_lo,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  T_at   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.T_at,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  T_lo   <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.T_lo,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  Cum_E  <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_E,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  Cum_dc <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.Cum_dc,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  H      <-matrix(t(extract(lapply(Z[1:nb.simul],function(x) x[indic.H,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  
-  D    <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.D,]),1:nb.traj)),
-                 ncol=nb.traj)[-1,]
-  N    <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.N,]),1:nb.traj)),
-                 ncol=nb.traj)[-1,]
-  WT_at <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.WT_at,]),1:nb.traj)),
-                  ncol=nb.traj)[-1,]
-  dH   <- matrix(t(extract(lapply(W[1:nb.simul],function(x) x[indic.dH,]),1:nb.traj)),
-                 ncol=nb.traj)[-1,]
-  
-  X      <- X[-1]
-  
-  vec_date <- seq(model_sol$vec_date[2],
-                  by=model_sol$tstep,length=nb.simul-1)
-  
-  
-  mylist<-c(list("delc"=delc,"y_tilde"=y_tilde,"E"=E,"Forc"=Forc,
-                 "M_at"=M_at,"M_up"=M_up,"M_lo"=M_lo,"T_lo"=T_lo,"T_at"=T_at,
-                 "Cum_E"=Cum_E,"Cum_dc"=Cum_dc,"H"=H),
-            list("D"=D,"N"=N,"WT_at"=WT_at,"dH"=dH),
-            list("X"=X))
-  
-  return(mylist)
-}
-
-
 #* LAPLACE TRANSFORMS (LapT) FCTS ----------------------------------------------
-#-------------------------------------Proposition: LapT of W
-#*Functions for 'a.w.t' and 'b.w.t'
-#*U is a dim(W)*N vector
-#*
+#-------------------------------------Propositions 1 & 6
+# LapT of W
 
-a1.w.fct <- function(model_sol,U,t){
+a1.w.fct <- function(model_sol,
+                     U, # dim(W)*N vector
+                     t # date of computation, t=0 for 2020
+                     ){
   param <-model_sol$parameters
   n.eta <-model_sol$n.eta
   
@@ -2133,7 +2169,10 @@ a1.w.fct <- function(model_sol,U,t){
   return(a.w)
 }
 
-b1.w.fct<-function(model_sol,U,t){
+b1.w.fct<-function(model_sol,
+                   U, # dim(W)*N vector
+                   t # date of computation, t=0 for 2020
+                   ){
   param <-model_sol$parameters
   n.eta <-model_sol$n.eta
   
@@ -2171,12 +2210,13 @@ b1.w.fct<-function(model_sol,U,t){
   return(b.w)
 }
 
+# LapT of X
+#* MIN value for t: 0; MAX value for t: Tmax-2
+#* U: n.X*N matrix
 
-#----Proposition: One-Period ahead Laplace transform of X ----------------------
-#*MIN value for t: 0; MAX value for t: Tmax-2
-#*U: n.X*N matrix
-
-a1.fct <- function(model_sol,U,t){
+a1.fct <- function(model_sol,U,
+                   t # date of computation, t=0 for 2020
+                   ){
   # t has to be < Tmax - 1 (otherwise use a1.fct.inf)
   omega.0 <- model_sol$omega0
   omega   <- model_sol$omega
@@ -2191,7 +2231,9 @@ a1.fct <- function(model_sol,U,t){
   return(a)
 }
 
-b1.fct <- function(model_sol,U,t){
+b1.fct <- function(model_sol,U,
+                   t # date of computation, t=0 for 2020
+                   ){
   # t has to be < Tmax - 1 (otherwise use b1.fct.inf)
   A.1   <- model_sol$A1
   omega <- model_sol$omega
@@ -2208,9 +2250,9 @@ b1.fct <- function(model_sol,U,t){
 
 #* INFINITE AND GN -------------------------------------------------------------
 
-#---- Functions for infinite a,b
-#*U: matrix dim(U)=n.X*N
-a1.w.fct.inf<-function(model_sol,U){
+#* Functions for infinite a,b
+#* U: matrix dim(U)=(dim(X) x N)
+a1.w.fct.inf <- function(model_sol,U){
   param <-model_sol$parameters
   n.eta <-model_sol$n.eta
   
@@ -2299,9 +2341,14 @@ b1.fct.inf <- function(model_sol,U){
 
 
 # Solution method for mu_u1 (fixed point) --------------------------------------
-#*x0: matrix of dimension "n.X*1", initial guess of infinite values
-#*return nb of iterations, dev, mu_u1.inf, list dev
-Auxiliary.function <- function(model_sol,x0){
+#* returns list of 4 elements
+#*   ite: nb of iterations
+#*   dev: final deviation wrt tolerance 
+#*   mu_u1: mu_u1 inf from Proposition 3 
+#*   listdev: list of deviations from each loop computed
+Auxiliary.function <- function(model_sol,
+                               x0 # matrix (dim(X)x1)", initial guess of infinite values
+                               ){
   param     <- model_sol$parameters
   mu_u1   <- x0
   ite     <- 0
@@ -2320,11 +2367,12 @@ Auxiliary.function <- function(model_sol,x0){
 }
 
 
-### New pricing functions where varphi is evaluated in parallel ----------------
-### at different omega's. For only one maturity at a time.
 
-
-multi.lt.fct.Uh_MULTI <- function(model_sol,Uh,X=model_sol$X,t=0){
+multi.lt.fct.Uh_MULTI <- function(model_sol,
+                                  Uh,
+                                  X=model_sol$X,
+                                  t=0
+                                  ){
   H <- dim(Uh)[3] # number of horizons
   K <- dim(Uh)[2]
   U <- list(matrix(Uh[,,H],ncol=K))
@@ -2370,70 +2418,15 @@ multi.lt.fct.Uh_MULTI <- function(model_sol,Uh,X=model_sol$X,t=0){
 }
 
 
-varphi_multi_omega<-function(model_sol,omega,H,X=model_sol$X,t=0){
-  # omega of dimension n.X x K
-  
-  K <- dim(omega)[2]
-  
-  P.pi <- t(matrix(unlist(model_sol$pi),
-                   model_sol$n.X,model_sol$Tmax-2))
-  eta0 <- model_sol$eta0
-  eta1 <- t(matrix(unlist(model_sol$eta1),
-                   model_sol$n.X,model_sol$Tmax-2))
-  
-  P.a.pi <- matrix(NaN,H-1,1)
-  P.b.pi <- matrix(NaN,H-1,model_sol$n.X)
-  
-  U <- array(0,c(model_sol$n.X,K,H))
-  
-  if(H>1){
-    for(k in 1:(H-1)){
-      P.a.pi[k]  <- a1.fct(model_sol,matrix(P.pi[t+k+1,],ncol=1),t+k)
-      P.b.pi[k,] <- b1.fct(model_sol,matrix(P.pi[t+k+1,],ncol=1),t+k)
-      
-      U[,,k] <- - eta1[t+k+1,] - P.b.pi[k,] + P.pi[t+k,]
-    }
-  }
-  U[,,H] <- P.pi[t+H,] + omega
-  
-  res.psi <- multi.lt.fct.Uh_MULTI(model_sol, Uh=U, X=X, t=t)
-  
-  # Specific treatment for k=1:
-  P.a.pi.1 <- a1.fct(model_sol,matrix(P.pi[t+1,],ncol=1),t)
-  P.b.pi.1 <- b1.fct(model_sol,matrix(P.pi[t+1,],ncol=1),t)
-  
-  varphi0 <- - sum(eta0[(t+1):(t+H)]) - c(P.a.pi.1) - sum(P.a.pi) +
-    res.psi$psi.0
-  varphi1 <- matrix(- eta1[t+1,] - P.b.pi.1,model_sol$n.X,K) + 
-    res.psi$psi.1
-  
-  Varphi <- exp(varphi0 + t(varphi1)%*%X)
-  
-  mylist<-list("varphi0"=varphi0,"varphi1"=varphi1,"P.t"=Varphi)
-  
-  return(mylist)
+#* MISCELLANEOUS ---------------------------------------------------------------
+
+# Function to extract n'th element of the list
+extract<-function(list, n){
+  sapply(list, `[`, n)
 }
 
 
-varphi.hat.fast<-function(model_sol,omega,H,x,a,b,X=model_sol$X,t=0){
-  dx<-matrix(x-c(0,x[1:length(x)-1]),length(x),1)
-  U <- matrix(omega,model_sol$n.X,length(x))
-  U <- U + 1i*matrix(a,ncol=1) %*% matrix(x,nrow=1)
-  s1<-varphi_multi_omega(model_sol,U,H,X=X,t=t)$P.t
-  fx<-outer(x,b,function(r,c)Im(s1[,1]*exp(-1i*r*c))/r)*
-    dx[,1]
-  varphi.hat<-varphi(model_sol,omega,H,X,t)[[3]][H]/2-1/pi*apply(fx,2,sum)
-  return(varphi.hat)
-}
-
-varphi.bar.fast<-function(model_sol,omega,H,x,a,b,X=model_sol$X,t=0){
-  eps       <-10^-5
-  varphi.bar<-(varphi.hat.fast(model_sol,eps*omega,H,x,a,b,X,t)[[1]]-
-                 varphi.hat.fast(model_sol,0,H,x,a,b,X,t)[[1]])/eps
-  return(varphi.bar)
-}
-
-
+# returns new model with alternative path of mitigation
 update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
                                          indic_cum = 1,
                                          indic_Euler = 0,
@@ -2518,9 +2511,11 @@ update.model_sol.4.mu_altern <- function(model_sol,mu_altern,
   return(new_model_sol)
 }
 
-
-#* Robustness checks -----------------------------------------------------------
-simul_TAT_condit_MAT <- function(model_sol,Mat.trajectory,indic_stochastic=FALSE){
+#* ROBUSTNESS CHECKS -----------------------------------------------------------
+simul_TAT_condit_MAT <- function(model_sol,
+                                 Mat.trajectory,
+                                 indic_stochastic=FALSE
+                                 ){
   # Use CR model to compute expected trajectory of Temperature conditional on 
   # M_AT pathway.
   # Mat.trajectory has to be of dimension H x n where n.traj is a nomber of trajectories.
@@ -2598,9 +2593,14 @@ simul_TAT_condit_MAT <- function(model_sol,Mat.trajectory,indic_stochastic=FALSE
 }
 
 
-simul_TAT_condit_MAT_CDICE <- function(tstep,Mat.trajectory,TAT.ini,TLO.ini,F.ini,
+simul_TAT_condit_MAT_CDICE <- function(tstep,
+                                       Mat.trajectory,
+                                       TAT.ini,
+                                       TLO.ini,
+                                       F.ini,
                                        param,
-                                       year.ini=2020){
+                                       year.ini=2020
+                                       ){
   # Use CDICE to produce trajectories of temperatures conditional on M_AT traj.
   c1 <- .137
   c3 <- .73
