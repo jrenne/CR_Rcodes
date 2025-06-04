@@ -7,7 +7,7 @@
 # Check sensitivity to assumptions regarding mu_t:
 # (i) parametric function + (ii) time consistency
 
-x.lim <- c(model_sol$vec_date[2],2200)
+x.lim <- c(model_sol$vec_date[2],2150)
 
 dice_data           <- read.csv("data/mu.csv",sep=";",header = F)
 row.names(dice_data)<- dice_data[,1]
@@ -49,7 +49,8 @@ plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      model_sol$mu[2:length(model_sol$vec_date)],
      type="l", xlab="Year",ylab="",lwd=2,
      ylim=c(0,1),las=1,
-     xlim=x.lim,las=1,main="(a) Mitigation rate, comparison with DICE")
+     xlim=x.lim,
+     las=1,main="(a) Mitigation rate, comparison with DICE")
 lines(model_sol$vec_date[2:length(model_sol$vec_date)],
       mu_dice[2:length(model_sol$vec_date)],lwd=2,lty=2,
       col="grey")
@@ -124,7 +125,9 @@ plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
                  t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
-     ylim=c(0,1),las=1,xlab="years",ylab="",
+     ylim=c(0,1),
+     xlim=x.lim,
+     las=1,xlab="years",ylab="",
      main="(b) Re-optimize - State vector = avg")
 for(t in 1:max.t){
   lines(model_sol$vec_date[2:length(model_sol$vec_date)],
@@ -202,10 +205,10 @@ all_mu <- foreach(t = 1:max.t,
                     ZCB <- varphi(model_sol,omega_ZCB,HHH,X=Xt,t=t)
                     ET.Q  <- varphi.tilde(model_sol,omega_T.at,HHH,
                                           X=Xt,t=t)[[1]]/ZCB$P.t
-                    plot(ET.P,type="l")
-                    lines(ET.Q,lty=2)
-                    lines(ET.P_new,col="red")
-                    lines(ET.Q_new,col="red",lty=2)
+                    # plot(ET.P,type="l")
+                    # lines(ET.Q,lty=2)
+                    # lines(ET.P_new,col="red")
+                    # lines(ET.Q_new,col="red",lty=2)
                     # ----------------------------------------------------------
                     
                     # The last two entries are to check the effect of updating on SCC:
@@ -219,7 +222,9 @@ plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
                  t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
-     ylim=c(0,1),las=1,xlab="years",ylab="",
+     ylim=c(0,1),
+     xlim=x.lim,
+     las=1,xlab="years",ylab="",
      main="(c) Re-optimize - State vector = avg + 2 std.dev.")
 for(t in 1:max.t){
   lines(model_sol$vec_date[2:length(model_sol$vec_date)],
@@ -267,7 +272,9 @@ plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
                  t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
-     ylim=c(0,1),las=1,xlab="years",ylab="",
+     ylim=c(0,1),
+     xlim=x.lim,
+     las=1,xlab="years",ylab="",
      main="(d) Re-optimize - State vector = avg - 2 std.dev.")
 for(t in 1:max.t){
   lines(model_sol$vec_date[2:length(model_sol$vec_date)],

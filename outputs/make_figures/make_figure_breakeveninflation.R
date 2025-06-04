@@ -11,7 +11,7 @@ omega_T.at <- omega_ZCB
 omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
 
 mu.pi.0     <- 0.02*model_sol$tstep
-all.mu.pi.D <- c(0.01,1,5)
+all.mu.pi.D <- c(0.1,0.5,2)
 
 colors.muD <- sequential_hcl(length(all.mu.pi.D)+2, "YlOrRd")
 colors.muD <- colors.muD[length(all.mu.pi.D):1]
@@ -97,6 +97,17 @@ for(k in 1:length(all.mu.pi.D)){
         lwd=2,col=colors.muD[k])
 }
 grid()
+
+legend(x=300,y=4,
+       legend=names4legend,
+       col=c("black",colors.muD),
+       lty=c(3,rep(1,length(colors.muD))),
+       lwd=c(3,rep(2,length(colors.muD))),
+       bty = "n",
+       cex=.9,
+       bg="white",
+       seg.len = 3)
+
 
 par(mfrow=c(2,length(all.mu.pi.D)))
 

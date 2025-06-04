@@ -2,7 +2,7 @@
 # An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 # ------------------------------------------------------------------------------
 # Pauline Chikhani and Jean-Paul Renne
-# This version: February 2025
+# This version: June 2025
 # ==============================================================================
 
 #clear environment
@@ -22,7 +22,7 @@ indic_plots_paper  <- 1 #produce paper's plots? see description below
 indic_tables_paper <- 1 #produce paper's table? see description below
 
 # For scripts using parallel computing:
-number.of.cores <- 4
+number.of.cores <- 8
 
 #Load libraries of functions:
 source("procedures/functions_general.R")
