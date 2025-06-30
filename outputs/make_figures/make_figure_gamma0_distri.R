@@ -1,9 +1,12 @@
 # ==============================================================================
-# FIGURE 9. Effect of \mu on the conditional distribution x_t|y_t \sim \gamma0 (y_t/\mu, \mu)
+# FIGURE 9. Effect of \mu on the conditional distribution
+#           x_t|y_t \sim \gamma0 (y_t/\mu, \mu)
 # Figure_gamma0.pdf
 # FIGURE 10. Distribution of cumulated damages
 # Figure_gamma0_Damages.pdf
 # ==============================================================================
+
+set.seed(123)
 
 t <- 1:50
 w <- .8^t

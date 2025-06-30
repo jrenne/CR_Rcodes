@@ -1,13 +1,14 @@
 # ==============================================================================
 # An Analytical Framework to Price Long-Dated Climate-Exposed Assets
 # ------------------------------------------------------------------------------
-# Pauline Chikhani and Jean-Paul Renne
-# This version: June 2025
+# Pauline Chikhani and Jean-Paul Renne (jean-paul.renne@unil.ch)
+# This version: July 2025
 # ==============================================================================
 
 #clear environment
-rm(list=ls(all=T)) 
-library(tictoc)
+rm(list=ls(all=T))
+
+# Load libraries
 library(parallel)
 library(doParallel)
 library(mgcv)
@@ -28,10 +29,7 @@ number.of.cores <- 8
 source("procedures/functions_general.R")
 source("procedures/functions_figures.R")
 source("procedures/functions_other_models.R")
-
-tic("Calibration")
 source("estimations/load_ini_model.R")
-toc()
 
 
 #Updating Plots and Tables -----------------------------------------------------
@@ -61,11 +59,11 @@ toc()
 #*      make_figure_calibration.R
 #* 51-- FIGURE V.1. Mitigation rate 
 #*      make_figure_mu.R
-#* 52-- FIGURE V.2. Social Cost of Carbon and temperature risk premiums
+#* 61-- FIGURE VI.1. Social Cost of Carbon and temperature risk premiums
 #*      make_figure_SCC_vs_TempRP.R
-#* 53-- FIGURE V.3. Comparison of temperature risk premiums
+#* 62-- FIGURE VI.2. Comparison of temperature risk premiums
 #*      make_figure_YC_RF.R
-#* 54-- FIGURE V.4. Merton model 
+#* 63-- FIGURE VI.3. Merton model 
 #*      make_figure_Merton.R
 #* 
 #* 
@@ -76,7 +74,7 @@ toc()
 #* Figure 2*: Simulated damages
 #*            make_figure_simul_cumDamages.R
 
-plots <- 1:54
+plots <- 1:63
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
@@ -93,9 +91,9 @@ if(indic_plots_paper==1){
 #* TABLE 7. Calibrated parameters
 #*          make_table_param.R
 #*          
-#* TABLE V.1. 2100 Temperature risk premium
+#* TABLE VI.1. 2100 Temperature risk premium
 #*            make_table_SCC.R
-#* TABLE V.2. Long-term interest rate (maturity: 2100)
+#* TABLE VI.2. Long-term interest rate (maturity: 2100)
 #*            make_table_SCC.R
 
 

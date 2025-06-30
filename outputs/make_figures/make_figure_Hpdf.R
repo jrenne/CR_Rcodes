@@ -11,11 +11,6 @@ a[HSL]    <- 1
 
 H <- model_sol$horiz.2100
 
-# Load external data:
-load("./data/sea_rcp.Rdat")
-sea60.smooth <- predict(loess(sea.rcp[,3]~sea.rcp[,1]))
-sea45.smooth <- predict(loess(sea.rcp[,2]~sea.rcp[,1]))
-
 # For Fourier transform:
 x <- exp(seq(-5,5,length.out = 1000)) #grid for Fourier
 

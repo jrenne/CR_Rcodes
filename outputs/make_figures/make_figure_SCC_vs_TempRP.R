@@ -1,5 +1,5 @@
 # ==============================================================================
-# FIGURE V.2. Social Cost of Carbon and temperature risk premiums
+# FIGURE VI.1. Social Cost of Carbon and temperature risk premiums
 # Figure_SCCvsTRP.pdf
 # ==============================================================================
 

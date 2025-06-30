@@ -1,9 +1,9 @@
 # ==============================================================================
 # TABLE 5. Social Cost of Carbon, in US $ per ton of CO2
 # table_SCC_sensitiv.txt
-# TABLE V.1. 2100 Temperature risk premium
+# TABLE VI.1. 2100 Temperature risk premium
 # table_TRP_sensitiv.txt
-# TABLE V.2. Long-term interest rate (maturity: 2100)
+# TABLE VI.2. Long-term interest rate (maturity: 2100)
 # table_LTR_sensitiv.txt
 # ==============================================================================
 

@@ -7,8 +7,8 @@
 #* TABLE 2. Utility solution
 #* TABLE 5. Social Cost of Carbon, in US $ per ton of CO2
 #* TABLE 7. Calibrated parameters
-#* TABLE V.1. 2100 Temperature risk premium
-#* TABLE V.2. Long-term interest rate (maturity: 2100)
+#* TABLE VI.1. 2100 Temperature risk premium
+#* TABLE VI.2. Long-term interest rate (maturity: 2100)
 
 par(plt=c(.1,.9,.1,.9))
 param<-model_sol$parameters
@@ -28,8 +28,8 @@ print("Preparing table showing utility function specification")
 source("outputs/make_tables/make_table_utility_solution.R")
 
 # TABLE 5. Social Cost of Carbon, in US $ per ton of CO2
-# TABLE V.1. 2100 Temperature risk premium
-# TABLE V.2. Long-term interest rate (maturity: 2100)
+# TABLE VI.1. 2100 Temperature risk premium
+# TABLE VI.2. Long-term interest rate (maturity: 2100)
 print("Preparing table showing results of SCC sensitivity analysis (takes about 3 minutes)")
 source("outputs/make_tables/make_table_SCC.R")
 

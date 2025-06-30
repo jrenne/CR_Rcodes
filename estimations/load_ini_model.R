@@ -242,9 +242,8 @@ model <- solveParam4T(model)
 print("***** calibration: done *****")
 
 
-tic("***** Solve Initial Model *****")
+print("***** Solve Initial Model *****")
 model_sol <- model_solve(model,indic_CRRA = FALSE)
-toc()
 
 
 # Check plots:

@@ -1,9 +1,8 @@
 # ==============================================================================
-# FIGURE V.4. Merton model 
-# Figure_Merton1.pdf
+# FIGURE VI.3. Merton model
 # Figure_Merton2.pdf
+# Figure_Merton1.pdf (not reported in Supplemental Appendix)
 # ==============================================================================
-
 
 # Figures illustrating Merton model (1/2)
 ALPHA <- .0

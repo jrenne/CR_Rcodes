@@ -3,8 +3,6 @@
 # conditional trajectory of atmospheric temperatures.
 
 #RCP data
-temp<-read.table("./data/mean_ssp.txt",header=TRUE)
-temp <- temp[temp$year >= 2020,] # keep only dates after 2020
 
 RCP_MAGICC <- read.csv("data/RCP_Mat_MAGICC.csv", header=FALSE)
 years_MAGICC <- RCP_MAGICC$V1

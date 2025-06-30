@@ -12,9 +12,9 @@
 #* 11-- FIGURE 11. From carbon concentrations to atmospheric temperature 
 #* 31-- FIGURE III.1. Model calibration 
 #* 51-- FIGURE V.1. Mitigation rate 
-#* 52-- FIGURE V.2. Social Cost of Carbon and temperature risk premiums
-#* 53-- FIGURE V.3. Comparison of temperature risk premiums 
-#* 54-- FIGURE V.4. Merton model 
+#* 61-- FIGURE VI.1. Social Cost of Carbon and temperature risk premiums
+#* 62-- FIGURE VI.2. Comparison of temperature risk premiums 
+#* 63-- FIGURE VI.3. Merton model 
 #* -----------------------------------------------------------------------------
  
  
@@ -131,24 +131,24 @@ if(is.element(31,plots)){
   source("outputs/make_figures/make_figure_calibration.R")
 }
 
-#-- 51
-# FIGURE V.1. Mitigation rate
-if(is.element(51,plots)){
+#-- 61
+# FIGURE VI.1. Mitigation rate
+if(is.element(61,plots)){
   print("Preparing figure mu plot (takes about 30 sec)")
   source("outputs/make_figures/make_figure_mu.R")
 }
 
-#-- 52
-# FIGURE V.2. Social Cost of Carbon and temperature risk premiums
-if(is.element(52,plots)){
+#-- 62
+# FIGURE VI.2. Social Cost of Carbon and temperature risk premiums
+if(is.element(62,plots)){
   print("Preparing figure Relationship SCC and Temp. risk premium (takes a few minutes)")
   source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
          encoding = 'ISO8859-1')
 }
 
-#-- 54
-# FIGURE V.4. Merton model
-if(is.element(54,plots)){
+#-- 63
+# FIGURE VI.3. Merton model
+if(is.element(63,plots)){
   print("Preparing Merton-model figure")
   source("outputs/make_figures/make_figure_Merton.R")
 }
