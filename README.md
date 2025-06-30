@@ -30,7 +30,7 @@ To replicate the results, execute the script `main.R`.
 
 Ensure that all necessary libraries referenced in `main.R` are installed prior to running the code. Libraries needed: parallel, doParallel, mgcv, colorspace, broman, optimx, MASS, expm.
 
-### Memory, Runtime, Storage Requirements
+### Runtime and Storage Requirements
 
 - On a setup with a 2.3 GHz 8-Core Intel Core i9 processor, all figures and tables (including those in the supplemental materials) can be generated in about 15 minutes. Depending on the setup, approximate time needed to reproduce the analyses on a standard (2025) desktop machine: 10-30 minutes
 - Approximate storage space needed: < 5 MBytes
@@ -55,8 +55,7 @@ The repository is organized into several folders, detailed as follows:
 3. **outputs/**: Includes scripts for producing figures and tables, along with the generated outputs (see table below).
 4. **procedures/**: Contains various procedures used to solve the model, price assets, and generate outputs.
 
-In addition to this README file, the main directory includes two essential files:
-- **main.R**: The primary script to source for replicating the paper's results.
+The main directory includes **main.R**, that is the primary script to source for replicating the paper's results.
 
 
 ### List of Tables and Figures Produced by the Codes
@@ -98,17 +97,15 @@ All the scripts producing figures are in the folder `outputs/make_figures/`. All
 
 We certify that the authors of the manuscript have legitimate access to and permission to use the data used in this manuscript. We also certify that the authors of the manuscript have permission to redistribute/publish the data contained within this replication package. Details are given below. The remaining code (beyond the data aforementioned) is licensed by the author under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/). Redistribution and use must adhere to the relevant license terms. Appropriate permission are documented in the [LICENSE.txt](LICENSE.txt) file.
 
-Some data contained in this repository (to construct Figure 2 of the paper) are obtained from the [USEPA/scghg](https://github.com/USEPA/scghg) repository, which provides codes to replicate results displayed in the 2023 U.S. Environmental Protection Agency (EPA) report entitled "Report on the Social Cost of Greenhouse Gases: Estimates Incorporating Recent Scientific Advances". The data is provided under the MIT License, which permits free use, modification, and distribution. We gratefully acknowledge Bryan Parthum for his support in helping us access and work with the data.
+Some data contained in this repository (to construct Figure 2 of the paper) are obtained from the [USEPA/scghg](https://github.com/USEPA/scghg) repository, which provides codes to replicate results displayed in EPA (2023). The data is provided under the MIT License, which permits free use, modification, and distribution. We gratefully acknowledge Bryan Parthum for his support in helping us access and work with the data.
 
 Some data contained in the EPA repository (aforementioned) are outputs generated from [HECTOR](https://jgcri.github.io/hector/), an open-source model licensed under the GNU General Public License v3.0. (These outputs are used in Figure 2 of the present paper.) As such, these outputs are also subject to the terms of the GPL v3.0. Users should review the GPL v3.0 license to understand their rights and obligations when using, modifying, or distributing these outputs. The original HECTOR license can be found [here](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
-Outputs from the [FaIR model (Finite-amplitude Impulse-Response)](https://docs.fairmodel.net/en/latest/) included in the EPA repository (aforementioned) are provided under the Apache License, Version 2.0. (These outputs are used in Figure 2 of the present paper.) These outputs are subject to the terms of the license, which allow use, modification, and distribution accordingly. The full license can be reviewed [here](http://www.apache.org/licenses/). All usage and sharing of this data must comply with the license terms.
+Some data contained in the EPA repository (aforementioned) are outputs generated from the [FaIR model (Finite-amplitude Impulse-Response)](https://docs.fairmodel.net/en/latest/); replication codes for this model are provided under the Apache License, Version 2.0. (These outputs are used in Figure 2 of the present paper.) The resulting outputs are subject to the terms of the license, which allow use, modification, and distribution accordingly. The full license can be reviewed [here](http://www.apache.org/licenses/).
 
-This package includes outputs generated with the MAGICC6.0 model; these originate from [Christian Traeger´s publicly available replication repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), associated with his paper ([Christian P. Traeger, 2023. "ACE-Analytic Climate Economy," American Economic Journal: Economic Policy, American Economic Association, vol. 15(3), pages 372-406](https://www.aeaweb.org/articles?id=10.1257/pol.20210297)). The author certifies that he has legitimate access and permission to publish the data, which is governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). The replication package of Christian Traeger also includes data provided by Fortunat Joos, Raphael Calel, Frank Venmans, and Simon Dietz that remain copyrighted by their respective creators; we do not use these data in the present package. All other code files in Christian Traeger's replication package are licensed under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/), as detailed in the documentation. We have made use of the latter codes to access the outputs of the MAGICC6.0 outputs simulated by Christian Traeger.
+The present replication package includes outputs generated with the MAGICC6.0 model; these originate from [Christian Traeger´s publicly available replication repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), associated with Traeger (2023). The author certifies that he has legitimate access and permission to publish the data, which is governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). The replication package also includes data provided by Fortunat Joos, which remains copyrighted by its creators; in our analysis, we indirectly use these data through outputs computed by Traeger (indicated as "ACE-Joos" in Figure 2).  All other code files in Christian Traeger´s repository are licensed under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/). We have utilized these codes to access the MAGICC6.0 outputs simulated by Christian Traeger.
 
-This package includes outputs generated with the MAGICC6.0 model; these originate from [Christian Traeger´s publicly available replication repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), associated with his paper ("ACE-Analytic Climate Economy", [link](https://www.aeaweb.org/articles?id=10.1257/pol.20210297)). The author certifies that he has legitimate access and permission to publish the data, which is governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). The replication package also includes data provided by Fortunat Joos, which remains copyrighted by its creators; in our analysis, we indirectly use these data through outputs computed by Traeger (indicated as "ACE-Joos" in Figure 2).  All other code files in Christian Traeger´s repository are licensed under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/). We have utilized these codes to access the MAGICC6.0 outputs simulated by Christian Traeger.
-
-Some data used in this package, including the outputs in Figure 6, originate from the replication package of Bauer and Rudebusch (2023) ("The Rising Cost of Climate Change: Evidence from the Bond Market", [link](https://doi.org/10.1162/rest_a_01109)), and are licensed under the [CC0 1.0 Universal Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/). This license effectively dedicates the data to the public domain, allowing free use, modification, and distribution without restrictions, as detailed in the full legal code. The data were extracted from Michael Bauer´s [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license terms.
+Some data used in this package, including the outputs in Figure 6, originate from the replication package of Bauer and Rudebusch (2023); these data are licensed under the [CC0 1.0 Universal Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/). This license effectively dedicates the data to the public domain, allowing free use, modification, and distribution without restrictions, as detailed in the full legal code. The data were extracted from Michael Bauer´s [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license terms.
 
 
 ### Details on each Data Source
@@ -128,23 +125,17 @@ Some data used in this package, including the outputs in Figure 6, originate fro
 
 ## References
 
-Bauer, M. D. and G. D. Rudebusch (2023). The Rising Cost of Climate Change: Evidence from the Bond Market. The Review of Economics and Statistics 105(5), 1255-1270.
+[Bauer, M. D. and G. D. Rudebusch (2023)](https://doi.org/10.1162/rest_a_01109). The Rising Cost of Climate Change: Evidence from the Bond Market. The Review of Economics and Statistics 105(5), 1255-1270.
 
-Environmental Protection Agency (2023). EPA Report on the Social Cost of Greenhouse Gases: Esti-
-mates Incorporating Recent Scientific Advances. EPA Report Docket ID No. EPA-HQ-OAR-2021-
+[Environmental Protection Agency (2023)](https://www.epa.gov/environmental-economics/scghg). EPA Report on the Social Cost of Greenhouse Gases: Estimates Incorporating Recent Scientific Advances. EPA Report Docket ID No. EPA-HQ-OAR-2021-
 0317, EPA.
 
-Joos, F., R. Roth, J. S. Fuglestvedt, G. P. Peters, I. G. Enting, W. von Bloh, V. Brovkin, E. J. Burke, M. Eby,
-N. R. Edwards, T. Friedrich, T. L. Frölicher, P. R. Halloran, P. B. Holden, C. Jones, T. Kleinen, F. T.
-Mackenzie, K. Matsumoto, M. Meinshausen, G.-K. Plattner, A. Reisinger, J. Segschneider, G. Shaffer,
-M. Steinacher, K. Strassmann, K. Tanaka, A. Timmermann, and A. J. Weaver (2013). Carbon Dioxide
-and Climate Impulse Response Functions for the Computation of Greenhouse Gas Metrics: a Multi-
-Model Analysis. Atmospheric Chemistry and Physics 13(5), 2793-2825.
+[Joos, F., R. Roth, J. S. Fuglestvedt, G. P. Peters, I. G. Enting, W. von Bloh, V. Brovkin, E. J. Burke, M. Eby, N. R. Edwards, T. Friedrich, T. L. Frölicher, P. R. Halloran, P. B. Holden, C. Jones, T. Kleinen, F. T. Mackenzie, K. Matsumoto, M. Meinshausen, G.-K. Plattner, A. Reisinger, J. Segschneider, G. Shaffer, M. Steinacher, K. Strassmann, K. Tanaka, A. Timmermann, and A. J. Weaver (2013)](https://acp.copernicus.org/articles/13/2793/2013/). Carbon Dioxide and Climate Impulse Response Functions for the Computation of Greenhouse Gas Metrics: a Multi-Model Analysis. Atmospheric Chemistry and Physics 13(5), 2793-2825.
 
-Lemoine, D. (2021). The Climate Risk Premium: How Uncertainty Affects the Social Cost of Carbon.
+[Lemoine, D. (2021)](https://www.journals.uchicago.edu/doi/abs/10.1086/710667?journalCode=jaere). The Climate Risk Premium: How Uncertainty Affects the Social Cost of Carbon.
 Journal of the Association of Environmental and Resource Economists 8(1), 27-57.
 
-Traeger, C. P. (2023). ACE-Analytic Climate Economy. American Economic Journal: Economic Policy 15(3),
+[Traeger, C. P. (2023)](https://www.aeaweb.org/articles?id=10.1257/pol.20210297). ACE-Analytic Climate Economy. American Economic Journal: Economic Policy 15(3),
 372-406.
 
 ---
