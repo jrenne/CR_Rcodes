@@ -1,4 +1,5 @@
-
+---
+output: pdf_document
 ---
 
 # An Analytical Framework to Price Long-Dated Climate-Exposed Assets
