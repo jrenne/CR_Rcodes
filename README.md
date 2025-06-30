@@ -89,6 +89,7 @@ All the scripts producing figures are in the folder `outputs/make_figures/`. All
 | Table 7          | `make_table_param.R` |  `table_param.txt`  |
 | Table VI.1          | `make_table_SCC.R` |  `table_TRP_sensitiv.txt`  |
 | Table VI.2          | `make_table_SCC.R` |  `table_LTR_sensitiv.txt`  |
+|-------------------|--------------------------|----------------------------------|
 
 
 
@@ -121,9 +122,9 @@ Some data used in this package, including the outputs in Figure 6, originate fro
 | IRF from ACE | `IRF_Traeger_5y.csv` | `data/` | TRUE | Traeger (2023) |
 | RCP temperature scenario and standard dev. | `mean_ssp.txt` | `data/` | TRUE | XXXX |
 | RCPs based on ACE model | `RCP_Mat_ACE.csv` | `data/` | TRUE | Traeger (2023) |
-| RCPs based on MAGICC6.0 model | `RCP_Mat_MAGICC.csv` | `data/` | TRUE | Traeger (2023) |
+| RCPs based on MAGICC6.0 model | `RCP_Mat_MAGICC.csv` | `data/` | TRUE | Meinshausen et al. (2011), Traeger (2023) |
 | DICE mitigation path | `mu.csv` | `data/` | TRUE | DICE XXXX |
-
+| -- | -- | -- | -- | -- | 
 
 
 ## References
@@ -137,6 +138,8 @@ Some data used in this package, including the outputs in Figure 6, originate fro
 
 [Lemoine, D. (2021)](https://www.journals.uchicago.edu/doi/abs/10.1086/710667?journalCode=jaere). The Climate Risk Premium: How Uncertainty Affects the Social Cost of Carbon.
 Journal of the Association of Environmental and Resource Economists 8(1), 27-57.
+
+[Meinshausen, M., S. C. B. Raper, and T. M. L. Wigley](https://acp.copernicus.org/articles/11/1417/2011/) (2011). Emulating Coupled Atmosphere-Ocean and Carbon Cycle Models with a Simpler Model, MAGICC6 - Part 1: Model Description and Calibration. Atmospheric Chemistry and Physics 11(4), 1417-1456.
 
 [Traeger, C. P. (2023)](https://www.aeaweb.org/articles?id=10.1257/pol.20210297). ACE-Analytic Climate Economy. American Economic Journal: Economic Policy 15(3),
 372-406.
