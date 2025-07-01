@@ -66,6 +66,8 @@ The provided code reproduces tables and figures in the paper (as well as in the 
 All the scripts producing figures are in the folder `outputs/make_figures/`. All the scripts producing tables are in the folder `outputs/make_tables/`. All produced figures are in pdf format, and stored in the folder `output/Figures/`. All produced tables are written in Latex, and stored as txt files in `outputs/Tables/`.
 
 
+
+
 | Figure/Table #    | Program                  | Output file                      |
 |-------------------|--------------------------|----------------------------------|
 | Figure 2          | `make_figure_IRF1Gt.R` |  `Figure_IRF1GtC.pdf`  |
@@ -102,7 +104,7 @@ Some data contained in this repository (to construct Figure 2 of the paper) are 
 
 - Some data contained in the EPA repository (aforementioned) are outputs generated from [HECTOR](https://jgcri.github.io/hector/), an open-source model licensed under the GNU General Public License v3.0. (These outputs are used in Figure 2 of the present paper.) As such, these outputs are also subject to the terms of the GPL v3.0. Users should review the GPL v3.0 license to understand their rights and obligations when using, modifying, or distributing these outputs. The original HECTOR license can be found [here](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
-- Some data contained in the EPA repository (aforementioned) are outputs generated from the [FaIR model (Finite-amplitude Impulse-Response)](https://docs.fairmodel.net/en/latest/); replication codes for this model are provided under the Apache License, Version 2.0. (These outputs are used in Figure 2 of the present paper.) The resulting outputs are subject to the terms of the license, which allow use, modification, and distribution accordingly. The full license can be reviewed [here](http://www.apache.org/licenses/).
+- Some data contained in the EPA repository (aforementioned) are outputs generated from the [FaIR model (Finite-amplitude Impulse-Response)](https://docs.fairmodel.net/en/latest/); replication codes for this model are provided under the [Apache License, Version 2.0](http://www.apache.org/licenses/). (These outputs are used in Figure 2 of the present paper.) The resulting outputs are subject to the terms of the license, which allow use, modification, and distribution accordingly.
 
 The present replication package includes outputs generated with the MAGICC6.0 model; these originate from [Christian Traeger´s publicly available replication repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), associated with Traeger (2023). In the readme file associated with the latter package, the author of the package certifies that he has legitimate access and permission to publish the data generated with the MAGICC6.0 model, which is governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). To load these data from Traeger's package, we have made use of the (Matlab) codes present in Christian Traeger's package; these codes are licensed under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/).
 
