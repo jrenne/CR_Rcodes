@@ -52,15 +52,13 @@ __________ End of code __________
 
 
 
-# --------------------------------------------------------------
-2. Construction of RCP_Mat_ACE.csv and RCP_Mat_MAGICC.csv
-# --------------------------------------------------------------
-
+Construction of RCP_Mat_ACE.csv and RCP_Mat_MAGICC.csv
 
 The file `IRF_Traeger_5y.csv` was created by adding the following line to the end of the script `ImpulseResponseComplot_ACE.m` in Traeger’s (2023) replication package. Running this script in MATLAB generates the CSV file and saves it in the current directory.
 
+```r
 csvwrite("IRF_Traeger_5y.csv",[ACE_Impulse_DICE5' ACE_Impulse_Joos5']);
-
+```
 
 
 # --------------------------------------------------------------
