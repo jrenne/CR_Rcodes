@@ -89,7 +89,6 @@ All the scripts producing figures are in the folder `outputs/make_figures/`. All
 | Table 7          | `make_table_param.R` |  `table_param.txt`  |
 | Table VI.1          | `make_table_SCC.R` |  `table_TRP_sensitiv.txt`  |
 | Table VI.2          | `make_table_SCC.R` |  `table_LTR_sensitiv.txt`  |
-|-------------------|--------------------------|----------------------------------|
 
 
 
@@ -97,7 +96,7 @@ All the scripts producing figures are in the folder `outputs/make_figures/`. All
 
 ### Statement about Rights
 
-We certify that the authors of the manuscript have legitimate access to and permission to use the data used in this manuscript. We also certify that the authors of the manuscript have permission to redistribute/publish the data contained within this replication package. Details are given below. The remaining code (beyond the data aforementioned) is licensed by the authors under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/). Redistribution and use must adhere to the relevant license terms. Appropriate permission are documented in the [LICENSE.txt](LICENSE.txt) file.
+We certify that the authors of the manuscript have legitimate access to and permission to use the data used in this manuscript. We also certify that the authors of the manuscript have permission to redistribute/publish the data contained within this replication package. Details are given below. The remaining code (beyond the data aforementioned) is licensed by the authors under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/). Further redistribution and use must adhere to the relevant license terms. Appropriate permission are documented in the [LICENSE.txt](LICENSE.txt) file.
 
 Some data contained in this repository (to construct Figure 2 of the paper) are obtained from the [USEPA/scghg](https://github.com/USEPA/scghg) repository, which provides codes to replicate results displayed in EPA (2023). The data is provided under the MIT License, which permits free use, modification, and distribution. We gratefully acknowledge Bryan Parthum for his support in helping us access and work with the data.
 
@@ -105,9 +104,9 @@ Some data contained in this repository (to construct Figure 2 of the paper) are 
 
 - Some data contained in the EPA repository (aforementioned) are outputs generated from the [FaIR model (Finite-amplitude Impulse-Response)](https://docs.fairmodel.net/en/latest/); replication codes for this model are provided under the Apache License, Version 2.0. (These outputs are used in Figure 2 of the present paper.) The resulting outputs are subject to the terms of the license, which allow use, modification, and distribution accordingly. The full license can be reviewed [here](http://www.apache.org/licenses/).
 
-The present replication package includes outputs generated with the MAGICC6.0 model; these originate from [Christian Traeger큦 publicly available replication repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), associated with Traeger (2023). In the readme file associated with the latter package, the author of the package certifies that he has legitimate access and permission to publish the data generated with the MAGICC6.0 model, which is governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). To load these data from Traeger's package, we have made use of the (Matlab) codes present in this package. These codes are licensed under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/).
+The present replication package includes outputs generated with the MAGICC6.0 model; these originate from [Christian Traeger큦 publicly available replication repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), associated with Traeger (2023). In the readme file associated with the latter package, the author of the package certifies that he has legitimate access and permission to publish the data generated with the MAGICC6.0 model, which is governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). To load these data from Traeger's package, we have made use of the (Matlab) codes present in Christian Traeger's package. These codes are licensed under the [CC-BY-NC 4.0 Unported license](https://creativecommons.org/licenses/by-nc/4.0/).
 
-In our Figure 2, the line labeled "ACE-Joos" is based on data extracted from [Christian Traeger큦 repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), which utilizes inputs originally obtained from Fortunat Joos (Joos et al., 2013). These data remain copyrighted by their creators.
+In our Figure 2, the line labeled "ACE-Joos" is based on data extracted from [Christian Traeger큦 repository](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view), which utilizes inputs originally obtained from Fortunat Joos (Joos et al., 2013). The latter work is licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 
 Some data used in this package, including the outputs in Figure 6, originate from the replication package of Bauer and Rudebusch (2023); these data are licensed under the [CC0 1.0 Universal Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/). This license effectively dedicates the data to the public domain, allowing free use, modification, and distribution without restrictions, as detailed in the full legal code. The data were extracted from Michael Bauer큦 [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license terms.
 
@@ -124,7 +123,6 @@ Some data used in this package, including the outputs in Figure 6, originate fro
 | RCPs based on ACE model | `RCP_Mat_ACE.csv` | `data/` | TRUE | Traeger (2023) |
 | RCPs based on MAGICC6.0 model | `RCP_Mat_MAGICC.csv` | `data/` | TRUE | Meinshausen et al. (2011), Traeger (2023) |
 | DICE mitigation path | `mu.csv` | `data/` | TRUE | DICE XXXX |
-| -- | -- | -- | -- | -- | 
 
 
 ## References
