@@ -1,15 +1,6 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 <!-- --- -->
 <!-- output: pdf_document -->
 <!-- --- -->
-
----
-output: pdf_document
----
 
 
 # Replication package for "An Analytical Framework to Price Long-Dated Climate-Exposed Assets"
