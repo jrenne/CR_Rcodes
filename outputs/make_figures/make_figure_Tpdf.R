@@ -11,7 +11,13 @@ omega_T.at <- omega_ZCB
 omega_T.at[which(model_sol$names.var.X=="T_at")] <- 1
 TAT <- which(model_sol$names.var.X=="T_at")
 
-#RCP data
+#RCP data (outputs from MAGICC6.0)
+RCP_MAGICC <- read.csv("data/RCP_Mat_MAGICC.csv", header=FALSE)
+T_RCP30 <- RCP_MAGICC$V6
+T_RCP45 <- RCP_MAGICC$V7
+T_RCP60 <- RCP_MAGICC$V8
+T_RCP85 <- RCP_MAGICC$V9
+
 temp<-read.table("./data/mean_ssp.txt",header=TRUE)
 temp_graph<-temp[3:11,]
 
@@ -97,14 +103,20 @@ for(i in length(vector.of.CI):1){
 }
 lines(model_sol$vec_date[2:(H+1)],
       ET.P,lwd=2,col=P.col.line)
-lines(temp_graph[,1],temp_graph[,5],lty=2,lwd=1,col="lightsteelblue4")
-lines(temp_graph[,1],temp_graph[,4],lty=2,lwd=1,col="lightsteelblue4")
-lines(temp_graph[,1],temp_graph[,2],lty=2,lwd=2,col="grey28")
-legend("topright",
-       legend=c("RCP4.5+RCP6.0","+/- 2 std"),
-       lty=c(2,2),
-       col=c("grey28","lightsteelblue4"),cex=1.5,
-       lwd=c(2,1),bty = "n")
+
+
+lines(RCP_MAGICC$V1[RCP_MAGICC$V1<2100],
+      T_RCP45[RCP_MAGICC$V1<2100],lty=2,lwd=2,col="lightsteelblue4")
+lines(RCP_MAGICC$V1[RCP_MAGICC$V1<2100],
+      T_RCP60[RCP_MAGICC$V1<2100],lty=4,lwd=2,col="lightsteelblue4")
+lines(RCP_MAGICC$V1[RCP_MAGICC$V1<2100],
+      T_RCP85[RCP_MAGICC$V1<2100],lty=3,lwd=2,col="lightsteelblue4")
+legend("topleft",
+       legend=c("RCP4.5","RCP6.0","RCP8.5"),
+       lty=c(2,4,3),
+       col=c("lightsteelblue4"),
+       cex=1.5,
+       lwd=2,seg.len = 4,bty = "n")
 
 plot(model_sol$vec_date[2:(H+1)],ET.Q,
      xlim=x.lim,ylim=y.lim,las=1,

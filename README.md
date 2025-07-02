@@ -112,7 +112,7 @@ In our Figure 2, the line labeled "ACE-Joos" is based on data extracted from Chr
 
 Some data in this package originate from the replication package of Bauer and Rudebusch (2023), and are licensed under the [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) Public Domain Dedication. These data, used to produce Figure 6, were obtained from Michael Bauer´s [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license.
 
-The CSV file included in this replication package contains data derived from an Excel file created by William Nordhaus and Lint Barrage. The data and associated program are © DICE2023-Excel-b-4-3-10-v18.3, with copyrights held by William Nordhaus and Lint Barrage. The owners provide free and open access to the program. Commercial users must obtain permission for use in its original form or with changes from the copyright holder.
+One csv file includes data derived from an Excel file created by William Nordhaus and Lint Barrage. (It is used in Figure V.1 of the Supplemental Appendix; the series is indicated by "DICE2023".) The data and associated program are © DICE2023-Excel-b-4-3-10-v18.3, with copyrights held by William Nordhaus and Lint Barrage. The owners provide free and open access to the program. Commercial users must obtain permission for use in its original form or with changes from the copyright holder.
 
 ### Details on each Data Source
 
@@ -171,7 +171,7 @@ The code line to add is:
 save(fair, hector, magicc, file="Figure223_EPA_data.Rdat")
 ```
 
-The file `mu_DICE.csv` contains the trajectory of emission control rates extracted from the Excel file with outputs of the DICE2023 model. This Excel file is part of the [supplementary material](https://bit.ly/3TwJ5nO) associated with Barrage and Nordhaus (2024). It can be accessed directly via [this link](https://yale.app.box.com/s/whlqcr7gtzdm4nxnrfhvap2hlzebuvvm/file/1361579245945). The emission control rate is located in row 71 of this Excel file, within the worksheet named `Opt`.
+The file `mu_DICE.csv` contains the trajectory of emission control rates extracted from the Excel file with outputs of the DICE2023 model. This Excel file is part of the [supplementary material](https://bit.ly/3TwJ5nO) associated with Barrage and Nordhaus (2024). It can be accessed directly via [this link](https://yale.app.box.com/s/whlqcr7gtzdm4nxnrfhvap2hlzebuvvm/file/1361579245945). The extracted series of emission control rates is located in row 71 of this Excel file, within the worksheet named `Opt`.
 
 
 ## References
