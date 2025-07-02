@@ -67,7 +67,7 @@ source("estimations/load_ini_model.R")
 #*      make_figure_Merton.R
 #* 
 #* 
-#* Manuel run in plots_paper.R
+#* Manual run in plots_paper.R
 #* Miscellaneous
 #* Figure 1*: From carbon concentrations to atmospheric temperature
 #*            make_figure_distrTAT_4_simul_Mat.R
