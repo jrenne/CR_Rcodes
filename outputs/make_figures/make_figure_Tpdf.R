@@ -18,9 +18,6 @@ T_RCP45 <- RCP_MAGICC$V7
 T_RCP60 <- RCP_MAGICC$V8
 T_RCP85 <- RCP_MAGICC$V9
 
-temp<-read.table("./data/mean_ssp.txt",header=TRUE)
-temp_graph<-temp[3:11,]
-
 x <- exp(seq(-5,5,length.out = 1000)) #grid for Fourier
 
 #distribution and expected temperature

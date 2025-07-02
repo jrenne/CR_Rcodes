@@ -1,7 +1,7 @@
 # ==============================================================================
 # FIGURE 6. The term structure of real rates
 # Figure_YC_RF.pdf
-# FIGURE VI.2.Comparison of temperature risk premiums
+# FIGURE S.4.Comparison of temperature risk premiums
 # Figure_TRP_comparison.pdf
 # ==============================================================================
 

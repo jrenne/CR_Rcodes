@@ -1,5 +1,5 @@
 # ==============================================================================
-# FIGURE VI.3. Merton model
+# FIGURE S.5. Merton model
 # Figure_Merton2.pdf
 # Figure_Merton1.pdf (not reported in Supplemental Appendix)
 # ==============================================================================

@@ -55,15 +55,15 @@ source("estimations/load_ini_model.R")
 #*      make_figure_gamma0_distri.R
 #* 11-- FIGURE 11. From carbon concentrations to atmospheric temperature 
 #*      make_figure_RCP_to_TAT.R
-#* 31-- FIGURE III.1. Model calibration 
+#* 101-- FIGURE S.1. Model calibration 
 #*      make_figure_calibration.R
-#* 51-- FIGURE V.1. Mitigation rate 
+#* 102-- FIGURE S.2. Mitigation rate 
 #*      make_figure_mu.R
-#* 61-- FIGURE VI.1. Social Cost of Carbon and temperature risk premiums
+#* 103-- FIGURE S.3. Social Cost of Carbon and temperature risk premiums
 #*      make_figure_SCC_vs_TempRP.R
-#* 62-- FIGURE VI.2. Comparison of temperature risk premiums
+#* 104-- FIGURE S.4. Comparison of temperature risk premiums
 #*      make_figure_YC_RF.R
-#* 63-- FIGURE VI.3. Merton model 
+#* 105-- FIGURE S.5. Merton model 
 #*      make_figure_Merton.R
 #* 
 #* 
@@ -74,7 +74,7 @@ source("estimations/load_ini_model.R")
 #* Figure 2*: Simulated damages
 #*            make_figure_simul_cumDamages.R
 
-plots <- 1:63
+plots <- 1:105
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
@@ -91,9 +91,9 @@ if(indic_plots_paper==1){
 #* TABLE 7. Calibrated parameters
 #*          make_table_param.R
 #*          
-#* TABLE VI.1. 2100 Temperature risk premium
+#* TABLE S.1. 2100 Temperature risk premium
 #*            make_table_SCC.R
-#* TABLE VI.2. Long-term interest rate (maturity: 2100)
+#* TABLE S.2. Long-term interest rate (maturity: 2100)
 #*            make_table_SCC.R
 
 

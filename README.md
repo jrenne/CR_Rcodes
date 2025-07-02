@@ -1,6 +1,16 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 <!-- --- -->
 <!-- output: pdf_document -->
 <!-- --- -->
+
+---
+output: pdf_document
+---
+
 
 # Replication package for "An Analytical Framework to Price Long-Dated Climate-Exposed Assets"
 
@@ -25,7 +35,8 @@ The analysis published in the paper has been conducted using R version 4.3.1 (20
 
 To replicate the results, execute the script `main.R`. 
    - The script begins by calibrating `mu_T` using the bisection method, which takes approximately 30 seconds.
-   - Within `main.R`, you have the option to generate specific tables and figures, with detailed instructions included as commented code. By default, the code produces all the figures and tables in the paper.
+   - Within `main.R`, the replciator has the option to generate specific tables and figures, with detailed instructions included as commented code. By default, the code produces all the figures and tables in the paper.
+   - On line 26 of `main.R`, the replicator may want to modify the variable `number.of.cores`, which specifies the number of cores to use for parallel computing. Parallel processing is employed to generate certain figures that require multiple model runs, such as sensitivity analyses. By default, `number.of.cores` is set to 8. If the computer of the replcicator has fewer than 8 cores, the maximum available number of cores will be used.
    
 ### Libraries
 
@@ -41,8 +52,8 @@ Ensure that all necessary libraries referenced in `main.R` are installed prior t
 Random seed is set:
 
 - at line 9 of program make_figure_gamma0_distri.R. This script produces the figure illustrating the gamma0 distribution (Figure 9).
-- within function `compute.SCC.Lemoine`; this function is included in the script `procedures/functions_other_models.R`. This function utilizes Lemoine (2021) model to compute yields and Social Cost of Carbons (SCC). It is used in `outputs/make_figures/make_figure_YC_RF.R` to produce Figure 6 (yield curves) and Figure VI.2 (Term structure of temperature risk premiums).
-- The other results of the paper are not based on pseudo-random number generators (PRNGs).
+- within function `compute.SCC.Lemoine`; this function utilizes Lemoine (2021) model to compute yields and Social Cost of Carbons (SCC). It is included in the script `procedures/functions_other_models.R`. It is used in `outputs/make_figures/make_figure_YC_RF.R` to produce Figure 6 (yield curves) and Figure S.4 (Term structure of temperature risk premiums).
+- The other results of the paper are not based on pseudo-random number generators.
 
 
 ---
@@ -69,7 +80,7 @@ All scripts used to generate figures are located in the folder `outputs/make_fig
 
 
 | Figure/Table #    | Program                  | Output file                      |
-|-------------------|--------------------------|----------------------------------|
+|-------------|--------------------------|----------------------------------|
 | Figure 2          | `make_figure_IRF1Gt.R` |  `Figure_IRF1GtC.pdf`  |
 | Figure 3          | `make_figure_Damage_comparison.R` |  `Figure_Damage_comparison.pdf`  |
 | Figure 4          | `make_figure_Tpdf.R` |  `Figure_Tat_P_and_Q_vector_CI.pdf`  |
@@ -80,17 +91,17 @@ All scripts used to generate figures are located in the folder `outputs/make_fig
 | Figure 9          | `make_figure_gamma0_distri.R` |  `Figure_gamma0.pdf`  |
 | Figure 10          | `make_figure_gamma0_distri.R` |  `Figure_gamma0_Damages.pdf`  |
 | Figure 11          | `make_figure_RCP_to_TAT.R` |  `Figure_RCP_to_TAT.pdf`  |
-| Figure III.1          | `make_figure_calibration.R` |  `Figure_Calibration.pdf`  |
-| Figure V.1          | `make_figure_mu.R` |  `FFigure_Mitigation_comparison.pdf`  |
-| Figure VI.1          | `make_figure_RCP_to_TAT.R` |  `Figure_SCCvsTRP.pdf`  |
-| Figure VI.2          | `make_figure_YC_RF.R` |  `Figure_TRP_comparison.pdf`  |
-| Figure VI.3          | `make_figure_Merton.R` |  `Figure_Merton2.pdf`  |
+| Figure S.1          | `make_figure_calibration.R` |  `Figure_Calibration.pdf`  |
+| Figure S.2          | `make_figure_mu.R` |  `FFigure_Mitigation_comparison.pdf`  |
+| Figure S.3          | `make_figure_RCP_to_TAT.R` |  `Figure_SCCvsTRP.pdf`  |
+| Figure S.4          | `make_figure_YC_RF.R` |  `Figure_TRP_comparison.pdf`  |
+| Figure S.5          | `make_figure_Merton.R` |  `Figure_Merton2.pdf`  |
 | Table 1          | `make_table_Estimated_Param.R` |  `table_param_est.txt`  |
 | Table 2          | `make_table_utility_solution.R` |  `table_utility_solution.txt`  |
 | Table 5          | `make_table_SCC.R` |  `table_SCC_sensitiv.txt`  |
 | Table 7          | `make_table_param.R` |  `table_param.txt`  |
-| Table VI.1          | `make_table_SCC.R` |  `table_TRP_sensitiv.txt`  |
-| Table VI.2          | `make_table_SCC.R` |  `table_LTR_sensitiv.txt`  |
+| Table S.1          | `make_table_SCC.R` |  `table_TRP_sensitiv.txt`  |
+| Table S.2          | `make_table_SCC.R` |  `table_LTR_sensitiv.txt`  |
 
 
 
@@ -112,19 +123,20 @@ In our Figure 2, the line labeled "ACE-Joos" is based on data extracted from Chr
 
 Some data in this package originate from the replication package of Bauer and Rudebusch (2023), and are licensed under the [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) Public Domain Dedication. These data, used to produce Figure 6, were obtained from Michael Bauer´s [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license.
 
-One csv file includes data derived from an Excel file created by William Nordhaus and Lint Barrage. (It is used in Figure V.1 of the Supplemental Appendix; the series is indicated by "DICE2023".) The data and associated program are © DICE2023-Excel-b-4-3-10-v18.3, with copyrights held by William Nordhaus and Lint Barrage. The owners provide free and open access to the program. Commercial users must obtain permission for use in its original form or with changes from the copyright holder.
+One csv file includes data derived from an Excel file created by William Nordhaus and Lint Barrage. (It is used in Figure S.2 of the Supplemental Appendix; the series is indicated by "DICE2023".) The data and associated program are © DICE2023-Excel-b-4-3-10-v18.3, with copyrights held by William Nordhaus and Lint Barrage. The owners provide free and open access to the program. Commercial users must obtain permission for use in its original form or with changes from the copyright holder.
 
 ### Details on each Data Source
 
-| Data.Name  | Data.Files | Location | Provided | Citation |
-| -- | -- | -- | -- | -- | 
-| Social Discount Rates | `Bauer_Rudebusch_sdrs.csv` | `data/` | TRUE | Bauer and Rudebusch (2023) |
-| IRF from EPA report | `Figure223_EPA_data.Rdat` | `data/` | TRUE | Environmental Protection Agency (2023) |
-| IRF from ACE | `IRF_Traeger_5y.csv` | `data/` | TRUE | Traeger (2023) |
-| RCP temperature scenario and standard dev. | `mean_ssp.txt` | `data/` | TRUE | XXXX |
-| RCPs based on ACE model | `RCP_Mat_ACE.csv` | `data/` | TRUE | Traeger (2023) |
-| RCPs based on MAGICC6.0 model | `RCP_Mat_MAGICC.csv` | `data/` | TRUE | Meinshausen et al. (2011), Traeger (2023) |
-| DICE mitigation path | `mu_DICE.csv` | `data/` | TRUE | DICE2023; Barrage and Nordhaus (2024) |
+All data files (listed in the following table) can be found in the `~/data/` folder.
+
+| Data.Name  | Data.Files  | Citation |
+| ------- | ------- | ------- | 
+| Social Discount Rates | `Bauer_Rudebusch_sdrs.csv` | Bauer and Rudebusch (2023) |
+| IRF from EPA report | `Figure223_EPA_data.Rdat` | Environmental Protection Agency (2023) |
+| IRF from ACE | `IRF_Traeger_5y.csv` | Traeger (2023) |
+| RCPs based on ACE model | `RCP_Mat_ACE.csv` | Traeger (2023) |
+| RCPs based on MAGICC6.0 model | `RCP_Mat_MAGICC.csv` | Meinshausen et al. (2011), Traeger (2023) |
+| DICE mitigation path | `mu_DICE.csv` | DICE2023; Barrage and Nordhaus (2024) |
 
 ### Details on creation of intermediary files
 
@@ -176,7 +188,7 @@ The file `mu_DICE.csv` contains the trajectory of emission control rates extract
 
 ## References
 
-[L. Barrage, and W. Nordhaus (2024)](https://doi.org/10.1073/pnas.2312030121),   Policies, projections, and the social cost of carbon: Results from the DICE-2023 model, Proc. Natl. Acad. Sci. U.S.A. 121 (13).
+[Barrage, L. and W. Nordhaus (2024)](https://doi.org/10.1073/pnas.2312030121),   Policies, projections, and the social cost of carbon: Results from the DICE-2023 model, Proc. Natl. Acad. Sci. U.S.A. 121 (13).
 
 [Bauer, M. D. and G. D. Rudebusch (2023)](https://doi.org/10.1162/rest_a_01109). The Rising Cost of Climate Change: Evidence from the Bond Market. The Review of Economics and Statistics 105(5), 1255-1270.
 
@@ -194,7 +206,3 @@ Journal of the Association of Environmental and Resource Economists 8(1), 27-57.
 
 [Traeger, C. P. (2023)](https://www.aeaweb.org/articles?id=10.1257/pol.20210297). ACE-Analytic Climate Economy. American Economic Journal: Economic Policy 15(3),
 372-406.
-
----
-
-If you have any questions or require further assistance, please reach out to the corresponding author.

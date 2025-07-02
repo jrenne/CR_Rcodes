@@ -84,10 +84,10 @@ if(is.element(5,plots)){
   source("outputs/make_figures/make_figure_Hpdf.R")
 }
 
-#--  6 + 53
+#--  6 + 103
 # FIGURE 6. The term structure of real rates 
-# + FIGURE V.3. Comparison of temperature risk premiums
-if(is.element(6|53,plots)){
+# + FIGURE S.4. Comparison of temperature risk premiums
+if(is.element(6|104,plots)){
   print("Preparing figure comparing risk-free yield curves (takes about 20 seconds)")
   source("outputs/make_figures/make_figure_YC_RF.R",
          encoding = 'ISO8859-1')
@@ -124,30 +124,30 @@ if(is.element(11,plots)){
          encoding = 'ISO8859-1')
 }
 
-#-- 31
-# FIGURE III.1. Model calibration
-if(is.element(31,plots)){
+#-- 101
+# FIGURE S.1. Model calibration
+if(is.element(101,plots)){
   print("Preparing Calibration plot")
   source("outputs/make_figures/make_figure_calibration.R")
 }
 
-#-- 61
-# FIGURE VI.1. Mitigation rate
+#-- 102
+# FIGURE S.2. Mitigation rate
 if(is.element(61,plots)){
   print("Preparing figure mu plot (takes about 30 sec)")
   source("outputs/make_figures/make_figure_mu.R")
 }
 
-#-- 62
-# FIGURE VI.2. Social Cost of Carbon and temperature risk premiums
+#-- 103
+# FIGURE S.4. Social Cost of Carbon and temperature risk premiums
 if(is.element(62,plots)){
   print("Preparing figure Relationship SCC and Temp. risk premium (takes a few minutes)")
   source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
          encoding = 'ISO8859-1')
 }
 
-#-- 63
-# FIGURE VI.3. Merton model
+#-- 105
+# FIGURE S.5. Merton model
 if(is.element(63,plots)){
   print("Preparing Merton-model figure")
   source("outputs/make_figures/make_figure_Merton.R")
