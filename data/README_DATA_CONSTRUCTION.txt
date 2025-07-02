@@ -96,3 +96,19 @@ The replication package of Traeger (2023) is available at:
 https://www.openicpsr.org/openicpsr/project/154141/version/V1/view?path=/openicpsr/154141/fcr:versions/V1&type=project
 
 
+DICE codes:
+https://yale.app.box.com/s/whlqcr7gtzdm4nxnrfhvap2hlzebuvvm
+
+DICE paper (Barrage and Nordhaus, 2024):
+https://www.pnas.org/doi/10.1073/pnas.2312030121#data-availability
+
+
+Copyright and licenses
+Copyright for this program is William Nordhaus, Yale University, New Haven, CT 06511 and Lint Barrage, ETH, Zurich.
+The owners provides free and open access to the program. Users are free to make changes for their purposes.
+We ask that you acknowledge the source of the program as listed below. Any commercial users
+must obtain permission for use in its original form or with changes from the copyright holder.
+This program should be cited as "©DICE2023-Excel-b-4-3-10-v18.3."
+
+
+

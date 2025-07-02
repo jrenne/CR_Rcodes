@@ -9,12 +9,7 @@
 
 x.lim <- c(model_sol$vec_date[2],2150)
 
-dice_data           <- read.csv("data/mu.csv",sep=";",header = F)
-row.names(dice_data)<- dice_data[,1]
-dice_data           <- dice_data[-1]
-
-mu_dice                    <- matrix(0,dim(dice_data)[2],1)
-mu_dice[1:length(mu_dice)] <- apply(dice_data[2,],2,function(x)min(x,1))
+mu_DICE <- read.csv("data/mu_DICE.csv")
 
 indic_Mat     <- which(model_sol$names.var.X=="M_at")
 indic_Mup     <- which(model_sol$names.var.X=="M_up")
@@ -48,11 +43,12 @@ par(plt=c(.15,.95,.15,.8))
 plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      model_sol$mu[2:length(model_sol$vec_date)],
      type="l", xlab="Year",ylab="",lwd=2,
-     ylim=c(0,1),las=1,
+     ylim=c(0,1.1),las=1,
      xlim=x.lim,
      las=1,main="(a) Mitigation rate, comparison with DICE")
-lines(model_sol$vec_date[2:length(model_sol$vec_date)],
-      mu_dice[2:length(model_sol$vec_date)],lwd=2,lty=2,
+
+lines(mu_DICE$X.Year,
+      mu_DICE$Emissions.Control.Rate,lwd=2,lty=2,
       col="grey")
 
 # (i) Check sensitivity to parametric function ---------------------------------
@@ -75,7 +71,7 @@ RES.Tmax.param <- res.optim(model_sol,
                             X = Xt)
 
 legend("bottomright",
-       legend=c("Parametric function","Non-parametric function","DICE"),
+       legend=c("Parametric function","Non-parametric function","DICE (2023)"),
        lty=c(1,NaN,2),
        col=c("black","black","grey"),
        lwd=c(2,1,2),
@@ -125,7 +121,7 @@ plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
                  t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
-     ylim=c(0,1),
+     ylim=c(0,1.1),
      xlim=x.lim,
      las=1,xlab="years",ylab="",
      main="(b) Re-optimize - State vector = avg")
@@ -222,7 +218,7 @@ plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
                  t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
-     ylim=c(0,1),
+     ylim=c(0,1.1),
      xlim=x.lim,
      las=1,xlab="years",ylab="",
      main="(c) Re-optimize - State vector = avg + 2 std.dev.")
@@ -272,7 +268,7 @@ plot(model_sol$vec_date[2:length(model_sol$vec_date)],
      mu.function(model_sol,theta = RES.2param$par,
                  t.ini = t)[2:length(model_sol$vec_date)],
      type="l",col="white",lwd=3,
-     ylim=c(0,1),
+     ylim=c(0,1.1),
      xlim=x.lim,
      las=1,xlab="years",ylab="",
      main="(d) Re-optimize - State vector = avg - 2 std.dev.")

@@ -112,8 +112,9 @@ In our Figure 2, the line labeled "ACE-Joos" is based on data extracted from Chr
 
 Some data in this package originate from the replication package of Bauer and Rudebusch (2023), and are licensed under the [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) Public Domain Dedication. These data, used to produce Figure 6, were obtained from Michael Bauer´s [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license.
 
-### Details on each Data Source
+The CSV file included in this replication package contains data derived from an Excel file created by William Nordhaus and Lint Barrage. The data and associated program are © DICE2023-Excel-b-4-3-10-v18.3, with copyrights held by William Nordhaus and Lint Barrage. The owners provide free and open access to the program. Commercial users must obtain permission for use in its original form or with changes from the copyright holder.
 
+### Details on each Data Source
 
 | Data.Name  | Data.Files | Location | Provided | Citation |
 | -- | -- | -- | -- | -- | 
@@ -123,7 +124,7 @@ Some data in this package originate from the replication package of Bauer and Ru
 | RCP temperature scenario and standard dev. | `mean_ssp.txt` | `data/` | TRUE | XXXX |
 | RCPs based on ACE model | `RCP_Mat_ACE.csv` | `data/` | TRUE | Traeger (2023) |
 | RCPs based on MAGICC6.0 model | `RCP_Mat_MAGICC.csv` | `data/` | TRUE | Meinshausen et al. (2011), Traeger (2023) |
-| DICE mitigation path | `mu.csv` | `data/` | TRUE | DICE XXXX |
+| DICE mitigation path | `mu_DICE.csv` | `data/` | TRUE | DICE2023; Barrage and Nordhaus (2024) |
 
 ### Details on creation of intermediary files
 
@@ -170,7 +171,12 @@ The code line to add is:
 save(fair, hector, magicc, file="Figure223_EPA_data.Rdat")
 ```
 
+The file `mu_DICE.csv` contains the trajectory of emission control rates extracted from the Excel file with outputs of the DICE2023 model. This Excel file is part of the [supplementary material](https://bit.ly/3TwJ5nO) associated with Barrage and Nordhaus (2024). It can be accessed directly via [this link](https://yale.app.box.com/s/whlqcr7gtzdm4nxnrfhvap2hlzebuvvm/file/1361579245945). The emission control rate is located in row 71 of this Excel file, within the worksheet named `Opt`.
+
+
 ## References
+
+[L. Barrage, and W. Nordhaus (2024)](https://doi.org/10.1073/pnas.2312030121),   Policies, projections, and the social cost of carbon: Results from the DICE-2023 model, Proc. Natl. Acad. Sci. U.S.A. 121 (13).
 
 [Bauer, M. D. and G. D. Rudebusch (2023)](https://doi.org/10.1162/rest_a_01109). The Rising Cost of Climate Change: Evidence from the Bond Market. The Review of Economics and Statistics 105(5), 1255-1270.
 
