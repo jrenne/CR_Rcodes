@@ -100,7 +100,9 @@ RCP85 <- RCP_MAGICC[,5]
 RCP   <- .5*(RCP45+RCP60)
 RCP_tstep <- RCP[which(RCP_MAGICC$V1 %in% vec_date)]
 m0 <- RCP_tstep/mateq
-save(m0,file="data/m0_4_ShinyApps.Rdat")
+
+# The following file is used in the RShiny app:
+save(m0,file="outputs/results/m0_4_ShinyApps.Rdat")
 
 param.clim<-list(
   m0         = m0, 
