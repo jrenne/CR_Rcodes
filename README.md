@@ -24,7 +24,8 @@ The analysis published in the paper has been conducted using R version 4.3.1 (20
 
 ### Instructions to Replicators
 
-To replicate the results, execute the script `main.R`. 
+To replicate the results, execute the script `main.R`.
+
    - The script begins by calibrating `mu_T` using the bisection method, which takes approximately 30 seconds.
    - Within `main.R`, the replciator has the option to generate specific tables and figures, with detailed instructions included as commented code. By default, the code produces all the figures and tables in the paper.
    - On line 26 of `main.R`, the replicator may want to modify the variable `number.of.cores`, which specifies the number of cores to use for parallel computing. Parallel processing is employed to generate certain figures that require multiple model runs, such as sensitivity analyses. By default, `number.of.cores` is set to 8. If the computer of the replcicator has fewer than 8 cores, the maximum available number of cores will be used.
@@ -53,8 +54,11 @@ Random seed is set:
 
 The repository is organized into several folders, detailed as follows:
 
-1. **data/**: Contains data files used for calibration and plotting.
-2. **estimations/**: Contains R scripts for estimating and calibrating the model.
+1. **data/**: Contains data files used for calibration and plotting (see details in the section on data sources).
+2. **estimations/**: Contains two R scripts used for calibrating the model.
+
+    - `compute_alpha.R`: This script determines the value of the alpha parameter used in the  calibration exercise.
+    - `load_ini_model.R`: This script constructs the baseline model. The calibration of some parameters is based on the literature; others are calculated so as to achieve specific targets.
 3. **outputs/**: Includes scripts for producing figures and tables, along with the generated outputs (see table below).
 4. **procedures/**: Contains various procedures used to solve the model, price assets, and generate outputs.
 
@@ -66,8 +70,6 @@ The main directory includes **main.R**, that is the primary script to source for
 The provided code reproduces the tables and figures in the paper, including those in the supplemental appendix. The exception is Figure 1, which is a schema created using the TikZ package in LaTeX. Tables 3, 4, and 6 are also exceptions; they contain formulas written directly in LaTeX.
 
 All scripts used to generate figures are located in the folder `outputs/make_figures/`. All scripts for producing tables are in `outputs/make_tables/`. The resulting figures are saved in PDF format within the folder `outputs/Figures/`, and all tables are written in LaTeX and stored as `.txt` files in `outputs/Tables/`.
-
-
 
 
 | Figure/Table #    | Program                  | Output file                      |
@@ -83,7 +85,7 @@ All scripts used to generate figures are located in the folder `outputs/make_fig
 | Figure 10          | `make_figure_gamma0_distri.R` |  `Figure_gamma0_Damages.pdf`  |
 | Figure 11          | `make_figure_RCP_to_TAT.R` |  `Figure_RCP_to_TAT.pdf`  |
 | Figure S.1          | `make_figure_calibration.R` |  `Figure_Calibration.pdf`  |
-| Figure S.2          | `make_figure_mu.R` |  `FFigure_Mitigation_comparison.pdf`  |
+| Figure S.2          | `make_figure_mu.R` |  `Figure_Mitigation_comparison.pdf`  |
 | Figure S.3          | `make_figure_RCP_to_TAT.R` |  `Figure_SCCvsTRP.pdf`  |
 | Figure S.4          | `make_figure_YC_RF.R` |  `Figure_TRP_comparison.pdf`  |
 | Figure S.5          | `make_figure_Merton.R` |  `Figure_Merton2.pdf`  |
@@ -93,7 +95,6 @@ All scripts used to generate figures are located in the folder `outputs/make_fig
 | Table 7          | `make_table_param.R` |  `table_param.txt`  |
 | Table S.1          | `make_table_SCC.R` |  `table_TRP_sensitiv.txt`  |
 | Table S.2          | `make_table_SCC.R` |  `table_LTR_sensitiv.txt`  |
-
 
 
 ## Data Availability and Provenance Statements
@@ -108,11 +109,11 @@ Some data used to construct Figure 2 are obtained from the [USEPA/scghg](https:/
 
 - Some data from the EPA repository are outputs generated from the [FaIR (Finite-amplitude Impulse-Response)] model, licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/). These outputs, used in Figure 2, are governed by that license, which permits use, modification, and distribution according to its terms.
 
-The present package also includes outputs generated with the [MAGICC6.0](https://www.ucl.ac.uk/~ucfbarc/MAGICC/) model, originating from Christian Traeger´s publicly available replication repository ([link](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view)), associated with Traeger (2023). The author of that package certifies he has legitimate access and permission to publish these data, which are governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). We used the MATLAB codes in Traeger´s package (also licensed under CC-BY-NC 4.0) to load and process these data.
+The present package also includes outputs generated with the [MAGICC6.0](https://www.ucl.ac.uk/~ucfbarc/MAGICC/) model, originating from Christian Traeger¥s publicly available replication repository ([link](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view)), associated with Traeger (2023). The author of that package certifies he has legitimate access and permission to publish these data, which are governed by the [CC-BY-NC-SA 3.0 Unported license](https://creativecommons.org/licenses/by-nc-sa/3.0/). We used the MATLAB codes in Traeger¥s package (also licensed under CC-BY-NC 4.0) to load and process these data.
 
-In our Figure 2, the line labeled "ACE-Joos" is based on data extracted from Christian Traeger´s repository, which utilizes inputs originally obtained from Joos et al. (2013); the latter work is licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+In our Figure 2, the line labeled "ACE-Joos" is based on data extracted from Christian Traeger¥s repository, which utilizes inputs originally obtained from Joos et al. (2013); the latter work is licensed under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 
-Some data in this package originate from the replication package of Bauer and Rudebusch (2023), and are licensed under the [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) Public Domain Dedication. These data, used to produce Figure 6, were obtained from Michael Bauer´s [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license.
+Some data in this package originate from the replication package of Bauer and Rudebusch (2023), and are licensed under the [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) Public Domain Dedication. These data, used to produce Figure 6, were obtained from Michael Bauer¥s [personal website](https://www.michaeldbauer.com/files/sdr/sdrs.csv) and are used here in accordance with the license.
 
 One csv file includes data derived from an Excel file created by William Nordhaus and Lint Barrage. (It is used in Figure S.2 of the Supplemental Appendix; the series is indicated by "DICE2023".) The data and associated program are © DICE2023-Excel-b-4-3-10-v18.3, with copyrights held by William Nordhaus and Lint Barrage. The owners provide free and open access to the program. Commercial users must obtain permission for use in its original form or with changes from the copyright holder.
 
@@ -131,7 +132,7 @@ All data files (listed in the following table) can be found in the `~/data/` fol
 
 ### Details on creation of intermediary files
 
-The two CSV files `RCP_Mat_ACE.csv` and `RCP_Mat_MAGICC.csv` were created by appending the following lines to the end of the script `TempFitSim_ACE.m`, available in [Traeger´s (2023) replication package](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view). Running this script in MATLAB generates the CSV files and saves them in the current directory.
+The two CSV files `RCP_Mat_ACE.csv` and `RCP_Mat_MAGICC.csv` were created by appending the following lines to the end of the script `TempFitSim_ACE.m`, available in [Traeger¥s (2023) replication package](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view). Running this script in MATLAB generates the CSV files and saves them in the current directory.
 
 ```matlab
 M_AT = [MagiccOcean.RCP3PD.Carboncycle(:,5) ...
@@ -160,7 +161,7 @@ csvwrite('RCP_Mat_MAGICC.csv', M);
 M = [(Startdate:timestep:Enddate)' Temp_combined_plot_atm_sim(:,[1 3 5 6])];
 csvwrite('RCP_Mat_ACE.csv', M);
 ```
-The file `IRF_Traeger_5y.csv` was created by adding the following line to the end of the script `ImpulseResponseComplot_ACE.m` in [Traeger´s (2023) replication package](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view). Running this script in MATLAB generates the CSV file and saves it in the current directory.
+The file `IRF_Traeger_5y.csv` was created by adding the following line to the end of the script `ImpulseResponseComplot_ACE.m` in [Traeger¥s (2023) replication package](https://www.openicpsr.org/openicpsr/project/154141/version/V1/view). Running this script in MATLAB generates the CSV file and saves it in the current directory.
 
 ```matlab
 csvwrite("IRF_Traeger_5y.csv",[ACE_Impulse_DICE5' ACE_Impulse_Joos5']);
@@ -186,7 +187,7 @@ The file `mu_DICE.csv` contains the trajectory of emission control rates extract
 [Environmental Protection Agency (2023)](https://www.epa.gov/environmental-economics/scghg). EPA Report on the Social Cost of Greenhouse Gases: Estimates Incorporating Recent Scientific Advances. EPA Report Docket ID No. EPA-HQ-OAR-2021-
 0317, EPA.
 
-[Joos, F., R. Roth, J. S. Fuglestvedt, G. P. Peters, I. G. Enting, W. von Bloh, V. Brovkin, E. J. Burke, M. Eby, N. R. Edwards, T. Friedrich, T. L. Frölicher, P. R. Halloran, P. B. Holden, C. Jones, T. Kleinen, F. T. Mackenzie, K. Matsumoto, M. Meinshausen, G.-K. Plattner, A. Reisinger, J. Segschneider, G. Shaffer, M. Steinacher, K. Strassmann, K. Tanaka, A. Timmermann, and A. J. Weaver (2013)](https://acp.copernicus.org/articles/13/2793/2013/). Carbon Dioxide and Climate Impulse Response Functions for the Computation of Greenhouse Gas Metrics: a Multi-Model Analysis. Atmospheric Chemistry and Physics 13(5), 2793-2825.
+[Joos, F., R. Roth, J. S. Fuglestvedt, G. P. Peters, I. G. Enting, W. von Bloh, V. Brovkin, E. J. Burke, M. Eby, N. R. Edwards, T. Friedrich, T. L. Fr^licher, P. R. Halloran, P. B. Holden, C. Jones, T. Kleinen, F. T. Mackenzie, K. Matsumoto, M. Meinshausen, G.-K. Plattner, A. Reisinger, J. Segschneider, G. Shaffer, M. Steinacher, K. Strassmann, K. Tanaka, A. Timmermann, and A. J. Weaver (2013)](https://acp.copernicus.org/articles/13/2793/2013/). Carbon Dioxide and Climate Impulse Response Functions for the Computation of Greenhouse Gas Metrics: a Multi-Model Analysis. Atmospheric Chemistry and Physics 13(5), 2793-2825.
 
 [Lemoine, D. (2021)](https://www.journals.uchicago.edu/doi/abs/10.1086/710667?journalCode=jaere). The Climate Risk Premium: How Uncertainty Affects the Social Cost of Carbon.
 Journal of the Association of Environmental and Resource Economists 8(1), 27-57.
@@ -197,3 +198,4 @@ Journal of the Association of Environmental and Resource Economists 8(1), 27-57.
 
 [Traeger, C. P. (2023)](https://www.aeaweb.org/articles?id=10.1257/pol.20210297). ACE-Analytic Climate Economy. American Economic Journal: Economic Policy 15(3),
 372-406.
+
