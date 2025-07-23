@@ -146,7 +146,7 @@ rownames(all.targets) <- c("Baseline",
 for(indic.CRRA in c(FALSE,TRUE)){# if FALSE, use Epstein-Zin, otherwise CRRA
   if(indic.CRRA){
     values.of.gamma <- c(1.5,1.001,2)
-    print("   * Time-separable CRRA preferences (about 2-3 minutes)")
+    print("   * Time-separable CRRA preferences (about 2 minutes)")
   }else{
     print("   * Epstein-Zin preferences (about 1 minute)")
     values.of.gamma <- c(model_sol$parameters$gamma,2,10)
