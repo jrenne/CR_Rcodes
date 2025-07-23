@@ -1,11 +1,3 @@
----
-output:
-  word_document:
-    toc: no
-    toc_depth: '2'
-  html_document: default
-  pdf_document: default
----
 # Replication package for "An Analytical Framework to Price Long-Dated Climate-Exposed Assets"
 
 **Authors:** Pauline Chikhani and Jean-Paul Renne  
