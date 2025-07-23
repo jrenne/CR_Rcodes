@@ -15,7 +15,7 @@ No uncert. on permafrost specif. ($\mu_N=0$)&$0.012$&$-$\textit{0.080\degree C}&
 No uncert. on sea-level specif. ($\mu_H=0$)&$0.092$&$-$\textit{0.000\degree C}&$0.030$&$-$\textit{0.000\degree C}&$0.162$&$-$\textit{0.000\degree C}\\
 No uncert. on temperature specif. ($\mu_T=0$)&$0.075$&$-$\textit{0.017\degree C}&$0.027$&$-$\textit{0.002\degree C}&$0.131$&$-$\textit{0.031\degree C}\\
 Small damages (twice lower)&$0.020$&$-$\textit{0.072\degree C}&$0.019$&$-$\textit{0.011\degree C}&$0.025$&$-$\textit{0.137\degree C}\\
-No permaf. releases ($a^{(N)}=b^{(N)}=0$)&$-0.020$&$-$\textit{0.112\degree C}&$-0.008$&$-$\textit{0.038\degree C}&$-0.023$&$-$\textit{0.185\degree C}\\
+No permaf. releases ($a^{(N)}=b^{(N)}=0$)&$-0.020$&$-$\textit{0.112\degree C}&$-0.008$&$-$\textit{0.038\degree C}&$-0.023$&$-$\textit{0.186\degree C}\\
 No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&$0.078$&$-$\textit{0.014\degree C}&$0.027$&$-$\textit{0.003\degree C}&$0.140$&$-$\textit{0.023\degree C}\\
 \hline
 \multicolumn{7}{l}{{\qquad\bf B. Time-separable CRRA preferences}}\\
@@ -23,16 +23,16 @@ No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&$0.078$&$-$\textit{0.014\deg
 Specification&\multicolumn{2}{c}{$\gamma=1.5$}&\multicolumn{2}{c}{$\gamma=1.001$}&\multicolumn{2}{c}{$\gamma=2$}\\
 \hline
 Baseline&{\bf 0.016}&&{\bf 0.021}&&{\bf 0.008}&\\
-Large rate of pref. for present ($-\log(\delta)/\Delta t=1.5\%$)&$0.017$&$+$\textit{0.001\degree C}&$0.022$&$+$\textit{0.000\degree C}&$0.009$&$+$\textit{0.001\degree C}\\
+Large rate of pref. for present ($-\log(\delta)/\Delta t=1.5\%$)&$0.017$&$+$\textit{0.001\degree C}&$0.022$&$+$\textit{0.001\degree C}&$0.009$&$+$\textit{0.001\degree C}\\
 Small rate of pref. for present ($-\log(\delta)/\Delta t=0.5\%$)&$0.016$&$-$\textit{0.000\degree C}&$0.021$&$-$\textit{0.000\degree C}&$0.008$&$-$\textit{0.001\degree C}\\
-Large climate sensitivity ($\nu=4$)&$0.026$&$+$\textit{0.010\degree C}&$0.031$&$+$\textit{0.009\degree C}&$0.019$&$+$\textit{0.011\degree C}\\
+Large climate sensitivity ($\nu=4$)&$0.026$&$+$\textit{0.010\degree C}&$0.030$&$+$\textit{0.009\degree C}&$0.019$&$+$\textit{0.011\degree C}\\
 Small climate sensitivity ($\nu=2$)&$0.001$&$-$\textit{0.015\degree C}&$0.006$&$-$\textit{0.015\degree C}&$-0.007$&$-$\textit{0.015\degree C}\\
-Deterministic model&$0.023$&$+$\textit{0.007\degree C}&$0.024$&$+$\textit{0.002\degree C}&$0.024$&$+$\textit{0.015\degree C}\\
+Deterministic model&$0.023$&$+$\textit{0.007\degree C}&$0.024$&$+$\textit{0.003\degree C}&$0.024$&$+$\textit{0.015\degree C}\\
 No exog. techno. uncertainty ($\sigma_A=0$)&$0.029$&$+$\textit{0.013\degree C}&$0.027$&$+$\textit{0.006\degree C}&$0.031$&$+$\textit{0.023\degree C}\\
 No uncert. on damage specif. ($\mu_D=0$)&$0.015$&$-$\textit{0.001\degree C}&$0.021$&$-$\textit{0.000\degree C}&$0.007$&$-$\textit{0.001\degree C}\\
-No uncert. on permafrost specif. ($\mu_N=0$)&$0.011$&$-$\textit{0.005\degree C}&$0.018$&$-$\textit{0.004\degree C}&$0.001$&$-$\textit{0.008\degree C}\\
+No uncert. on permafrost specif. ($\mu_N=0$)&$0.011$&$-$\textit{0.005\degree C}&$0.018$&$-$\textit{0.004\degree C}&$0.001$&$-$\textit{0.007\degree C}\\
 No uncert. on sea-level specif. ($\mu_H=0$)&$0.016$&$-$\textit{0.000\degree C}&$0.021$&$-$\textit{0.000\degree C}&$0.008$&$-$\textit{0.000\degree C}\\
 No uncert. on temperature specif. ($\mu_T=0$)&$0.016$&$-$\textit{0.000\degree C}&$0.021$&$-$\textit{0.000\degree C}&$0.008$&$-$\textit{0.000\degree C}\\
 Small damages (twice lower)&$0.010$&$-$\textit{0.006\degree C}&$0.018$&$-$\textit{0.003\degree C}&$-0.002$&$-$\textit{0.010\degree C}\\
 No permaf. releases ($a^{(N)}=b^{(N)}=0$)&$-0.013$&$-$\textit{0.029\degree C}&$-0.006$&$-$\textit{0.027\degree C}&$-0.023$&$-$\textit{0.031\degree C}\\
-No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&$0.015$&$-$\textit{0.001\degree C}&$0.020$&$-$\textit{0.001\degree C}&$0.006$&$-$\textit{0.002\degree C}\\
+No sea-level-specific damages ($a^{(H)}=b^{(H)}=0$)&$0.015$&$-$\textit{0.001\degree C}&$0.021$&$-$\textit{0.001\degree C}&$0.006$&$-$\textit{0.002\degree C}\\

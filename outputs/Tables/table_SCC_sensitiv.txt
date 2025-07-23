@@ -25,10 +25,10 @@ Specification&\multicolumn{2}{c}{$\gamma=1.5$}&\multicolumn{2}{c}{$\gamma=1.001$
 Baseline&{\bf 73}&&{\bf 215}&&{\bf 35}&\\
 Large rate of pref. for present ($-\log(\delta)/\Delta t=1.5\%$)&49&$-$\textit{32.7\%}&92&$-$\textit{57.2\%}&28&$-$\textit{20.3\%}\\
 Small rate of pref. for present ($-\log(\delta)/\Delta t=0.5\%$)&118&$+$\textit{61.3\%}&853&$+$\textit{297.4\%}&45&$+$\textit{28.3\%}\\
-Large climate sensitivity ($\nu=4$)&87&$+$\textit{19.3\%}&255&$+$\textit{18.8\%}&41&$+$\textit{18.4\%}\\
+Large climate sensitivity ($\nu=4$)&87&$+$\textit{19.4\%}&255&$+$\textit{18.8\%}&41&$+$\textit{18.4\%}\\
 Small climate sensitivity ($\nu=2$)&47&$-$\textit{35.0\%}&139&$-$\textit{35.1\%}&23&$-$\textit{33.7\%}\\
 Deterministic model&69&$-$\textit{5.3\%}&208&$-$\textit{2.9\%}&32&$-$\textit{7.6\%}\\
-No exog. techno. uncertainty ($\sigma_A=0$)&73&$-$\textit{0.3\%}&215&$+$\textit{0.0\%}&35&$-$\textit{0.8\%}\\
+No exog. techno. uncertainty ($\sigma_A=0$)&73&$-$\textit{0.3\%}&215&$-$\textit{0.0\%}&35&$-$\textit{0.8\%}\\
 No uncert. on damage specif. ($\mu_D=0$)&69&$-$\textit{4.9\%}&208&$-$\textit{2.9\%}&33&$-$\textit{6.7\%}\\
 No uncert. on permafrost specif. ($\mu_N=0$)&73&$-$\textit{0.1\%}&215&$-$\textit{0.0\%}&35&$-$\textit{0.2\%}\\
 No uncert. on sea-level specif. ($\mu_H=0$)&73&$-$\textit{0.0\%}&215&$-$\textit{0.0\%}&35&$-$\textit{0.0\%}\\
