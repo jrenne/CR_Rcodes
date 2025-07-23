@@ -1,3 +1,8 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
 # Replication package for "An Analytical Framework to Price Long-Dated Climate-Exposed Assets"
 
 **Authors:** Pauline Chikhani and Jean-Paul Renne  
@@ -243,7 +248,7 @@ All data files (listed in the following table) can be found in the `~/data/` fol
 | DICE mitigation path | `mu_DICE.csv` | DICE2023; Barrage and Nordhaus (2024) |
 
 
-- The file `sdrs.csv` (Bauer and Rudebusch, 2023), is available on [Michael Bauer's website](https://www.michaeldbauer.com/files/sdr/sdrs.csv).
+- The file `sdrs.csv` (Bauer and Rudebusch, 2023), is available on Michael Bauer's website; it can be downloaded [here](https://www.michaeldbauer.com/files/sdr/sdrs.csv).
 - The three files `EPA_fair.csv`, `EPA_hector.csv`, and `EPA_magicc.csv` contain the data of impulse response functions shown in Figure 2.2.3 of the EPA (2023) report. To generate these three files: (1) download the [EPA replication package](https://github.com/USEPA/scghg/tree/figures), (2) append the following three lines of code at the end of `plot_temperature_anomaly.R` (that file is available [here](https://github.com/USEPA/scghg/blob/figures/EPA/code/figures/plot_temperature_anomaly.R); i.e., in the folder `/EPA/code/figures/` of the EPA package), (3) set `/EPA/` as the working directory, (4) source `plot_temperature_anomaly.R`. This will create the three `.csv` files in the working directory.
 ```r
       write.csv(fair,   "EPA_fair.csv")
