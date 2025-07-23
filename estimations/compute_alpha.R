@@ -45,36 +45,3 @@ alpha <- res_optim$par[2]
 
 traj_T <- Tinf - (Tinf - T0)*exp(-alpha * seq_i)
 
-
-# # Generate figure illustrating the fit obtained with alpha:
-# 
-# FILE = "/outputs/Figures/Figure_fit_alpha.pdf"
-# pdf(file=paste(getwd(),FILE,sep=""),pointsize=10, width=6, height=3)
-# 
-# par(mfrow=c(1,1))
-# par(plt=c(.15,.95,.1,.95))
-# 
-# plot(years,temp,col="white",las=1,
-#      ylab="Temperature, in °C")
-# lines(years,traj_T,col="red",type="l",lwd=2)
-# lines(years,temp,col="black",lty=2,lwd=3)
-# lines(c(2020,2100),
-#       c(T_RCP[RCP_MAGICC$V1==2020],T_RCP[RCP_MAGICC$V1==2100]),col="blue",lty=3,lwd=2)
-# 
-# legend("topleft",
-#        legend=c("Average RCP45+RCP6",
-#                 "Fitted parametric trajectory",
-#                 "Linear trajectory"),
-#        lty=c(2,1,3),
-#        col=c("black","red","blue"),
-#        pch=c(NaN),
-#        lwd=c(3,2,2),
-#        seg.len = 3,
-#        bty = "n",cex=1)
-# 
-# grid()
-# 
-# dev.off()
-
-
-

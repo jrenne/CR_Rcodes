@@ -168,7 +168,7 @@ polygon(c(seq(model_sol$tstep,H,by=model_sol$tstep),
         col="light grey",border = NaN)
 
 # Bauer and Rudebusch yield curves:
-BR_sdrs <- read.csv("data/Bauer_Rudebusch_sdrs.csv")
+BR_sdrs <- read.csv("data/sdrs.csv")
 lines(BR_sdrs$uc_y10_2019[1:H],col=col.BR,lwd=2,lty=3)
 lines(BR_sdrs$arbreak_y10_2019[1:H],col=col.BR,lwd=2,lty=2)
 lines(BR_sdrs$arlearn_y10_2019[1:H],col=col.BR,lwd=2,lty=1)

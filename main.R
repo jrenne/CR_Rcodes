@@ -5,34 +5,39 @@
 # This version: July 2025
 # ==============================================================================
 
-#clear environment
+# Clear environment ------------------------------------------------------------
 rm(list=ls(all=T))
 
-# Load libraries
+# Set working directory --------------------------------------------------------
+setwd("~/Dropbox/Research/TIBs/CR_Rcodes")
+
+# Load libraries ---------------------------------------------------------------
 library(parallel)
 library(doParallel)
-library(mgcv)
 library(colorspace)
 library(broman)
 library(optimx)
 library(MASS)
 library(expm)
 
+# Determine whether tables and figures are generated ---------------------------
 #Binary operators: 0 = NO, 1 = YES.
 indic_plots_paper  <- 1 #produce paper's plots? see description below
 indic_tables_paper <- 1 #produce paper's table? see description below
 
-# For scripts using parallel computing:
+# Set number of cores used for parallel computing (sensitivity analysis) -------
 number.of.cores <- 8
 
-#Load libraries of functions:
+# Load libraries of functions --------------------------------------------------
 source("procedures/functions_general.R")
 source("procedures/functions_figures.R")
 source("procedures/functions_other_models.R")
+
+# Calibrate baseline model -----------------------------------------------------
 source("estimations/load_ini_model.R")
 
 
-#Updating Plots and Tables -----------------------------------------------------
+# Generate Figures and Tables --------------------------------------------------
 
 #* Figures description:
 #*  2-- FIGURE 2. Atmospheric temperature response to a carbon pulse 
@@ -65,22 +70,13 @@ source("estimations/load_ini_model.R")
 #*      make_figure_YC_RF.R
 #* 105-- FIGURE S.5. Merton model 
 #*      make_figure_Merton.R
-#* 
-#* 
-#* Manual run in plots_paper.R
-#* Miscellaneous
-#* Figure 1*: From carbon concentrations to atmospheric temperature
-#*            make_figure_distrTAT_4_simul_Mat.R
-#* Figure 2*: Simulated damages
-#*            make_figure_simul_cumDamages.R
 
-plots <- 1:105
+plots <- 1:105 # this selects all possible figures
 
 if(indic_plots_paper==1){
   source("outputs/plots_paper.R")
 }
 
-# -----------------------------------------------------
 #* Tables description:
 #* TABLE 1. Model-specific parameters 
 #*          make_table_Estimated_Param.R
@@ -95,7 +91,6 @@ if(indic_plots_paper==1){
 #*            make_table_SCC.R
 #* TABLE S.2. Long-term interest rate (maturity: 2100)
 #*            make_table_SCC.R
-
 
 if(indic_tables_paper==1){
   print("Preparing tables (couple of minutes)")

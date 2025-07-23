@@ -1,7 +1,6 @@
 # ==============================================================================
 # FIGURE S.5. Merton model
 # Figure_Merton2.pdf
-# Figure_Merton1.pdf (not reported in Supplemental Appendix)
 # ==============================================================================
 
 # Figures illustrating Merton model (1/2)
@@ -61,29 +60,7 @@ for(k in 1:length(vector.of.muAD)){
 
 all.expected.A <- NULL
 
-# ------------------------------------------------------------------------------
-# Plots----
-# 1----
-FILE = paste("/outputs/Figures/Figure_Merton1.pdf",sep="")
-pdf(file=paste(getwd(),FILE,sep=""),pointsize=7,width=8, height=4)
-
-par(mfrow=c(1,length(vector.of.muAD)))
-par(plt=c(.15,.95,.15,.85))
-
-indic.plot <- 0
-
-cl <- makeCluster(number.of.cores)
-registerDoParallel(cl)
-
-save.image("outputs/toto.Rdata")
-clusterEvalQ(cl,load("outputs/toto.Rdata"))
-
-clusterEvalQ(cl,library(MASS))
-clusterEvalQ(cl,library(expm))
-
 for(muAD in vector.of.muAD){
-  
-  indic.plot <- indic.plot + 1
   
   iiii <- which(muAD==vector.of.muAD)
   mu_A <- list(muprice_0 = 0,
@@ -106,59 +83,12 @@ for(muAD in vector.of.muAD){
   # save results (for comparison):
   all.expected.A <- rbind(all.expected.A,
                           expected.A)
-  
-  # Compute P and Q proba:
-  Price.ZC <- varphi(model_sol,omega.ZC,H = H)[[3]]
-  all.Probas.P <- foreach(h = 1:H, .combine=cbind) %dopar% {
-    probas <- fourier(model_sol,x,values.of.logA,h,
-                      which(model_sol$names.var.X=="Cum_dc"))
-    probas
-  }
-  
-  # Compute confidence intervals:
-  CI.P <- confidence_intervals_across_horizons(all.Probas.P,
-                                               values.of.variable = exp(values.of.logA),
-                                               nb.values.variable = nb.values.variable,
-                                               vector.of.CI = vector.of.CI)
-  
-  scale.A.values <- CI.P$scale.variable.values
-  all.CI.P  <- CI.P$all.CI
-  all.pdf.P <- CI.P$all.pdf
-  all.cdf.P <- CI.P$all.cdf
-  
-  plot(model_sol$vec_date[2:(H+1)],RF.strategy,
-       xlim=x.lim,ylim=y.lim, cex.main=1.5,cex.axis=1.5,cex.lab=1.5,
-       col="white",xlab="",ylab="",las=1,
-       main=panel.titles[indic.plot])
-  
-  for(i in length(vector.of.CI):1){
-    # P
-    polygon(c(model_sol$vec_date[2:(H+1)],rev(model_sol$vec_date[2:(H+1)])),
-            c(all.CI.P[1,,i],rev(all.CI.P[2,,i])),
-            col=P.col,border = NA)
-  }
-  lines(model_sol$vec_date[2:(H+1)],
-        expected.A,lwd=2,col=P.col.line)
-  lines(model_sol$vec_date[2:(H+1)],RF.strategy,
-        lty=2,lwd=2,col="lightsteelblue4")
-  
-  grid()
-  
-  if(indic.plot==1){
-    legend("topleft",
-           legend=c("Expected value of firm's assets","Risk-free return"),
-           lty=c(1,2),
-           col=c(P.col.line,"lightsteelblue4"),cex=1.4,
-           lwd=c(2,2),bty = "n")
-  }
 }
 
-dev.off()
-
-stopCluster(cl)
-file.remove("outputs/toto.Rdata")
 
 #print(log(all.expected.A[,10])/50)
+
+
 
 
 
@@ -254,7 +184,8 @@ for(muAD in vector.of.muAD){
   
 }
 
-# 2----
+
+
 FILE = paste("/outputs/Figures/Figure_Merton2.pdf",sep="")
 pdf(file=paste(getwd(),FILE,sep=""),pointsize=10,width=8, height=4)
 

@@ -203,12 +203,14 @@ for(largeMat in c(TRUE,FALSE)){
 
 
 # Load EPA data:
-load(file="/Users/jrenne/Dropbox/Research/TIBs/CR_Rcodes/data/Figure223_EPA_data.Rdat")
+fair   <- read.csv("data/EPA_fair.csv")
+hector <- read.csv("data/EPA_hector.csv")
+magicc <- read.csv("data/EPA_magicc.csv")
+
 lower.bound.01 <- fair$q01
 upper.bound.99 <- fair$q99
 lower.bound.05 <- fair$q05
 upper.bound.95 <- fair$q95
-
 
 shock <- 1 # Gt Carbon
 

@@ -1,0 +1,845 @@
+"","climate_model","model","quantile","region","scenario","gas","unit","variable","year","temp.delta","temp.baseline","version","labels","group"
+"1","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2020,0,1.35926502534186,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"2","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2021,0,1.38891035241506,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"3","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2022,0,1.41518431565835,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"4","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2023,0,1.44680991408953,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"5","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2024,0,1.47322757031634,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"6","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2025,0,1.49642993652147,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"7","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2026,0,1.51774901048892,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"8","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2027,0,1.53785523114034,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"9","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2028,0,1.55807224100081,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"10","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2029,0,1.5787553580734,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"11","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2030,0,1.60028887009429,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"12","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2031,0.00068505507577687,1.62130919491766,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"13","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2032,0.00122834795916648,1.64608023887022,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"14","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2033,0.00147643915787876,1.67289866084894,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"15","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2034,0.00160616720812001,1.70305229362964,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"16","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2035,0.0016763201909673,1.73308197681916,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"17","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2036,0.00171831540516076,1.76258100052726,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"18","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2037,0.00174416315737757,1.7878681495619,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"19","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2038,0.00176104787579689,1.81279143200745,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"20","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2039,0.00177025195738911,1.83485996671515,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"21","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2040,0.0017703654892629,1.85569513072022,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"22","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2041,0.00176917064926906,1.87761637924582,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"23","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2042,0.0017617843746942,1.89829223122603,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"24","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2043,0.00175675611976089,1.92208014111497,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"25","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2044,0.00175094640800843,1.94684043199685,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"26","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2045,0.0017441504782254,1.97435900764388,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"27","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2046,0.00173862118897905,2.00430022316537,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"28","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2047,0.00172893227240999,2.03491639115139,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"29","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2048,0.00171815198148905,2.06207501178155,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"30","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2049,0.00170435870451224,2.08753619108304,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"31","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2050,0.00169506643669825,2.10407691228367,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"32","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2051,0.00168015099271445,2.121168133424,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"33","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2052,0.00166599971166025,2.14009425146716,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"34","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2053,0.0016586021455629,2.15737061023386,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"35","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2054,0.0016494908020217,2.17581577288716,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"36","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2055,0.00164042301253986,2.19572820073736,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"37","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2056,0.00163313066805792,2.21708559501171,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"38","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2057,0.00162656555837559,2.23741274760076,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"39","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2058,0.00162395649562441,2.2591259191888,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"40","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2059,0.00161793975682655,2.28150574454164,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"41","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2060,0.00160903867640915,2.30120988811769,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"42","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2061,0.00160266766550765,2.31748586184447,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"43","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2062,0.00159868315387723,2.33397774780232,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"44","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2063,0.00159071508332053,2.34928856800101,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"45","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2064,0.00158570342463093,2.36366727639895,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"46","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2065,0.00157816132494326,2.37982119607143,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"47","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2066,0.00157081095965794,2.39876948995945,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"48","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2067,0.00156587352417414,2.41962914464515,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"49","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2068,0.00156148046341697,2.4392933025999,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"50","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2069,0.00155741406670872,2.45686970494458,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"51","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2070,0.00155315253991439,2.47427545832707,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"52","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2071,0.00154851236719211,2.48797727721176,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"53","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2072,0.00154416315825089,2.50116080347285,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"54","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2073,0.00154063141930627,2.5162722434767,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"55","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2074,0.00153808773027153,2.52760400330081,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"56","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2075,0.00153558404340947,2.54127739496057,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"57","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2076,0.00153237678798312,2.55480651533491,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"58","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2077,0.00152903860468467,2.56739463916194,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"59","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2078,0.00152604622628382,2.58248093397575,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"60","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2079,0.00152310076264949,2.59827668737728,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"61","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2080,0.0015201132810334,2.61556895265769,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"62","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2081,0.00151735222281756,2.63032572457888,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"63","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2082,0.00151627546549781,2.64544097313582,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"64","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2083,0.0015147449690025,2.65861091055373,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"65","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2084,0.00151295725297884,2.66799437186162,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"66","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2085,0.00151139001988864,2.67554332499889,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"67","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2086,0.00150901283549131,2.68293665884886,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"68","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2087,0.00150674657433413,2.69216224557288,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"69","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2088,0.00150385679008646,2.70141012924711,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"70","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2089,0.00150194312526141,2.71182495080323,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"71","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2090,0.00150093339328627,2.72440811525654,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"72","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2091,0.00149861262599326,2.73723993803072,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"73","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2092,0.00149793867527137,2.74837546703296,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"74","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2093,0.00149773105495443,2.75811514491832,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"75","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2094,0.00149750063192266,2.7655804035456,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"76","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2095,0.0014976551419279,2.77190052614653,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"77","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2096,0.00149756702429759,2.77518679263082,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"78","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2097,0.00149805418097437,2.7773763903028,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"79","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2098,0.00149771854377989,2.78067816413563,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"80","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2099,0.00149717265092674,2.7867297462267,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"81","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2100,0.00149682920614102,2.79449797335018,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"82","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2101,0.00149703383090282,2.80427634359361,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"83","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2102,0.00149656217691074,2.81051148962667,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"84","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2103,0.00149668828140403,2.81468944367768,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"85","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2104,0.00149675086973077,2.81782240408314,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"86","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2105,0.00149637538221303,2.81943461135591,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"87","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2106,0.00149476113220115,2.8171851146921,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"88","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2107,0.00149518866803144,2.81649305536677,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"89","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2108,0.00149547928968774,2.81792440082583,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"90","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2109,0.00149529105294687,2.82114203058774,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"91","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2110,0.00149529805748338,2.82669270875647,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"92","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2111,0.00149568525861165,2.83603852204845,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"93","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2112,0.00149619854962135,2.84438522109373,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"94","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2113,0.0014959411841271,2.85054106014417,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"95","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2114,0.00149566102480203,2.8534136276425,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"96","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2115,0.00149607455979361,2.85634221525,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"97","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2116,0.00149506833885593,2.85945838761385,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"98","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2117,0.00149405820303316,2.86081900650466,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"99","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2118,0.00149270920009758,2.86122298680392,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"100","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2119,0.00149198903701841,2.8633619592375,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"101","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2120,0.00149291847547772,2.86730266922163,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"102","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2121,0.00149417847878807,2.87362150454416,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"103","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2122,0.00149642382276682,2.88097928384423,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"104","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2123,0.00149383389857549,2.88768638642723,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"105","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2124,0.00149773136171593,2.89208778048492,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"106","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2125,0.00149740525540309,2.8926708842789,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"107","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2126,0.00149672328263394,2.89097481412288,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"108","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2127,0.00149605159709165,2.89203556776551,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"109","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2128,0.0014957958278694,2.89346274950982,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"110","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2129,0.00149594970275734,2.8959348834065,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"111","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2130,0.00149484734574278,2.90020501853829,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"112","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2131,0.00149528245838226,2.90817350694486,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"113","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2132,0.00149637396714963,2.91504866117257,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"114","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2133,0.00149697655477676,2.92093921461528,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"115","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2134,0.00149753516977857,2.92482090259283,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"116","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2135,0.00149829786341415,2.92751987798389,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"117","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2136,0.00150023474786431,2.92916321548801,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"118","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2137,0.00149951541831816,2.92962053278063,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"119","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2138,0.00150024651125502,2.931632840735,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"120","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2139,0.00150117988611375,2.93302569674705,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"121","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2140,0.00150148644277248,2.93447170608807,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"122","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2141,0.00150093153139319,2.93818344590962,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"123","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2142,0.00150151984001234,2.94371796828101,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"124","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2143,0.00150220321513239,2.94907702735005,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"125","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2144,0.00150280402587865,2.95399614232139,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"126","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2145,0.00150296637721503,2.95794120748247,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"127","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2146,0.00150338346714318,2.95971592761972,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"128","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2147,0.0015037906900972,2.96126140942019,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"129","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2148,0.00150419736036244,2.96299848832424,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"130","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2149,0.00150412847812164,2.96606032401525,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"131","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2150,0.00150393065929033,2.96937863602648,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"132","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2151,0.0015038056733414,2.97263287488808,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"133","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2152,0.00150337610775275,2.97659109490907,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"134","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2153,0.00150246413567756,2.98280980149923,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"135","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2154,0.0015030011903685,2.99070011857659,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"136","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2155,0.00150409275658502,2.99710890229144,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"137","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2156,0.00150577277696606,3.00214093659757,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"138","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2157,0.00150541996901609,3.00534305285157,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"139","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2158,0.00150431311486531,3.00627527767425,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"140","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2159,0.00150431357587543,3.00640660751106,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"141","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2160,0.00150515902127823,3.00668300507409,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"142","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2161,0.00150408648400457,3.00786726087442,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"143","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2162,0.00150393111438851,3.011128277364,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"144","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2163,0.00150452198704953,3.01747164425941,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"145","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2164,0.00150575536088792,3.02567863536214,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"146","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2165,0.00150655219787232,3.03178122367675,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"147","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2166,0.00150717389761334,3.03675841269362,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"148","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2167,0.00150778845967325,3.03876361388999,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"149","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2168,0.00150836942052734,3.03722695707213,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"150","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2169,0.00150845283442135,3.03706111902452,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"151","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2170,0.0015085034890272,3.03727561031715,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"152","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2171,0.00150862142285657,3.03823184344391,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"153","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2172,0.00150884026982156,3.04009661039962,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"154","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2173,0.00150964637146944,3.04388307391558,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"155","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2174,0.00151049030329497,3.04803765113918,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"156","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2175,0.00151015975618507,3.0522505749747,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"157","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2176,0.00151197505715949,3.0554095438945,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"158","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2177,0.00151200319081534,3.05643399681513,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"159","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2178,0.00151200556719111,3.0554118329932,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"160","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2179,0.00151149935477956,3.05378006144229,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"161","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2180,0.00151314625653253,3.05266617016781,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"162","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2181,0.0015134287883729,3.05196994998264,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"163","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2182,0.00151364470000592,3.05144020097108,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"164","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2183,0.0015141544716184,3.05125987251683,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"165","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2184,0.00151498718996356,3.0517679764008,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"166","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2185,0.00151534561516197,3.05342065255838,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"167","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2186,0.00151617327757569,3.05710685677236,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"168","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2187,0.00151704570723842,3.06044991212125,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"169","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2188,0.00151789158796988,3.06338267871714,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"170","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2189,0.00151868963082568,3.06610081508537,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"171","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2190,0.0015192309900931,3.06713427875867,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"172","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2191,0.0015196545359768,3.06651321137978,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"173","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2192,0.00151980654171191,3.06596501973639,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"174","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2193,0.00152034835663106,3.06641512741192,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"175","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2194,0.00152114507588208,3.06717704622788,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"176","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2195,0.00152208356087135,3.06773857442719,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"177","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2196,0.00152310631935836,3.0728002582077,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"178","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2197,0.00152468241852621,3.08101331062641,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"179","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2198,0.00152595024109225,3.08769262699947,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"180","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2199,0.00152693998922126,3.09163016395996,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"181","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2200,0.00152791139681163,3.09328788879167,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"182","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2201,0.00152759982818184,3.09208797738417,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"183","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2202,0.00152847902290775,3.09003150072315,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"184","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2203,0.00152937008461817,3.08828190518198,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"185","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2204,0.00153027102844305,3.08704412096733,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"186","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2205,0.0015311849593933,3.08599548954285,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"187","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2206,0.00153210956042126,3.08503975151796,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"188","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2207,0.0015330462285652,3.08484981193842,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"189","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2208,0.00153399689394517,3.08602817699129,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"190","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2209,0.00153495966891403,3.08823941373951,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"191","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2210,0.00153593012785346,3.09074291792591,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"192","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2211,0.00153726522284958,3.09240684089617,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"193","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2212,0.00153882140081429,3.09334121972298,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"194","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2213,0.00154002690414301,3.09321462864237,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"195","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2214,0.00154098500744104,3.09294998249485,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"196","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2215,0.00154203063445468,3.09165837726332,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"197","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2216,0.00154302805276951,3.0900761724542,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"198","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2217,0.00154398883928763,3.08894975929371,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"199","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2218,0.0015449665270919,3.08809230123861,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"200","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2219,0.00154596792222339,3.08854071292783,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"201","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2220,0.00154699660222457,3.09048296629933,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"202","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2221,0.00154804397753571,3.09330220172444,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"203","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2222,0.00154911127794066,3.09726687407825,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"204","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2223,0.00155017846497185,3.09862959255966,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"205","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2224,0.00155081270392587,3.09672366887866,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"206","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2225,0.00155107924953035,3.09317330156687,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"207","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2226,0.00155203490798827,3.08838038973197,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"208","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2227,0.00155351215019727,3.08412447663611,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"209","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2228,0.00155406989694428,3.08062012429566,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"210","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2229,0.00155507178218572,3.08084336383159,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"211","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2230,0.00155617719586009,3.08310471485628,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"212","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2231,0.0015573207964652,3.08589329123485,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"213","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2232,0.00155879011336157,3.08799214029269,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"214","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2233,0.00156051918693611,3.09011174594538,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"215","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2234,0.00156279023321337,3.09077103857848,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"216","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2235,0.00156440515033939,3.09066198581789,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"217","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2236,0.00156452204803647,3.08860300744706,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"218","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2237,0.00156586290959626,3.08646122393313,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"219","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2238,0.00156716091947006,3.08389645426607,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"220","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2239,0.00156854648936932,3.08145683768639,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"221","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2240,0.00157002260040939,3.08095498843651,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"222","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2241,0.00157154170617679,3.08371758121935,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"223","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2242,0.00157307085999791,3.08764428820546,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"224","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2243,0.00157520261746957,3.08955146439899,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"225","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2244,0.00157671311488649,3.09026231342233,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"226","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2245,0.00157816114088227,3.08925375970857,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"227","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2246,0.00157912022788431,3.08700811043645,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"228","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2247,0.00158045270493811,3.08478462884385,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"229","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2248,0.00158177176128937,3.08045147292007,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"230","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2249,0.00158212302585969,3.07740562816264,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"231","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2250,0.00158324197643411,3.07474191584703,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"232","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2251,0.00158435566805059,3.07210288983538,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"233","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2252,0.0015854669139339,3.07068882228181,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"234","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2253,0.00158657561596453,3.07111621909548,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"235","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2254,0.00158767341497179,3.07274959477518,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"236","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2255,0.00158873669452996,3.07363922119645,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"237","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2256,0.00158976173783553,3.074028617453,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"238","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2257,0.00159101087148183,3.07361765672573,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"239","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2258,0.0015922900092693,3.07180494422847,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"240","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2259,0.00159354177946324,3.06933937474825,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"241","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2260,0.00159351957947606,3.06591770394893,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"242","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2261,0.00159439945767125,3.06245449101396,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"243","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2262,0.00159720724521994,3.05996318760279,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"244","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2263,0.00159843784799207,3.05842080243163,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"245","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2264,0.0015996843134014,3.05863055468056,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"246","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2265,0.00160094087443263,3.06081271669812,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"247","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2266,0.00160181424011662,3.06379505578206,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"248","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2267,0.00160270249690341,3.06704040339815,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"249","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2268,0.00160352187003143,3.0674288349015,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"250","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2269,0.00160427981850719,3.06572628305284,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"251","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2270,0.00160541889040932,3.06272645503731,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"252","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2271,0.00160670704768306,3.05948230413789,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"253","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2272,0.00160799889132134,3.05629073262571,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"254","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2273,0.00160930031408157,3.05397493732957,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"255","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2274,0.00161061425342179,3.05283082199983,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"256","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2275,0.00161193047353513,3.05328918104054,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"257","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2276,0.00161323069663321,3.05446612947076,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"258","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2277,0.00161413080768224,3.05474434466965,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"259","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2278,0.00161507830454921,3.05404538286249,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"260","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2279,0.00161613731920184,3.05219726316868,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"261","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2280,0.0016175373628875,3.0489154143943,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"262","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2281,0.0016189247839069,3.04550480048775,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"263","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2282,0.00162030911327248,3.0430090348775,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"264","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2283,0.00162169433829872,3.04112602948934,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"265","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2284,0.00162309143366989,3.04104551842517,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"266","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2285,0.00162451030839139,3.04439520095758,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"267","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2286,0.0016259429091503,3.04900108845963,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"268","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2287,0.00162736625589787,3.05147121882164,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"269","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2288,0.00162876919805698,3.05267028964879,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"270","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2289,0.00163013074837747,3.05087924463121,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"271","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2290,0.00163102328769415,3.04761841025285,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"272","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2291,0.00163185348771066,3.04497389660326,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"273","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2292,0.00163266857341581,3.04201219788456,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"274","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2293,0.00163273005410125,3.03896063063972,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"275","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2294,0.00163247666190979,3.03664865688976,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"276","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2295,0.00163246748931977,3.03764090117066,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"277","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2296,0.00163271052159141,3.04094272220344,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"278","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2297,0.00163315216951942,3.04486520277267,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"279","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2298,0.00163387750429944,3.04787220717664,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"280","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2299,0.00163494215505832,3.0477665211825,"MAGICC 7.5.3","","co2
+MAGICC 7.5.3
+ssp245"
+"281","MAGICCv7.5.3","MESSAGE-GLOBIOM",0.5,"World","ssp245","co2","K","Surface Air Temperature Change",2300,0.00163593463950562,3.04665286663817,"MAGICC 7.5.3","MAGICC 7.5.3
+SSP245","co2
+MAGICC 7.5.3
+ssp245"

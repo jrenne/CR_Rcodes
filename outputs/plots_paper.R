@@ -1,33 +1,35 @@
 #* Figures description:
-#* -----------------------------------------------------------------------------
-#*  2-- FIGURE 2. Atmospheric temperature response to a carbon pulse
-#*  3-- FIGURE 3. Damage function
+#*  2-- FIGURE 2. Atmospheric temperature response to a carbon pulse 
+#*      make_figure_IRF1Gt.R
+#*  3-- FIGURE 3. Damage function 
+#*      make_figure_Damage_comparison.R
 #*  4-- FIGURE 4. Conditional distribution of future temperatures 
+#*      make_figure_Tpdf.R
 #*  5-- FIGURE 5. Conditional distribution of future global sea level 
+#*      make_figure_Hpdf.R
 #*  6-- FIGURE 6. The term structure of real rates
+#*      make_figure_YC_RF.R
 #*  7-- FIGURE 7. The term structures of interest rates 
+#*      make_figure_breakeveninflation.R
 #*  8-- FIGURE 8. Price of digital options, with contributions of risk premiums 
-#*  9-- FIGURE 9. Effect of \mu on the conditional distribution x_t|y_t \sim \gamma0 (y_t/\mu, \mu) 
+#*      make_figure_options.R
+#*  9-- FIGURE 9. Effect of \mu on the conditional distribution x_t|y_t \sim \gamma0 (y_t/\mu, \mu)
+#*      make_figure_gamma0_distri.R 
 #* 10-- FIGURE 10. Distribution of cumulated damages 
+#*      make_figure_gamma0_distri.R
 #* 11-- FIGURE 11. From carbon concentrations to atmospheric temperature 
-#* 31-- FIGURE III.1. Model calibration 
-#* 51-- FIGURE V.1. Mitigation rate 
-#* 61-- FIGURE VI.1. Social Cost of Carbon and temperature risk premiums
-#* 62-- FIGURE VI.2. Comparison of temperature risk premiums 
-#* 63-- FIGURE VI.3. Merton model 
+#*      make_figure_RCP_to_TAT.R
+#* 101-- FIGURE S.1. Model calibration 
+#*      make_figure_calibration.R
+#* 102-- FIGURE S.2. Mitigation rate 
+#*      make_figure_mu.R
+#* 103-- FIGURE S.3. Social Cost of Carbon and temperature risk premiums
+#*      make_figure_SCC_vs_TempRP.R
+#* 104-- FIGURE S.4. Comparison of temperature risk premiums
+#*      make_figure_YC_RF.R
+#* 105-- FIGURE S.5. Merton model 
+#*      make_figure_Merton.R
 #* -----------------------------------------------------------------------------
- 
- 
-#* Miscellaneous
-
-#* Figure 1*: From carbon concentrations to atmospheric temperature
-# print("Preparing figure showing effect of linearization on 2300 temp. distri")
-# source("outputs/make_figures/make_figure_distrTAT_4_simul_Mat.R",
-#        encoding = 'ISO8859-1')
-
-#* Figure 2*: Simulated damages
-# source("outputs/make_figures/make_figure_simul_cumDamages.R",
-#        encoding = 'ISO8859-1')
 
 # Maturity:
 H <-model_sol$horiz.2100                                                        #maturity 2100
@@ -133,14 +135,14 @@ if(is.element(101,plots)){
 
 #-- 102
 # FIGURE S.2. Mitigation rate
-if(is.element(61,plots)){
+if(is.element(102,plots)){
   print("Preparing figure mu plot (takes about 30 sec)")
   source("outputs/make_figures/make_figure_mu.R")
 }
 
 #-- 103
 # FIGURE S.4. Social Cost of Carbon and temperature risk premiums
-if(is.element(62,plots)){
+if(is.element(103,plots)){
   print("Preparing figure Relationship SCC and Temp. risk premium (takes a few minutes)")
   source("outputs/make_figures/make_figure_SCC_vs_TempRP.R",
          encoding = 'ISO8859-1')
@@ -148,7 +150,7 @@ if(is.element(62,plots)){
 
 #-- 105
 # FIGURE S.5. Merton model
-if(is.element(63,plots)){
+if(is.element(105,plots)){
   print("Preparing Merton-model figure")
   source("outputs/make_figures/make_figure_Merton.R")
 }
