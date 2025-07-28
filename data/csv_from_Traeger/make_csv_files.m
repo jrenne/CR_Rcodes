@@ -21,7 +21,7 @@
 %
 % ACKNOWLEDGMENT:
 % This code builds upon earlier work by Traeger (2023).
-% Original datasets (MagiccOcean.mat and TempFit.mat) and parts
+% Original datasets (MagiccOcean.mat and impulse_timestep_5_logi_001.mat) and parts
 % of the code structure are sourced from his implementation.
 % We thank him for making these resources available.
 % Traeger replication package: Original dataset can be retrieved at
